@@ -53,4 +53,9 @@ export class AppRoutes extends Component {
 
   
         </Switch>
-      </Suspense
+      </Suspense>
+    )
+  }
+}
+
+export default AppRoutes
