@@ -31,9 +31,15 @@ export class AppRoutes extends Component {
             <Redirect to="/dashboard"></Redirect>
           </Route>
 
-          <Route exact path="/dashboard" component={ Dashboard } />
+          {/* <Route exact path="/dashboard" component={ Dashboard } /> */}
      
-          <Route exact path="/general-pages/signin" component={ Signin } />
+          <Route exact path="/dashboard">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Dashboard/>}
+            </Route>
+            
+          <Route exact path="/general-pages/signin">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Signin/>}
+            </Route>
           <Route exact path="/general-pages/signup" component={ Signup } />
 
           <Route exact path="/ui-elements/buttons" component={ Buttons } />
@@ -46,10 +52,10 @@ export class AppRoutes extends Component {
 
           <Route exact path="/tables/basic-table" component={ BasicTable } />
 
-          <Route exact path="/logout" element={ logout } />
-
-          <Route exact path="/login" component={ Login } />
          
+          <Route exact path="/login">
+            {sessionStorage.getItem('token') ? <Redirect to='/dashboard'/> : < Login/>}
+            </Route>
 
   
         </Switch>
