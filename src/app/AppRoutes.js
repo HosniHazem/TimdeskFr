@@ -1,7 +1,7 @@
 import React, { Component, Suspense, lazy } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import AuthGuard from './Session/AuthGuard'
-import jwtDecode from 'jwt-decode';
+
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'))
 
@@ -31,7 +31,7 @@ export class AppRoutes extends Component {
             <Redirect to="/dashboard"></Redirect>
           </Route>
 
-          <AuthGuard exact path="/dashboard" component={ Dashboard } />
+          <Route exact path="/dashboard" component={ Dashboard } />
      
           <Route exact path="/general-pages/signin" component={ Signin } />
           <Route exact path="/general-pages/signup" component={ Signup } />
