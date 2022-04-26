@@ -6,14 +6,14 @@ export default function Getemail() {
     const [userdetail,setUserdetail] = useState('');
 
     useEffect(()=>{
+        const fetchUserDetail = () =>{
+            http.post('/me').then((res)=>{
+                setUserdetail(res.data);
+            });
+        }
         fetchUserDetail();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[]);
-
-    const fetchUserDetail = () =>{
-        http.post('/me').then((res)=>{
-            setUserdetail(res.data);
-        });
-    }
 
     function renderElement(){
         if(userdetail){

@@ -342,10 +342,10 @@ export class Header extends Component {
                     <i className="typcn typcn-cog-outline"></i> Account Settings
                   </a>
 
-                  <Link to="/login" className="dropdown-item">
+                  <div className="dropdown-item">
           
                     <i className="typcn typcn-power-outline"></i>< Logout/>
-                  </Link>
+                  </div>
                 </Dropdown.Menu>
               </Dropdown>
             </div>
