@@ -67,6 +67,19 @@ export class Header extends Component {
                     <i className="typcn typcn-chart-area-outline"></i> Dashboard
                   </Link>
                 </li>
+                
+                <li
+                  className={
+                    this.isPathActive("/levels")
+                      ? "nav-item active"
+                      : "nav-item"
+                  }
+                >
+                  <Link to="/levels" className="nav-link">
+                    <i className="typcn typcn-chart-area-outline"></i> Levels
+                  </Link>
+                </li>
+
                 <li className="nav-item">
                   <Dropdown
                     className={
@@ -344,7 +357,7 @@ export class Header extends Component {
 
                   <div className="dropdown-item">
           
-                    <i className="typcn typcn-power-outline"></i>< Logout/>
+                    <i className="typcn typcn-power-outline dropdown-item"></i>< Logout/>
                   </div>
                 </Dropdown.Menu>
               </Dropdown>
