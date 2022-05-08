@@ -1,6 +1,7 @@
 import React, { Component, Suspense, lazy } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
-
+import axios from 'axios';
+axios.defaults.baseURL = "http://localhost:8000/";
 
 
 const SimpleForm = lazy(() => import('./new/SimpleForm'))
@@ -45,7 +46,9 @@ export class AppRoutes extends Component {
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Dashboard/>}
             </Route>
             
-            <Route exact path="/levels" component={ Datatable } />
+            <Route exact path="/levels">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Datatable/>} 
+             </Route>
             <Route exact path="/levels/new" component={ SimpleForm } />
 
           

@@ -46,6 +46,8 @@
     "react-select": "^3.0.8",
     "react-simplemde-editor": "^4.1.0",
     "sass": "^1.50.1",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.4.11",
     "typicons.font": "^2.0.9"
   },
   "scripts": {
