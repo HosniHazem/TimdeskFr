@@ -1,10 +1,11 @@
+import React, { useState, useEffect } from 'react'
 import {
   Button,
   Grid,
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { Span } from './Typography'
-import React, { useState, useEffect } from 'react'
+
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
 import axios from 'axios';
 
@@ -30,12 +31,10 @@ const IMG = styled('img')(() => ({
   }))
 
 
-  const Getdata = (props) => {
-
-
+  
+  export default function SimpleForm (props) {
 
     const id=props.match.params.id;
-    console.log(id);
     const [levels, setlevels] = useState([]);
 
     useEffect(() => {
@@ -45,30 +44,14 @@ const IMG = styled('img')(() => ({
    }
       });
     }, []);
-   
-   console.log(levels);
-
-  }
-
-
   
-const SimpleForm = () => {
+ 
+console.log(levels)
 
   const [state, setState] = useState({
       date: new Date(),
   })
 
-  useEffect(() => {
-      ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-          console.log(value)
-
-          if (value !== state.password) {
-              return false
-          }
-          return true
-      })
-      return () => ValidatorForm.removeValidationRule('isPasswordMatch')
-  }, [state.password])
 
   const handleSubmit = (event) => {
       // console.log("submitted");
@@ -84,33 +67,29 @@ const SimpleForm = () => {
   }
 
 
-  const {
-      username,
-      description,
-  } = state
-
-  return (
-   
+  return (   
+    
       <Container>
       <div>
-      
+      <div>
+    {console.log(levels.name)}
+  </div>  
           <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
               <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                       <TextField
-                           sx={{ mb: 3, width: '100%' }}
-                           variant="outlined"
-                           size="small"
-                           label="hh"
-
-                           type="email"
-                           name="email"
-                        //    onChange={e=>setEmail(e.target.value)}
-                           validators={['required', 'isEmail']}
-                           errorMessages={[
-                               'this field is required',
-                               'email is not valid',
-                           ]}
+                          type="text"
+                          name="username"
+                          id="standard-basic"
+                          onChange={handleChange}
+                          defaultValue={levels.name}
+                          validators={[
+                              'required',
+                              'minStringLength: 4',
+                              'maxStringLength: 9',
+                          ]}
+                          label="User"
+                          errorMessages={['this field is required']}
                       />
                                           
                       
@@ -130,18 +109,14 @@ const SimpleForm = () => {
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <TextField
-                           type="text"
-                           name="description"
-                           id="standard-basic"
-                           onChange={handleChange}
-                           value={description || ''}
-                           validators={[
-                               'required',
-                               'minStringLength: 4',
-                               'maxStringLength: 9',
-                           ]}
-                           label="descriptions"
-                           errorMessages={['this field is required']}
+                          label="Description"
+                          onChange={handleChange}
+                          type="text"
+                          name="firstName"
+                          
+                          defaultValue="salem"
+                          validators={['required']}
+                          errorMessages={['this field is required']}
                       />
 
                       
@@ -173,5 +148,3 @@ const SimpleForm = () => {
       </Container>
   )
 }
-
-export default SimpleForm
