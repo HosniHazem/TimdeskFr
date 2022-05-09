@@ -6,6 +6,8 @@ axios.defaults.baseURL = "http://localhost:8000/";
 
 const SimpleForm = lazy(() => import('./new/SimpleForm'))
 
+const CurrentForm = lazy(() => import('./new/CurrentForm'))
+
 const Datatable = lazy(() => import('./datatable/Datatable'))
 
 
@@ -51,7 +53,7 @@ export class AppRoutes extends Component {
              </Route>
             <Route exact path="/levels/new" component={ SimpleForm } />
 
-          
+            <Route exact path="/levels/current/:id" component={ CurrentForm } />
 
           <Route exact path="/general-pages/signin">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Signin/>}

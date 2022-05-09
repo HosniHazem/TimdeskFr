@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import App from './app/App';
 import * as serviceWorker from './serviceWorker';
+import "bootstrap/dist/css/bootstrap.css";
 // basename="/Timdesk"
 ReactDOM.render(
   <BrowserRouter> 

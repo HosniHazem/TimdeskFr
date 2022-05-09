@@ -74,7 +74,7 @@ dataRows = levels.map((n) =>{
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to="/users/test" style={{ textDecoration: "none" }}>
+            <Link to={`/levels/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -98,7 +98,7 @@ dataRows = levels.map((n) =>{
     <div className="datatable">
       <div className="datatableTitle">
         Add New Level
-        <Link to="/users/new" className="link">
+        <Link to="/levels/new" className="link">
           Add New
         </Link>
       </div>
