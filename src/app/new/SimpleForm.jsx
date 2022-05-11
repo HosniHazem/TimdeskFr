@@ -1,26 +1,18 @@
+import React, { useState } from 'react'
 import {
   Button,
   Grid,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Checkbox,
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { Span } from './Typography'
-import React, { useState, useEffect } from 'react'
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
-import AdapterDateFns from '@mui/lab/AdapterDateFns'
-import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import { DatePicker } from '@mui/lab'
 
-const TextField = styled(TextValidator)(() => ({
-  width: '100%',
-  marginBottom: '16px',
-}))
+import { ValidatorForm} from 'react-material-ui-form-validator'
+import axios from 'axios';
+import {useHistory} from 'react-router-dom';
+import swal from 'sweetalert';
 
 const Container = styled('div')(({ theme }) => ({
-    margin: '30px',
+    margin: '100px',
     [theme.breakpoints.down('sm')]: {
         margin: '16px',
     },
@@ -34,187 +26,109 @@ const Container = styled('div')(({ theme }) => ({
 const IMG = styled('img')(() => ({
     width: '30%',
   }))
-const SimpleForm = () => {
-  const [state, setState] = useState({
-      date: new Date(),
-  })
+ 
+  
 
-  useEffect(() => {
-      ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
-          console.log(value)
+  export default function SimpleForm () {
 
-          if (value !== state.password) {
-              return false
-          }
-          return true
-      })
-      return () => ValidatorForm.removeValidationRule('isPasswordMatch')
-  }, [state.password])
+    const [LevelsInput, setLevels] = useState({
+        name:"",
+        Is_Active:"Active",
+        description:"",
+        Is_Defaults:"Active",
+    });
+  
+    console.log(LevelsInput)
+    
+    const history = useHistory();
 
-  const handleSubmit = (event) => {
-      // console.log("submitted");
-      // console.log(event);
-  }
+    const handleInput = (e) => {
+        e.persist();
+        console.log(LevelsInput)
+        setLevels({...LevelsInput, [e.target.name]: e.target.value });
+    }
+    const AddLevels = (e) => {
+    
+       
+        e.preventDefault();
+        
+       
+            const  data = {
+                name: LevelsInput.name,
+                Is_Active: LevelsInput.Is_Active,
+                description: LevelsInput.description,
+                Is_Defaults: LevelsInput.Is_Defaults,
+             
+            }
+        
+            console.log(LevelsInput)
 
-  const handleChange = (event) => {
-      event.persist()
-      setState({
-          ...state,
-          [event.target.name]: event.target.value,
-      })
-  }
+    axios.post(`api/Levels/create`, data).then(res=>{
+        if(res.status === 200)
+        {
+            swal("Created",LevelsInput.name,"success");
+           history.push('/levels')
+        }
+        else if(res.status === 404)
+        {
+            swal("Error",LevelsInput.name,"error");
+        }
+    });
+}
 
-  const handleDateChange = (date) => {
-      setState({ ...state, date })
-  }
+  
+  
 
-  const {
-      username,
-      firstName,
-      creditCard,
-      mobile,
-      password,
-      confirmPassword,
-      gender,
-      date,
-      email,
-  } = state
 
-  return (
+  return (   
+    
       <Container>
       <div>
-          <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
+    
+          <ValidatorForm onSubmit={AddLevels} onError={() => null}>
               <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                      <TextField
-                          type="text"
-                          name="username"
-                          id="standard-basic"
-                          onChange={handleChange}
-                          value={username || ''}
-                          validators={[
-                              'required',
-                              'minStringLength: 4',
-                              'maxStringLength: 9',
-                          ]}
-                          label="Username (Min length 4, Max length 9)"
-                          errorMessages={['this field is required']}
-                      />
-                      <TextField
-                          label="First Name"
-                          onChange={handleChange}
-                          type="text"
-                          name="firstName"
-                          value={firstName || ''}
-                          validators={['required']}
-                          errorMessages={['this field is required']}
-                      />
-                      <TextField
-                          label="Email"
-                          onChange={handleChange}
-                          type="email"
-                          name="email"
-                          value={email || ''}
-                          validators={['required', 'isEmail']}
-                          errorMessages={[
-                              'this field is required',
-                              'email is not valid',
-                          ]}
-                      />
+                     
+                  <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="name">Name</label>
+                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={LevelsInput.name}  />
+                </div>
+                      
+                                          
+                      
+                <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
+                      <div className="input-group mb-3">
+                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{LevelsInput.Is_Active}</label>
+                    <select className="form-select" name="Is_Active" value={LevelsInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
+                    <option defaultValue value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    
+                    </select>
+                     </div>
 
-                      <LocalizationProvider dateAdapter={AdapterDateFns}>
-                          <DatePicker
-                              value={date}
-                              onChange={handleDateChange}
-                              renderInput={(props) => (
-                                  <TextField
-                                      {...props}
-                                      // variant="Outlined"
-                                      id="mui-pickers-date"
-                                      label="Date picker"
-                                      sx={{ mb: 2, width: '100%' }}
-                                  />
-                              )}
-                          />
-                      </LocalizationProvider>
 
-                      <TextField
-                          sx={{ mb: 4 }}
-                          label="Credit Card"
-                          onChange={handleChange}
-                          type="number"
-                          name="creditCard"
-                          value={creditCard || ''}
-                          validators={[
-                              'required',
-                              'minStringLength:16',
-                              'maxStringLength: 16',
-                          ]}
-                          errorMessages={['this field is required']}
-                      />
+                
                   </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                      <TextField
-                          label="Mobile Nubmer"
-                          onChange={handleChange}
-                          type="text"
-                          name="mobile"
-                          value={mobile || ''}
-                          validators={['required']}
-                          errorMessages={['this field is required']}
-                      />
-                      <TextField
-                          label="Password"
-                          onChange={handleChange}
-                          name="password"
-                          type="password"
-                          value={password || ''}
-                          validators={['required']}
-                          errorMessages={['this field is required']}
-                      />
-                      <TextField
-                          label="Confirm Password"
-                          onChange={handleChange}
-                          name="confirmPassword"
-                          type="password"
-                          value={confirmPassword || ''}
-                          validators={['required', 'isPasswordMatch']}
-                          errorMessages={[
-                              'this field is required',
-                              "password didn't match",
-                          ]}
-                      />
-                      <RadioGroup
-                          sx={{ mb: 2 }}
-                          value={gender || ''}
-                          name="gender"
-                          onChange={handleChange}
-                          row
-                      >
-                          <FormControlLabel
-                              value="Male"
-                              control={<Radio color="secondary" />}
-                              label="Male"
-                              labelPlacement="end"
-                          />
-                          <FormControlLabel
-                              value="Female"
-                              control={<Radio color="secondary" />}
-                              label="Female"
-                              labelPlacement="end"
-                          />
-                          <FormControlLabel
-                              value="Others"
-                              control={<Radio color="secondary" />}
-                              label="Others"
-                              labelPlacement="end"
-                          />
-                      </RadioGroup>
-                      <FormControlLabel
-                          control={<Checkbox />}
-                          label="I have read and agree to the terms of service."
-                      />
+                  <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
+                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={LevelsInput.description}/>
+                </div>
+
+                      
+                      
+                <label htmlFor="exampleFormControlInput1" className="Is_Defaults">Is Default</label>
+                      <div className="input-group mb-3">
+                    <label className="input-group-text" name="Is_Defaults" htmlFor="inputGroupSelect01">{LevelsInput.Is_Defaults}</label>
+                    <select className="form-select" name="Is_Defaults" value={LevelsInput.Is_Defaults}  onChange={handleInput} id="inputGroupSelect02">
+                    <option defaultValue value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+
+
                   </Grid>
               </Grid>
               <Button color="primary" variant="contained" type="submit">
@@ -223,7 +137,7 @@ const SimpleForm = () => {
                                     alt=""
                                 />
                   <Span sx={{ pl: 1, textTransform: 'capitalize' }}>
-                      Submit
+                      ADD
                   </Span>
               </Button>
           </ValidatorForm>
@@ -231,5 +145,3 @@ const SimpleForm = () => {
       </Container>
   )
 }
-
-export default SimpleForm

@@ -6,13 +6,10 @@ import {
 import { styled } from '@mui/system'
 import { Span } from './Typography'
 
-import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator'
+import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
-
-const TextField = styled(TextValidator)(() => ({
-  width: '100%',
-  marginBottom: '16px',
-}))
+import {useHistory} from 'react-router-dom';
+import swal from 'sweetalert';
 
 const Container = styled('div')(({ theme }) => ({
     margin: '100px',
@@ -29,104 +26,109 @@ const Container = styled('div')(({ theme }) => ({
 const IMG = styled('img')(() => ({
     width: '30%',
   }))
-
-
+ 
   
+
   export default function SimpleForm (props) {
 
+
     const id=props.match.params.id;
-    const [levels, setlevels] = useState([]);
+    const [LevelsInput, setLevels] = useState([]);
 
     useEffect(() => {
       axios.get(`api/Levels/${id}/show`).then((res) => {
         if(res.status === 200){
-        setlevels(res.data.Levels);
+        setLevels(res.data.Levels);
+   } else if(res.data.status === 404){
+    
    }
       });
-    }, []);
+    }, [id]);
+    
+    
+    const history = useHistory();
+
+    const handleInput = (e) => {
+        e.persist();
+        setLevels({...LevelsInput, [e.target.name]: e.target.value });
+    }
+    const updateLevels = (e) => {
+    
+       
+        e.preventDefault();
+        
+       
+            const  data = {
+                name: LevelsInput.name,
+                Is_Active: LevelsInput.Is_Active,
+                description: LevelsInput.description,
+                Is_Defaults: LevelsInput.Is_Defaults,
+             
+            }
+        
+   
+
+    axios.put(`api/Levels/${id}/update`, data).then(res=>{
+        if(res.status === 200)
+        {
+            swal("Updated",LevelsInput.name,"success");
+           history.push('/levels')
+        }
+        else if(res.status === 404)
+        {
+            swal("Error",LevelsInput.name,"error");
+        }
+    });
+}
+
   
- 
-console.log(levels)
-
-  const [state, setState] = useState({
-      date: new Date(),
-  })
-
-
-  const handleSubmit = (event) => {
-      // console.log("submitted");
-      // console.log(event);
-  }
-
-  const handleChange = (event) => {
-      event.persist()
-      setState({
-          ...state,
-          [event.target.name]: event.target.value,
-      })
-  }
+  
 
 
   return (   
     
       <Container>
       <div>
-      <div>
-    {console.log(levels.name)}
-  </div>  
-          <ValidatorForm onSubmit={handleSubmit} onError={() => null}>
+    
+          <ValidatorForm onSubmit={updateLevels} onError={() => null}>
               <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                      <TextField
-                          type="text"
-                          name="username"
-                          id="standard-basic"
-                          onChange={handleChange}
-                          defaultValue={levels.name}
-                          validators={[
-                              'required',
-                              'minStringLength: 4',
-                              'maxStringLength: 9',
-                          ]}
-                          label="User"
-                          errorMessages={['this field is required']}
-                      />
+                     
+                  <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="name">Name</label>
+                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={LevelsInput.name}  />
+                </div>
+                      
                                           
                       
-
+                <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" htmlFor="inputGroupSelect01">Is Active</label>
-                    <select className="form-select" id="inputGroupSelect01">
-                    <option defaultValue value="1">Active</option>
-                    <option value="2">Inactive</option>
+                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{LevelsInput.Is_Active}</label>
+                    <select className="form-select" name="Is_Active" value={LevelsInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
+                    <option defaultValue value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
                     
                     </select>
-                </div>
+                     </div>
 
 
                 
                   </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                  <TextField
-                          label="Description"
-                          onChange={handleChange}
-                          type="text"
-                          name="firstName"
-                          
-                          defaultValue="salem"
-                          validators={['required']}
-                          errorMessages={['this field is required']}
-                      />
+                  <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
+                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={LevelsInput.description}/>
+                </div>
 
                       
                       
-                      
+                <label htmlFor="exampleFormControlInput1" className="Is_Defaults">Is Default</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" htmlFor="inputGroupSelect01">Is Default</label>
-                    <select className="form-select" id="inputGroupSelect01">
-                    <option defaultValue value="1">Active</option>
-                    <option value="2">Inactive</option>
+                    <label className="input-group-text" name="Is_Defaults" htmlFor="inputGroupSelect01">{LevelsInput.Is_Defaults}</label>
+                    <select className="form-select" name="Is_Defaults" value={LevelsInput.Is_Defaults}  onChange={handleInput} id="inputGroupSelect02">
+                    <option defaultValue value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
                     </select>
                 </div>
 

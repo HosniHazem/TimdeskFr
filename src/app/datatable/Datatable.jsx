@@ -27,7 +27,7 @@ const Datatable = () => {
    });
  }, []);
 
-console.log(levels);
+
 var dataRows = "";
        
 dataRows = levels.map((n) =>{
@@ -35,7 +35,7 @@ dataRows = levels.map((n) =>{
    
     {
       id: n.id,
-      username: n.name,
+      Name: n.name,
       Description: n.description,
       UpadatedDate: n.updated_at,
       Is_Active: n.Is_Active,
