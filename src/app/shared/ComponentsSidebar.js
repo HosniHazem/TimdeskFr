@@ -7,9 +7,8 @@ export class ComponentsSidebar extends Component {
       <div>
         <div className="az-content-left az-content-left-components">
           <div className="component-item">
-            <label>UI Elements</label>
             <nav className="nav flex-column">
-              <Link to="/ui-elements/buttons" className={ this.isPathActive('/ui-elements/buttons') ? "nav-link active" : "nav-link" }>Buttons</Link>
+              <Link to="/levels" className={ this.isPathActive('/levels') ? "nav-link active" : "nav-link" }>Levels</Link>
               <Link to="/ui-elements/dropdowns" className={ this.isPathActive('/ui-elements/dropdowns') ? "nav-link active" : "nav-link" }>Dropdown</Link>
               <Link to="/ui-elements/icons" className={ this.isPathActive('/ui-elements/icons') ? "nav-link active" : "nav-link" }>Icons</Link>
             </nav>

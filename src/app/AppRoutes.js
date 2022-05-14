@@ -3,13 +3,21 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios';
 axios.defaults.baseURL = "http://localhost:8000/";
 
+// Levels
+const AddForm = lazy(() => import('./Admin Settings/Levels/AddForm'))
 
-const SimpleForm = lazy(() => import('./new/SimpleForm'))
+const UpdateForm = lazy(() => import('./Admin Settings/Levels/UpdateForm'))
 
-const CurrentForm = lazy(() => import('./new/CurrentForm'))
+const Datatable = lazy(() => import('./Admin Settings/Levels/Datatable'))
+//
 
-const Datatable = lazy(() => import('./datatable/Datatable'))
+// Status
+const AddFormS = lazy(() => import('./Admin Settings/Status/AddForm'))
 
+const UpdateFormS = lazy(() => import('./Admin Settings/Status/UpdateForm'))
+
+const DatatableS = lazy(() => import('./Admin Settings/Status/Datatable'))
+//
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'))
 
@@ -31,7 +39,7 @@ const BasicTable = lazy(() => import('./tables/BasicTable'))
 
 const Login = lazy(() => import('./Session/login'))
 
-
+const ForgetPassword = lazy(() => import('./ForgetPassword/ForgetPassword'))
 
 export class AppRoutes extends Component {
   render() {
@@ -48,12 +56,25 @@ export class AppRoutes extends Component {
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Dashboard/>}
             </Route>
             
+
+
+            {/* Levels */}
             <Route exact path="/levels">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Datatable/>} 
              </Route>
-            <Route exact path="/levels/new" component={ SimpleForm } />
+            <Route exact path="/levels/new" component={ AddForm } />
 
-            <Route exact path="/levels/current/:id" component={ CurrentForm } />
+            <Route exact path="/levels/current/:id" component={ UpdateForm } />
+            {/* //// */}
+            {/* Status */}
+            <Route exact path="/status">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableS/>} 
+             </Route>
+            <Route exact path="/status/new" component={ AddFormS } />
+
+            <Route exact path="/status/current/:id" component={ UpdateFormS } />
+            {/* //// */}
+
 
           <Route exact path="/general-pages/signin">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Signin/>}
@@ -77,6 +98,9 @@ export class AppRoutes extends Component {
             {sessionStorage.getItem('token') ? <Redirect to='/dashboard'/> : < Login/>}
             </Route>
 
+            <Route exact path="/forgetpassword">
+            {sessionStorage.getItem('token') ? <Redirect to='/login'/> : < ForgetPassword/>}
+            </Route>
   
         </Switch>
       </Suspense>

@@ -12,6 +12,7 @@ import {
   import { Paragraph } from './Typography'
   import { TextValidator, ValidatorForm } from 'react-material-ui-form-validator'
   import React from 'react'
+  import { Link } from "react-router-dom";
 
   const FlexBox = styled(Box)(() => ({
     display: 'flex',
@@ -135,7 +136,7 @@ export default function Login() {
                                         validators={['required']}
                                         errorMessages={['this field is required']}
                                     />
-                                    <FormControlLabel
+                                    {/* <FormControlLabel
                                         sx={{ mb: '12px', maxWidth: 288 }}
                                         name="agreement"
     
@@ -148,7 +149,7 @@ export default function Login() {
                                             />
                                         }
                                         label="Remeber me"
-                                    />
+                                    /> */}
                                      {message && (
                                         <Paragraph className="Er" sx={{ color: ERR }}>
                                             {message}
@@ -176,7 +177,9 @@ export default function Login() {
     
                                     </FlexBox>
                                     <Button>
+                                    <Link to="/forgetpassword" className="link">
                                         Forgot password?
+                                        </Link>
                                     </Button>
                                 </ValidatorForm>
                             </ContentBox>

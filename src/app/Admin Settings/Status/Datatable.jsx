@@ -2,10 +2,12 @@
 import React,{ useState,useEffect } from "react";
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns } from '../Levels/datatablesource';
+import { userColumns } from './datatablesource';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import swal from 'sweetalert';
+import moment from 'moment';
+
 
 const http = axios.create({
   baseURL:"http://localhost:8000/api",
@@ -17,12 +19,12 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [levels, setlevels] = useState([]);
+  const [Status, setStatus] = useState([]);
 
  useEffect(() => {
-   axios.get('api/Levels').then((res) => {
+   axios.get('api/Status').then((res) => {
      if(res.status === 200){
-     setlevels(res.data.Levels);
+     setStatus(res.data.Levels);
 }
    });
  }, []);
@@ -30,14 +32,14 @@ const Datatable = () => {
 
 var dataRows = "";
        
-dataRows = levels.map((n) =>{
+dataRows = Status.map((n) =>{
   return ( 
    
     {
       id: n.id,
       Name: n.name,
       Description: n.description,
-      UpadatedDate: n.updated_at,
+      UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
       Is_Active: n.Is_Active,
       Is_Defaults: n.Is_Defaults,
     }
@@ -74,7 +76,7 @@ dataRows = levels.map((n) =>{
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/levels/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/Status/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -98,7 +100,7 @@ dataRows = levels.map((n) =>{
     <div className="datatable">
       <div className="datatableTitle">
         Add New Level
-        <Link to="/levels/new" className="link">
+        <Link to="/Status/new" className="link">
           Add New
         </Link>
       </div>

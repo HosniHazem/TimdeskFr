@@ -36,15 +36,16 @@ const IMG = styled('img')(() => ({
         Is_Active:"Active",
         description:"",
         Is_Defaults:"Active",
+        error_list: [],
     });
   
-    console.log(LevelsInput)
+
     
     const history = useHistory();
 
     const handleInput = (e) => {
         e.persist();
-        console.log(LevelsInput)
+       
         setLevels({...LevelsInput, [e.target.name]: e.target.value });
     }
     const AddLevels = (e) => {
@@ -60,18 +61,22 @@ const IMG = styled('img')(() => ({
                 Is_Defaults: LevelsInput.Is_Defaults,
              
             }
-        
-            console.log(LevelsInput)
+      
 
     axios.post(`api/Levels/create`, data).then(res=>{
-        if(res.status === 200)
+        if(res.data.status === 200)
         {
             swal("Created",LevelsInput.name,"success");
            history.push('/levels')
         }
-        else if(res.status === 404)
+        else if(res.data.status === 404)
         {
             swal("Error",LevelsInput.name,"error");
+        }
+        else if(res.data.status === 422)
+        {
+         
+                     setLevels({...LevelsInput, error_list: res.data.validate_err });
         }
     });
 }
@@ -92,8 +97,10 @@ const IMG = styled('img')(() => ({
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="name">Name</label>
                         <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={LevelsInput.name}  />
+                        <span className="text-danger">{LevelsInput.error_list.name}</span>
                 </div>
-                      
+                
+
                                           
                       
                 <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
@@ -104,6 +111,7 @@ const IMG = styled('img')(() => ({
                     <option value="Inactive">Inactive</option>
                     
                     </select>
+                    <span className="text-danger">{LevelsInput.error_list.Is_Active}</span>
                      </div>
 
 
@@ -114,6 +122,7 @@ const IMG = styled('img')(() => ({
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
                         <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={LevelsInput.description}/>
+                        <span className="text-danger">{LevelsInput.error_list.description}</span>
                 </div>
 
                       
@@ -125,6 +134,7 @@ const IMG = styled('img')(() => ({
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     </select>
+                    <span className="text-danger">{LevelsInput.error_list.Is_Defaults}</span>
                 </div>
 
 
