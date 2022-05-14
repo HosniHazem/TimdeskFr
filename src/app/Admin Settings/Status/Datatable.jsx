@@ -19,12 +19,12 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [status, setstatus] = useState([]);
+  const [Status, setStatus] = useState([]);
 
  useEffect(() => {
-   axios.get('api/status').then((res) => {
+   axios.get('api/Status').then((res) => {
      if(res.status === 200){
-     setstatus(res.data.status);
+     setStatus(res.data.Status);
 }
    });
  }, []);
@@ -32,7 +32,7 @@ const Datatable = () => {
 
 var dataRows = "";
        
-dataRows = status.map((n) =>{
+dataRows = Status.map((n) =>{
   return ( 
    
     {
@@ -41,7 +41,10 @@ dataRows = status.map((n) =>{
       Description: n.description,
       UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
       Is_Active: n.Is_Active,
-      Is_Defaults: n.Is_Defaults,
+      Is_Defaults: n.Is_Default,
+      Is_Closed:n.Is_Closed,
+      Is_Client_Visible:n.Is_Client_Visible,
+
     }
    );
    
@@ -53,7 +56,7 @@ dataRows = status.map((n) =>{
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`status/delete/${id}`).then(res=>{
+     await http.delete(`Status/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -72,11 +75,11 @@ dataRows = status.map((n) =>{
     {
       field: "action",
       headerName: "Action",
-      width: 200,
+      width: 160,
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/status/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/Status/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -99,7 +102,7 @@ dataRows = status.map((n) =>{
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Level
+        Add New Status
         <Link to="/status/new" className="link">
           Add New
         </Link>

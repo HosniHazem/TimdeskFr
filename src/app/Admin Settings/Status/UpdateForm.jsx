@@ -34,14 +34,15 @@ const IMG = styled('img')(() => ({
 
 
     const id=props.match.params.id;
-    const [LevelsInput, setLevels] = useState([]);
+    const [StatusInput, setStatus] = useState([]);
     const [errorInput, setError] = useState([]);
 
 
     useEffect(() => {
-      axios.get(`api/Levels/${id}/show`).then((res) => {
+      axios.get(`api/Status/${id}/show`).then((res) => {
         if(res.data.status === 200){
-        setLevels(res.data.Levels);
+        setStatus(res.data.Status);
+        console.log(res.data.Status)
    } else if(res.data.status === 404){
     
    }
@@ -53,33 +54,34 @@ const IMG = styled('img')(() => ({
 
     const handleInput = (e) => {
         e.persist();
-        setLevels({...LevelsInput, [e.target.name]: e.target.value });
+        setStatus({...StatusInput, [e.target.name]: e.target.value });
     }
-    const updateLevels = (e) => {
+    const updateStatus = (e) => {
     
        
         e.preventDefault();
         
        
             const  data = {
-                name: LevelsInput.name,
-                Is_Active: LevelsInput.Is_Active,
-                description: LevelsInput.description,
-                Is_Defaults: LevelsInput.Is_Defaults,
-             
+                name: StatusInput.name,
+                Is_Active: StatusInput.Is_Active,
+                description: StatusInput.description,
+                Is_Default: StatusInput.Is_Default,
+                Is_Closed:StatusInput.Is_Closed,
+                Is_Client_Visible:StatusInput.Is_Client_Visible,
             }
         
    
 
-    axios.put(`api/Levels/${id}/update`, data).then(res=>{
+    axios.put(`api/Status/${id}/update`, data).then(res=>{
         
       
         if(res.data.status === 200)
         {
-            swal("Updated",LevelsInput.name,"success");
+            swal("Updated",StatusInput.name,"success");
             setError([]);
             
-           history.push('/levels')
+           history.push('/Status')
         } if(res.data.status === 422)
         {
             swal("All fields are mandetory","","error");
@@ -87,7 +89,7 @@ const IMG = styled('img')(() => ({
         }
         else if(res.data.status === 404)
         {
-            swal("Error",LevelsInput.name,"error");
+            swal("Error",StatusInput.name,"error");
             setError([]);
         }
     });
@@ -102,30 +104,37 @@ const IMG = styled('img')(() => ({
       <Container>
       <div>
     
-          <ValidatorForm onSubmit={updateLevels} >
+          <ValidatorForm onSubmit={updateStatus} >
               <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="name">Name</label>
-                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={LevelsInput.name}  />
+                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={StatusInput.name}  />
                         <span className="text-danger">{errorInput.name}</span>
                 </div>
                       
-                                          
-                      
                 <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{LevelsInput.Is_Active}</label>
-                    <select className="form-select" name="Is_Active" value={LevelsInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
+                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{StatusInput.Is_Active}</label>
+                    <select className="form-select" name="Is_Active" value={StatusInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     
                     </select>
-                    
-
+                    <span className="text-danger">{errorInput.Is_Active}</span>
                      </div>
 
+                     <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
+                      <div className="input-group mb-3">
+                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{StatusInput.Is_Client_Visible}</label>
+                    <select className="form-select" name="Is_Client_Visible" value={StatusInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
+                    <option defaultValue value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    
+                    </select>
+                    <span className="text-danger">{errorInput.Is_Client_Visible}</span>
+                     </div>
 
                 
                   </Grid>
@@ -133,22 +142,30 @@ const IMG = styled('img')(() => ({
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
-                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={LevelsInput.description}/>
+                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={StatusInput.description}/>
                         <span className="text-danger">{errorInput.description}</span>
-
                 </div>
 
                       
                       
-                <label htmlFor="exampleFormControlInput1" className="Is_Defaults">Is Default</label>
+                <label htmlFor="exampleFormControlInput1" className="Is_Default">Is Default</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Defaults" htmlFor="inputGroupSelect01">{LevelsInput.Is_Defaults}</label>
-                    <select className="form-select" name="Is_Defaults" value={LevelsInput.Is_Defaults}  onChange={handleInput} id="inputGroupSelect02">
+                    <label className="input-group-text" name="Is_Default" htmlFor="inputGroupSelect01">{StatusInput.Is_Default}</label>
+                    <select className="form-select" name="Is_Default" value={StatusInput.Is_Default}  onChange={handleInput} id="inputGroupSelect02">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     </select>
-                    
+                    <span className="text-danger">{errorInput.Is_Default}</span>
+                </div>
 
+                <label htmlFor="exampleFormControlInput1" className="Is_Closed">Is Closed</label>
+                      <div className="input-group mb-3">
+                    <label className="input-group-text" name="Is_Closed" htmlFor="inputGroupSelect01">{StatusInput.Is_Closed}</label>
+                    <select className="form-select" name="Is_Closed" value={StatusInput.Is_Closed}  onChange={handleInput} id="inputGroupSelect02">
+                    <option defaultValue value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                    </select>
+                    <span className="text-danger">{errorInput.Is_Closed}</span>
                 </div>
 
 

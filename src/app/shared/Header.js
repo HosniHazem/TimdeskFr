@@ -134,7 +134,7 @@ export class Header extends Component {
                   <Dropdown
                     className={
                       this.isPathActive("/levels") ||
-                      this.isPathActive("/form") ||
+                      this.isPathActive("/status") ||
                       this.isPathActive("/charts") ||
                       this.isPathActive("/tables")
                         ? "nav-item active"
@@ -160,9 +160,9 @@ export class Header extends Component {
                               Levels
                             </Link>
                             <Link
-                              to="#"
+                              to="/status"
                               className={
-                                this.isPathActive("#")
+                                this.isPathActive("/status")
                                   ? "nav-link active"
                                   : "nav-link"
                               }

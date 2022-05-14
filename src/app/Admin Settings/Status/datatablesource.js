@@ -6,7 +6,7 @@ export const userColumns = [
   {
     field: "Name",
     headerName: "Name",
-    width: 180,
+    width: 100,
     renderCell: (params) => {
       return (
         
@@ -18,7 +18,7 @@ export const userColumns = [
   {
     field: "Description",
     headerName: "Description",
-    width: 200,
+    width: 130,
   },
   {
     field: "UpadatedDate",
@@ -29,7 +29,7 @@ export const userColumns = [
   {
     field: "Is_Active",
     headerName: "Is_Active",
-    width: 160,
+    width: 130,
     renderCell: (params) => {
       return (
         <div className={`cellWithStatus ${params.row.Is_Active}`}>
@@ -41,7 +41,7 @@ export const userColumns = [
   {
     field: "Is_Defaults",
     headerName: "Is_Defaults",
-    width: 160,
+    width: 130,
     renderCell: (params) => {
       return (
         <div className={`cellWithStatus ${params.row.Is_Defaults}`}>
@@ -51,6 +51,31 @@ export const userColumns = [
     },
   },
 
+  {
+    field: "Is_Closed",
+    headerName: "Is_Closed",
+    width: 130,
+    renderCell: (params) => {
+      return (
+        <div className={`cellWithStatus ${params.row.Is_Closed}`}>
+          {params.row.Is_Closed}
+        </div>
+      );
+    },
+  },
+  
+  {
+    field: "Is_Client_Visible",
+    headerName: "Is_Client_Visible",
+    width: 130,
+    renderCell: (params) => {
+      return (
+        <div className={`cellWithStatus ${params.row.Is_Client_Visible}`}>
+          {params.row.Is_Client_Visible}
+        </div>
+      );
+    },
+  },
 
 ];
 
