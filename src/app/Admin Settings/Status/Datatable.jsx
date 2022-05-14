@@ -19,12 +19,12 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [Status, setStatus] = useState([]);
+  const [status, setstatus] = useState([]);
 
  useEffect(() => {
-   axios.get('api/Status').then((res) => {
+   axios.get('api/status').then((res) => {
      if(res.status === 200){
-     setStatus(res.data.Levels);
+     setstatus(res.data.status);
 }
    });
  }, []);
@@ -32,7 +32,7 @@ const Datatable = () => {
 
 var dataRows = "";
        
-dataRows = Status.map((n) =>{
+dataRows = status.map((n) =>{
   return ( 
    
     {
@@ -53,7 +53,7 @@ dataRows = Status.map((n) =>{
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`Levels/delete/${id}`).then(res=>{
+     await http.delete(`status/delete/${id}`).then(res=>{
       if(res.status === 200)
         {
           
@@ -76,7 +76,7 @@ dataRows = Status.map((n) =>{
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/Status/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/status/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -100,7 +100,7 @@ dataRows = Status.map((n) =>{
     <div className="datatable">
       <div className="datatableTitle">
         Add New Level
-        <Link to="/Status/new" className="link">
+        <Link to="/status/new" className="link">
           Add New
         </Link>
       </div>
