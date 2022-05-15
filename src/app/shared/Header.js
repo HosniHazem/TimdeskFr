@@ -170,9 +170,9 @@ export class Header extends Component {
                               Status
                             </Link>
                             <Link
-                              to="/ui-elements/icons"
+                              to="/category"
                               className={
-                                this.isPathActive("/ui-elements/icons")
+                                this.isPathActive("/category")
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -227,9 +227,9 @@ export class Header extends Component {
                           <nav className="nav">
                            
                             <Link
-                              to="/tables/basic-table"
+                              to="/impact"
                               className={
-                                this.isPathActive("/tables/basic-table")
+                                this.isPathActive("/impact")
                                   ? "nav-link active"
                                   : "nav-link"
                               }
