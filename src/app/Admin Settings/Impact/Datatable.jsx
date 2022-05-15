@@ -24,7 +24,7 @@ const Datatable = () => {
  useEffect(() => {
    axios.get('api/Impact').then((res) => {
      if(res.status === 200){
-     setImpact(res.data.Impact);
+     setImpact(res.data.Impacts);
 }
    });
  }, []);

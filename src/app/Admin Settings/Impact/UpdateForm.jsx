@@ -41,8 +41,8 @@ const IMG = styled('img')(() => ({
     useEffect(() => {
       axios.get(`api/Impact/${id}/show`).then((res) => {
         if(res.data.status === 200){
-        setImpact(res.data.Impact);
-        console.log(res.data.Impact)
+        setImpact(res.data.Impacts);
+        
    } else if(res.data.status === 404){
     
    }
