@@ -134,7 +134,7 @@ export class Header extends Component {
                   <Dropdown
                     className={
                       this.isPathActive("/levels") ||
-                      this.isPathActive("/form") ||
+                      this.isPathActive("/status") ||
                       this.isPathActive("/charts") ||
                       this.isPathActive("/tables")
                         ? "nav-item active"
@@ -160,9 +160,9 @@ export class Header extends Component {
                               Levels
                             </Link>
                             <Link
-                              to="#"
+                              to="/status"
                               className={
-                                this.isPathActive("#")
+                                this.isPathActive("/status")
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -170,9 +170,9 @@ export class Header extends Component {
                               Status
                             </Link>
                             <Link
-                              to="/ui-elements/icons"
+                              to="/category"
                               className={
-                                this.isPathActive("/ui-elements/icons")
+                                this.isPathActive("/category")
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -227,9 +227,9 @@ export class Header extends Component {
                           <nav className="nav">
                            
                             <Link
-                              to="/tables/basic-table"
+                              to="/impact"
                               className={
-                                this.isPathActive("/tables/basic-table")
+                                this.isPathActive("/impact")
                                   ? "nav-link active"
                                   : "nav-link"
                               }

@@ -19,44 +19,43 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [Status, setStatus] = useState([]);
+  const [Impact, setImpact] = useState([]);
 
  useEffect(() => {
-   axios.get('api/Status').then((res) => {
+   axios.get('api/Impact').then((res) => {
      if(res.status === 200){
-     setStatus(res.data.Status);
+     setImpact(res.data.Impacts);
 }
    });
  }, []);
 
 
-var dataRows = "";
+ var dataRows = "";
        
-dataRows = Status.map((n) =>{
-  return ( 
-   
-    {
-      id: n.id,
-      Name: n.name,
-      Description: n.description,
-      UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
-      Is_Active: n.Is_Active,
-      Is_Defaults: n.Is_Default,
-      Is_Closed:n.Is_Closed,
-      Is_Client_Visible:n.Is_Client_Visible,
+ dataRows = Impact.map((n) =>{
+   return ( 
+    
+     {
+       id: n.id,
+       Name: n.name,
+       Description: n.description,
+       UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
+       Is_Active: n.Is_Active,
+       Is_Defaults: n.Is_Defaults,
+       Is_Client_Visible:n.Is_Client_Visible,
+     }
+    );
+    
+ 
+ })
+ 
 
-    }
-   );
-   
-
-})
-
-
+console.log(dataRows)
   
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`Status/${id}/delete`).then(res=>{
+     await http.delete(`Impact/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -79,7 +78,7 @@ dataRows = Status.map((n) =>{
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/Status/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/Impact/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -102,8 +101,8 @@ dataRows = Status.map((n) =>{
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Status
-        <Link to="/status/new" className="link">
+        Add New Impact
+        <Link to="/impact/new" className="link">
           Add New
         </Link>
       </div>

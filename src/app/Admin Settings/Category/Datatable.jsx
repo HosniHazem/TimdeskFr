@@ -19,44 +19,44 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [Status, setStatus] = useState([]);
+  const [Category, setCategory] = useState([]);
 
  useEffect(() => {
-   axios.get('api/Status').then((res) => {
+   axios.get('api/Category').then((res) => {
      if(res.status === 200){
-     setStatus(res.data.Status);
+     setCategory(res.data.Category);
 }
    });
  }, []);
 
 
-var dataRows = "";
+ var dataRows = "";
        
-dataRows = Status.map((n) =>{
-  return ( 
-   
-    {
-      id: n.id,
-      Name: n.name,
-      Description: n.description,
-      UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
-      Is_Active: n.Is_Active,
-      Is_Defaults: n.Is_Default,
-      Is_Closed:n.Is_Closed,
-      Is_Client_Visible:n.Is_Client_Visible,
+ dataRows = Category.map((n) =>{
+   return ( 
+    
+     {
+       id: n.id,
+       Name: n.name,
+       Description: n.description,
+       UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
+       external_code:n.external_code,
+       Is_Active: n.Is_Active,
+       Is_Defaults: n.Is_Defaults,
+       Is_Client_Visible:n.Is_Client_Visible,
+     }
+    );
+    
+ 
+ })
+ 
 
-    }
-   );
-   
-
-})
-
-
+console.log(dataRows)
   
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`Status/${id}/delete`).then(res=>{
+     await http.delete(`Category/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -79,7 +79,7 @@ dataRows = Status.map((n) =>{
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/Status/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/Category/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -102,8 +102,8 @@ dataRows = Status.map((n) =>{
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Status
-        <Link to="/status/new" className="link">
+        Add New Category
+        <Link to="/category/new" className="link">
           Add New
         </Link>
       </div>

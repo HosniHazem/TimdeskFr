@@ -34,15 +34,15 @@ const IMG = styled('img')(() => ({
 
 
     const id=props.match.params.id;
-    const [StatusInput, setStatus] = useState([]);
+    const [CategoryInput, setCategory] = useState([]);
     const [errorInput, setError] = useState([]);
 
 
     useEffect(() => {
-      axios.get(`api/Status/${id}/show`).then((res) => {
+      axios.get(`api/Category/${id}/show`).then((res) => {
         if(res.data.status === 200){
-        setStatus(res.data.Status);
-        console.log(res.data.Status)
+        setCategory(res.data.Category);
+        console.log(res.data.Category)
    } else if(res.data.status === 404){
     
    }
@@ -54,34 +54,34 @@ const IMG = styled('img')(() => ({
 
     const handleInput = (e) => {
         e.persist();
-        setStatus({...StatusInput, [e.target.name]: e.target.value });
+        setCategory({...CategoryInput, [e.target.name]: e.target.value });
     }
-    const updateStatus = (e) => {
+    const updateCategory = (e) => {
     
        
         e.preventDefault();
         
        
             const  data = {
-                name: StatusInput.name,
-                Is_Active: StatusInput.Is_Active,
-                description: StatusInput.description,
-                Is_Default: StatusInput.Is_Default,
-                Is_Closed:StatusInput.Is_Closed,
-                Is_Client_Visible:StatusInput.Is_Client_Visible,
+                name: CategoryInput.name,
+                Is_Active: CategoryInput.Is_Active,
+                description: CategoryInput.description,
+                Is_Defaults: CategoryInput.Is_Defaults,
+                Is_Client_Visible:CategoryInput.Is_Client_Visible,
+                external_code:CategoryInput.external_code,
             }
         
    
 
-    axios.put(`api/Status/${id}/update`, data).then(res=>{
+    axios.put(`api/Category/${id}/update`, data).then(res=>{
         
       
         if(res.data.status === 200)
         {
-            swal("Updated",StatusInput.name,"success");
+            swal("Updated",CategoryInput.name,"success");
             setError([]);
             
-           history.push('/Status')
+           history.push('/Category')
         } if(res.data.status === 422)
         {
             swal("All fields are mandetory","","error");
@@ -89,7 +89,7 @@ const IMG = styled('img')(() => ({
         }
         else if(res.data.status === 404)
         {
-            swal("Error",StatusInput.name,"error");
+            swal("Error",CategoryInput.name,"error");
             setError([]);
         }
     });
@@ -104,20 +104,20 @@ const IMG = styled('img')(() => ({
       <Container>
       <div>
     
-          <ValidatorForm onSubmit={updateStatus} >
+          <ValidatorForm onSubmit={updateCategory} >
               <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="name">Name</label>
-                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={StatusInput.name}  />
+                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={CategoryInput.name}  />
                         <span className="text-danger">{errorInput.name}</span>
                 </div>
                       
                 <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{StatusInput.Is_Active}</label>
-                    <select className="form-select" name="Is_Active" value={StatusInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
+                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{CategoryInput.Is_Active}</label>
+                    <select className="form-select" name="Is_Active" value={CategoryInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     
@@ -127,8 +127,8 @@ const IMG = styled('img')(() => ({
 
                      <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{StatusInput.Is_Client_Visible}</label>
-                    <select className="form-select" name="Is_Client_Visible" value={StatusInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
+                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{CategoryInput.Is_Client_Visible}</label>
+                    <select className="form-select" name="Is_Client_Visible" value={CategoryInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     
@@ -142,31 +142,28 @@ const IMG = styled('img')(() => ({
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
-                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={StatusInput.description}/>
+                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={CategoryInput.description}/>
                         <span className="text-danger">{errorInput.description}</span>
                 </div>
 
+                <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="external_code">External Code</label>
+                        <input type="text" name="external_code" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={CategoryInput.external_code}  />
+                        <span className="text-danger">{errorInput.external_code}</span>
+                </div>
                       
                       
-                <label htmlFor="exampleFormControlInput1" className="Is_Default">Is Default</label>
+                <label htmlFor="exampleFormControlInput1" className="Is_Defaults">Is Default</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Default" htmlFor="inputGroupSelect01">{StatusInput.Is_Default}</label>
-                    <select className="form-select" name="Is_Default" value={StatusInput.Is_Default}  onChange={handleInput} id="inputGroupSelect02">
+                    <label className="input-group-text" name="Is_Defaults" htmlFor="inputGroupSelect01">{CategoryInput.Is_Defaults}</label>
+                    <select className="form-select" name="Is_Defaults" value={CategoryInput.Is_Defaults}  onChange={handleInput} id="inputGroupSelect02">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     </select>
-                    <span className="text-danger">{errorInput.Is_Default}</span>
+                    <span className="text-danger">{errorInput.Is_Defaults}</span>
                 </div>
 
-                <label htmlFor="exampleFormControlInput1" className="Is_Closed">Is Closed</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Closed" htmlFor="inputGroupSelect01">{StatusInput.Is_Closed}</label>
-                    <select className="form-select" name="Is_Closed" value={StatusInput.Is_Closed}  onChange={handleInput} id="inputGroupSelect02">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    </select>
-                    <span className="text-danger">{errorInput.Is_Closed}</span>
-                </div>
+                
 
 
 

@@ -51,18 +51,6 @@ export const userColumns = [
     },
   },
 
-  {
-    field: "Is_Closed",
-    headerName: "Is_Closed",
-    width: 130,
-    renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.Is_Closed}`}>
-          {params.row.Is_Closed}
-        </div>
-      );
-    },
-  },
   
   {
     field: "Is_Client_Visible",

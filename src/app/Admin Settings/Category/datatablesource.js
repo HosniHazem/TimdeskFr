@@ -23,9 +23,13 @@ export const userColumns = [
   {
     field: "UpadatedDate",
     headerName: "UpadatedDate",
-    width: 180,
+    width: 160,
   },
-
+  {
+    field: "external_code",
+    headerName: "external_code",
+    width: 130,
+  },
   {
     field: "Is_Active",
     headerName: "Is_Active",
@@ -51,18 +55,6 @@ export const userColumns = [
     },
   },
 
-  {
-    field: "Is_Closed",
-    headerName: "Is_Closed",
-    width: 130,
-    renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.Is_Closed}`}>
-          {params.row.Is_Closed}
-        </div>
-      );
-    },
-  },
   
   {
     field: "Is_Client_Visible",
