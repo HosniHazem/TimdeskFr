@@ -41,7 +41,7 @@ dataRows = levels.map((n) =>{
       Description: n.description,
       UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
       Is_Active: n.Is_Active,
-      Is_Defaults: n.Is_Defaults,
+
     }
    );
    

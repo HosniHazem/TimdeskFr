@@ -98,13 +98,13 @@ export class AppRoutes extends Component {
             {/* //// */}
 
 
-            {/* TicketModel */}
-            <Route exact path="/ticketmodel">
+            {/* Model */}
+            <Route exact path="/subcategory">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableTM/>} 
              </Route>
-            <Route exact path="/ticketmodel/new" component={ AddFormTM } />
+            <Route exact path="/subcategory/new" component={ AddFormTM } />
 
-            <Route exact path="/ticketmodel/current/:id" component={ UpdateFormTM } />
+            <Route exact path="/subcategory/current/:id" component={ UpdateFormTM } />
             {/* //// */}
 
             {/* Category */}

@@ -38,18 +38,7 @@ export const userColumns = [
       );
     },
   },
-  {
-    field: "Is_Defaults",
-    headerName: "Is_Defaults",
-    width: 160,
-    renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.Is_Defaults}`}>
-          {params.row.Is_Defaults}
-        </div>
-      );
-    },
-  },
+
 
 
 ];

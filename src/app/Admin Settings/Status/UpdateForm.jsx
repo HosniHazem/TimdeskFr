@@ -66,7 +66,7 @@ const IMG = styled('img')(() => ({
                 name: StatusInput.name,
                 Is_Active: StatusInput.Is_Active,
                 description: StatusInput.description,
-                Is_Default: StatusInput.Is_Default,
+ 
                 Is_Closed:StatusInput.Is_Closed,
                 Is_Client_Visible:StatusInput.Is_Client_Visible,
             }
@@ -146,17 +146,7 @@ const IMG = styled('img')(() => ({
                         <span className="text-danger">{errorInput.description}</span>
                 </div>
 
-                      
-                      
-                <label htmlFor="exampleFormControlInput1" className="Is_Default">Is Default</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Default" htmlFor="inputGroupSelect01">{StatusInput.Is_Default}</label>
-                    <select className="form-select" name="Is_Default" value={StatusInput.Is_Default}  onChange={handleInput} id="inputGroupSelect02">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    </select>
-                    <span className="text-danger">{errorInput.Is_Default}</span>
-                </div>
+         
 
                 <label htmlFor="exampleFormControlInput1" className="Is_Closed">Is Closed</label>
                       <div className="input-group mb-3">

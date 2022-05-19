@@ -152,7 +152,9 @@ export default function Login() {
                                     /> */}
                                      {message && (
                                         <Paragraph className="Er" sx={{ color: ERR }}>
+                                           <span className="text-danger">
                                             {message}
+                                            </span>
                                         </Paragraph>
                                     )}
     

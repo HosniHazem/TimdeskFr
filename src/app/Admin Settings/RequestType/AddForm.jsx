@@ -35,7 +35,7 @@ const IMG = styled('img')(() => ({
         name:"",
         Is_Active:"Active",
         description:"",
-        Is_Defaults:"Active",
+    
         Is_Client_Visible:"Active",
         error_list: [],
     });
@@ -59,7 +59,7 @@ const IMG = styled('img')(() => ({
                 name: RequestTypeInput.name,
                 Is_Active: RequestTypeInput.Is_Active,
                 description: RequestTypeInput.description,
-                Is_Defaults: RequestTypeInput.Is_Defaults,
+              
                 Is_Client_Visible:RequestTypeInput.Is_Client_Visible,
             }
       
@@ -138,17 +138,7 @@ const IMG = styled('img')(() => ({
                 </div>
 
                       
-                      
-                <label htmlFor="exampleFormControlInput1" className="Is_Defaults">Is Default</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Defaults" htmlFor="inputGroupSelect01">{RequestTypeInput.Is_Defaults}</label>
-                    <select className="form-select" name="Is_Defaults" value={RequestTypeInput.Is_Defaults}  onChange={handleInput} id="inputGroupSelect02">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    </select>
-                    <span className="text-danger">{RequestTypeInput.error_list.Is_Defaults}</span>
-                </div>
-
+            
 
 
                   </Grid>

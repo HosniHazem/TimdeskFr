@@ -66,7 +66,7 @@ const IMG = styled('img')(() => ({
                 name: ImpactInput.name,
                 Is_Active: ImpactInput.Is_Active,
                 description: ImpactInput.description,
-                Is_Defaults: ImpactInput.Is_Defaults,
+    
                 Is_Client_Visible:ImpactInput.Is_Client_Visible,
             }
         
@@ -146,16 +146,7 @@ const IMG = styled('img')(() => ({
                 </div>
 
                       
-                      
-                <label htmlFor="exampleFormControlInput1" className="Is_Defaults">Is Default</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Defaults" htmlFor="inputGroupSelect01">{ImpactInput.Is_Defaults}</label>
-                    <select className="form-select" name="Is_Defaults" value={ImpactInput.Is_Defaults}  onChange={handleInput} id="inputGroupSelect02">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    </select>
-                    <span className="text-danger">{errorInput.Is_Defaults}</span>
-                </div>
+              
 
                 
 

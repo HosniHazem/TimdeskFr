@@ -19,12 +19,12 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [TicketModel, setTicketModel] = useState([]);
+  const [SubCategory, setSubCategory] = useState([]);
 
  useEffect(() => {
-   axios.get('api/TicketModel').then((res) => {
+   axios.get('api/SubCategory').then((res) => {
      if(res.status === 200){
-     setTicketModel(res.data.TicketModel);
+     setSubCategory(res.data.SubCategory);
 }
    });
  }, []);
@@ -32,7 +32,7 @@ const Datatable = () => {
 
  var dataRows = "";
        
- dataRows = TicketModel.map((n) =>{
+ dataRows = SubCategory.map((n) =>{
    return ( 
     
      {
@@ -40,7 +40,10 @@ const Datatable = () => {
        Name: n.name,
        Description: n.description,
        UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
+       external_code:n.external_code,
        Is_Active: n.Is_Active,
+       Category:n.category?.name,
+       Is_Client_Visible:n.Is_Client_Visible,
      }
     );
     
@@ -53,7 +56,7 @@ console.log(dataRows)
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`TicketModel/${id}/delete`).then(res=>{
+     await http.delete(`SubCategory/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -76,7 +79,7 @@ console.log(dataRows)
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/ticketmodel/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/SubCategory/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -99,8 +102,8 @@ console.log(dataRows)
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New TicketModel
-        <Link to="/ticketmodel/new" className="link">
+        Add New SubCategory
+        <Link to="/subcategory/new" className="link">
           Add New
         </Link>
       </div>
@@ -113,6 +116,8 @@ console.log(dataRows)
         checkboxSelection
       />
     </div>
+    
+
   );
 };
 

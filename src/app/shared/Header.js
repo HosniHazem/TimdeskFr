@@ -185,9 +185,9 @@ export class Header extends Component {
                           <nav className="nav">
                            
                             <Link
-                              to="/ticketmodel"
+                              to="/subcategory"
                               className={
-                                this.isPathActive("/ticketmodel")
+                                this.isPathActive("/subcategory")
                                   ? "nav-link active"
                                   : "nav-link"
                               }

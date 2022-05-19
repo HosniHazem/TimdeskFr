@@ -25,7 +25,16 @@ export const userColumns = [
     headerName: "UpadatedDate",
     width: 160,
   },
- 
+  {
+    field: "external_code",
+    headerName: "external_code",
+    width: 130,
+  },
+  {
+    field: "Category",
+    headerName: "Category",
+    width: 130,
+  },
   {
     field: "Is_Active",
     headerName: "Is_Active",
@@ -38,7 +47,21 @@ export const userColumns = [
       );
     },
   },
- 
+
+
+  
+  {
+    field: "Is_Client_Visible",
+    headerName: "Is_Client_Visible",
+    width: 130,
+    renderCell: (params) => {
+      return (
+        <div className={`cellWithStatus ${params.row.Is_Client_Visible}`}>
+          {params.row.Is_Client_Visible}
+        </div>
+      );
+    },
+  },
 
 ];
 

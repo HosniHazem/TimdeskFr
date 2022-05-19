@@ -4342,13 +4342,6 @@
   dependencies:
     "@babel/runtime" "^7.1.2"
 
-"dom-helpers@^3.4.0":
-  "integrity" "sha512-LnuPJ+dwqKDIyotW1VzmOZ5TONUN7CwkCR5hrgawTUbkBGYdeoNLZo6nNfGkCrjtE1nXXaj7iMMpDa8/d9WoIA=="
-  "resolved" "https://registry.npmjs.org/dom-helpers/-/dom-helpers-3.4.0.tgz"
-  "version" "3.4.0"
-  dependencies:
-    "@babel/runtime" "^7.1.2"
-
 "dom-helpers@^5.0.1", "dom-helpers@^5.2.0", "dom-helpers@^5.2.1":
   "integrity" "sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA=="
   "resolved" "https://registry.npmjs.org/dom-helpers/-/dom-helpers-5.2.1.tgz"
@@ -9648,10 +9641,10 @@
     "prop-types" "^15.0.0"
     "react-lifecycles-compat" "^3.0.2"
 
-"react-input-autosize@^2.2.2":
-  "integrity" "sha512-jQJgYCA3S0j+cuOwzuCd1OjmBmnZLdqQdiLKRYrsMMzbjUrVDS5RvJUDwJqA7sKuksDuzFtm6hZGKFu7Mjk5aw=="
-  "resolved" "https://registry.npmjs.org/react-input-autosize/-/react-input-autosize-2.2.2.tgz"
-  "version" "2.2.2"
+"react-input-autosize@^3.0.0":
+  "integrity" "sha512-nL9uS7jEs/zu8sqwFE5MAPx6pPkNAriACQ2rGLlqmKr2sPGtN7TXTyDdQt4lbNXVx7Uzadb40x8qotIuru6Rhg=="
+  "resolved" "https://registry.npmjs.org/react-input-autosize/-/react-input-autosize-3.0.0.tgz"
+  "version" "3.0.0"
   dependencies:
     "prop-types" "^15.5.8"
 
@@ -9838,10 +9831,10 @@
   optionalDependencies:
     "fsevents" "2.1.2"
 
-"react-select@^3.0.8":
-  "integrity" "sha512-v9LpOhckLlRmXN5A6/mGGEft4FMrfaBFTGAnuPHcUgVId7Je42kTq9y0Z+Ye5z8/j0XDT3zUqza8gaRaI1PZIg=="
-  "resolved" "https://registry.npmjs.org/react-select/-/react-select-3.0.8.tgz"
-  "version" "3.0.8"
+"react-select@^3.2.0":
+  "integrity" "sha512-B/q3TnCZXEKItO0fFN/I0tWOX3WJvi/X2wtdffmwSQVRwg5BpValScTO1vdic9AxlUgmeSzib2hAZAwIUQUZGQ=="
+  "resolved" "https://registry.npmjs.org/react-select/-/react-select-3.2.0.tgz"
+  "version" "3.2.0"
   dependencies:
     "@babel/runtime" "^7.4.4"
     "@emotion/cache" "^10.0.9"
@@ -9849,8 +9842,8 @@
     "@emotion/css" "^10.0.9"
     "memoize-one" "^5.0.0"
     "prop-types" "^15.6.0"
-    "react-input-autosize" "^2.2.2"
-    "react-transition-group" "^2.2.1"
+    "react-input-autosize" "^3.0.0"
+    "react-transition-group" "^4.3.0"
 
 "react-simplemde-editor@^4.1.0":
   "integrity" "sha512-et7SGkhTMOu112Y95HQGVnEVQHfjS43TlD+JtVrkLvsr6g6cQsJtmpz0mNTOggtYxoo+zNEmseDr+7gVsj3svA=="
@@ -9860,17 +9853,7 @@
     "@types/codemirror" "^0.0.76"
     "easymde" "^2.7.1-202.0"
 
-"react-transition-group@^2.2.1":
-  "integrity" "sha512-+HzNTCHpeQyl4MJ/bdE0u6XRMe9+XG/+aL4mCxVN4DnPBQ0/5bfHWPDuOZUzYdMj94daZaZdCCc1Dzt9R/xSSg=="
-  "resolved" "https://registry.npmjs.org/react-transition-group/-/react-transition-group-2.9.0.tgz"
-  "version" "2.9.0"
-  dependencies:
-    "dom-helpers" "^3.4.0"
-    "loose-envify" "^1.4.0"
-    "prop-types" "^15.6.2"
-    "react-lifecycles-compat" "^3.0.4"
-
-"react-transition-group@^4.4.1", "react-transition-group@^4.4.2":
+"react-transition-group@^4.3.0", "react-transition-group@^4.4.1", "react-transition-group@^4.4.2":
   "integrity" "sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg=="
   "resolved" "https://registry.npmjs.org/react-transition-group/-/react-transition-group-4.4.2.tgz"
   "version" "4.4.2"
