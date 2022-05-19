@@ -19,41 +19,43 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [levels, setlevels] = useState([]);
+  const [RequestType, setRequestType] = useState([]);
 
  useEffect(() => {
-   axios.get('api/Levels').then((res) => {
+   axios.get('api/RequestType').then((res) => {
      if(res.status === 200){
-     setlevels(res.data.Levels);
+     setRequestType(res.data.RequestType);
 }
    });
  }, []);
 
 
-var dataRows = "";
+ var dataRows = "";
        
-dataRows = levels.map((n) =>{
-  return ( 
+ dataRows = RequestType.map((n) =>{
+   return ( 
+    
+     {
+       id: n.id,
+       Name: n.name,
+       Description: n.description,
+       UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
+       Is_Active: n.Is_Active,
    
-    {
-      id: n.id,
-      Name: n.name,
-      Description: n.description,
-      UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
-      Is_Active: n.Is_Active,
+       Is_Client_Visible:n.Is_Client_Visible,
+     }
+    );
+    
+ 
+ })
+ 
 
-    }
-   );
-   
-
-})
-
-
+console.log(dataRows)
   
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`Levels/delete/${id}`).then(res=>{
+     await http.delete(`RequestType/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -72,11 +74,11 @@ dataRows = levels.map((n) =>{
     {
       field: "action",
       headerName: "Action",
-      width: 200,
+      width: 160,
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/levels/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/RequestType/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -99,8 +101,8 @@ dataRows = levels.map((n) =>{
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Level
-        <Link to="/levels/new" className="link">
+        Add New RequestType
+        <Link to="/RequestType/new" className="link">
           Add New
         </Link>
       </div>

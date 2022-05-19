@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Button,
   Grid,
@@ -29,56 +29,67 @@ const IMG = styled('img')(() => ({
  
   
 
-  export default function SimpleForm () {
-
-    const [ImpactInput, setImpact] = useState({
-        name:"",
-        Is_Active:"Active",
-        description:"",
   
-        Is_Client_Visible:"Active",
-        error_list: [],
-    });
-  
+  export default function SimpleForm (props) {
 
+
+    const id=props.match.params.id;
+    const [RequestTypeInput, setRequestType] = useState([]);
+    const [errorInput, setError] = useState([]);
+
+
+    useEffect(() => {
+      axios.get(`api/RequestType/${id}/show`).then((res) => {
+        if(res.data.status === 200){
+        setRequestType(res.data.RequestType);
+        
+   } else if(res.data.status === 404){
+    
+   }
+      });
+    }, [id]);
+    
     
     const history = useHistory();
 
     const handleInput = (e) => {
         e.persist();
-       
-        setImpact({...ImpactInput, [e.target.name]: e.target.value });
+        setRequestType({...RequestTypeInput, [e.target.name]: e.target.value });
     }
-    const AddImpact = (e) => {
+    const updateRequestType = (e) => {
     
        
         e.preventDefault();
         
        
             const  data = {
-                name: ImpactInput.name,
-                Is_Active: ImpactInput.Is_Active,
-                description: ImpactInput.description,
-             
-                Is_Client_Visible:ImpactInput.Is_Client_Visible,
-            }
-      
+                name: RequestTypeInput.name,
+                Is_Active: RequestTypeInput.Is_Active,
+                description: RequestTypeInput.description,
 
-    axios.post(`api/Impact/create`, data).then(res=>{
+                Is_Client_Visible:RequestTypeInput.Is_Client_Visible,
+            }
+        
+   
+
+    axios.put(`api/RequestType/${id}/update`, data).then(res=>{
+        
+      
         if(res.data.status === 200)
         {
+            swal("Updated",RequestTypeInput.name,"success");
+            setError([]);
             
-            swal("Created",ImpactInput.name,"success");
-           history.push('/impact')
+           history.push('/RequestType')
+        } if(res.data.status === 422)
+        {
+            swal("All fields are mandetory","","error");
+            setError(res.data.validate_err);
         }
         else if(res.data.status === 404)
         {
-            swal("Error",ImpactInput.name,"error");
-        }
-        else if(res.data.status === 422)
-        {
-         
-                     setImpact({...ImpactInput, error_list: res.data.validate_err });
+            swal("Error",RequestTypeInput.name,"error");
+            setError([]);
         }
     });
 }
@@ -92,39 +103,36 @@ const IMG = styled('img')(() => ({
       <Container>
       <div>
     
-          <ValidatorForm onSubmit={AddImpact} onError={() => null}>
+          <ValidatorForm onSubmit={updateRequestType} >
               <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="name">Name</label>
-                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={ImpactInput.name}  />
-                        <span className="text-danger">{ImpactInput.error_list.name}</span>
+                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={RequestTypeInput.name}  />
+                        <span className="text-danger">{errorInput.name}</span>
                 </div>
-                
-
-                                          
                       
                 <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{ImpactInput.Is_Active}</label>
-                    <select className="form-select" name="Is_Active" value={ImpactInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
+                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{RequestTypeInput.Is_Active}</label>
+                    <select className="form-select" name="Is_Active" value={RequestTypeInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     
                     </select>
-                    <span className="text-danger">{ImpactInput.error_list.Is_Active}</span>
+                    <span className="text-danger">{errorInput.Is_Active}</span>
                      </div>
 
                      <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{ImpactInput.Is_Client_Visible}</label>
-                    <select className="form-select" name="Is_Client_Visible" value={ImpactInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
+                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{RequestTypeInput.Is_Client_Visible}</label>
+                    <select className="form-select" name="Is_Client_Visible" value={RequestTypeInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     
                     </select>
-                    <span className="text-danger">{ImpactInput.error_list.Is_Client_Visible}</span>
+                    <span className="text-danger">{errorInput.Is_Client_Visible}</span>
                      </div>
 
                 
@@ -133,13 +141,15 @@ const IMG = styled('img')(() => ({
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
-                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={ImpactInput.description}/>
-                        <span className="text-danger">{ImpactInput.error_list.description}</span>
+                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={RequestTypeInput.description}/>
+                        <span className="text-danger">{errorInput.description}</span>
                 </div>
 
                       
                       
-              
+       
+                
+
 
 
                   </Grid>
@@ -150,7 +160,7 @@ const IMG = styled('img')(() => ({
                                     alt=""
                                 />
                   <Span sx={{ pl: 1, textTransform: 'capitalize' }}>
-                      ADD
+                      update
                   </Span>
               </Button>
           </ValidatorForm>

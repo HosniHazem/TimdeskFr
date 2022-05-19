@@ -19,41 +19,44 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [levels, setlevels] = useState([]);
+  const [SubCategory, setSubCategory] = useState([]);
 
  useEffect(() => {
-   axios.get('api/Levels').then((res) => {
+   axios.get('api/SubCategory').then((res) => {
      if(res.status === 200){
-     setlevels(res.data.Levels);
+     setSubCategory(res.data.SubCategory);
 }
    });
  }, []);
 
 
-var dataRows = "";
+ var dataRows = "";
        
-dataRows = levels.map((n) =>{
-  return ( 
-   
-    {
-      id: n.id,
-      Name: n.name,
-      Description: n.description,
-      UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
-      Is_Active: n.Is_Active,
+ dataRows = SubCategory.map((n) =>{
+   return ( 
+    
+     {
+       id: n.id,
+       Name: n.name,
+       Description: n.description,
+       UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
+       external_code:n.external_code,
+       Is_Active: n.Is_Active,
+       Category:n.category?.name,
+       Is_Client_Visible:n.Is_Client_Visible,
+     }
+    );
+    
+ 
+ })
+ 
 
-    }
-   );
-   
-
-})
-
-
+console.log(dataRows)
   
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`Levels/delete/${id}`).then(res=>{
+     await http.delete(`SubCategory/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -72,11 +75,11 @@ dataRows = levels.map((n) =>{
     {
       field: "action",
       headerName: "Action",
-      width: 200,
+      width: 160,
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/levels/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/SubCategory/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -99,8 +102,8 @@ dataRows = levels.map((n) =>{
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Level
-        <Link to="/levels/new" className="link">
+        Add New SubCategory
+        <Link to="/subcategory/new" className="link">
           Add New
         </Link>
       </div>
@@ -113,6 +116,8 @@ dataRows = levels.map((n) =>{
         checkboxSelection
       />
     </div>
+    
+
   );
 };
 

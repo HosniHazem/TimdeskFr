@@ -185,9 +185,9 @@ export class Header extends Component {
                           <nav className="nav">
                            
                             <Link
-                              to="/form/form-elements"
+                              to="/subcategory"
                               className={
-                                this.isPathActive("/form/form-elements")
+                                this.isPathActive("/subcategory")
                                   ? "nav-link active"
                                   : "nav-link"
                               }
@@ -212,9 +212,9 @@ export class Header extends Component {
                           <nav className="nav">
                             
                             <Link
-                              to="/charts/chartjs"
+                              to="/requesttype"
                               className={
-                                this.isPathActive("/charts/chartjs")
+                                this.isPathActive("/requesttype")
                                   ? "nav-link active"
                                   : "nav-link"
                               }

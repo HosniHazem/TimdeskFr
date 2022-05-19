@@ -31,11 +31,11 @@ const IMG = styled('img')(() => ({
 
   export default function SimpleForm () {
 
-    const [ImpactInput, setImpact] = useState({
+    const [RequestTypeInput, setRequestType] = useState({
         name:"",
         Is_Active:"Active",
         description:"",
-  
+    
         Is_Client_Visible:"Active",
         error_list: [],
     });
@@ -47,38 +47,38 @@ const IMG = styled('img')(() => ({
     const handleInput = (e) => {
         e.persist();
        
-        setImpact({...ImpactInput, [e.target.name]: e.target.value });
+        setRequestType({...RequestTypeInput, [e.target.name]: e.target.value });
     }
-    const AddImpact = (e) => {
+    const AddRequestType = (e) => {
     
        
         e.preventDefault();
         
        
             const  data = {
-                name: ImpactInput.name,
-                Is_Active: ImpactInput.Is_Active,
-                description: ImpactInput.description,
-             
-                Is_Client_Visible:ImpactInput.Is_Client_Visible,
+                name: RequestTypeInput.name,
+                Is_Active: RequestTypeInput.Is_Active,
+                description: RequestTypeInput.description,
+              
+                Is_Client_Visible:RequestTypeInput.Is_Client_Visible,
             }
       
 
-    axios.post(`api/Impact/create`, data).then(res=>{
+    axios.post(`api/RequestType/create`, data).then(res=>{
         if(res.data.status === 200)
         {
             
-            swal("Created",ImpactInput.name,"success");
-           history.push('/impact')
+            swal("Created",RequestTypeInput.name,"success");
+           history.push('/requesttype')
         }
         else if(res.data.status === 404)
         {
-            swal("Error",ImpactInput.name,"error");
+            swal("Error",RequestTypeInput.name,"error");
         }
         else if(res.data.status === 422)
         {
          
-                     setImpact({...ImpactInput, error_list: res.data.validate_err });
+                     setRequestType({...RequestTypeInput, error_list: res.data.validate_err });
         }
     });
 }
@@ -92,14 +92,14 @@ const IMG = styled('img')(() => ({
       <Container>
       <div>
     
-          <ValidatorForm onSubmit={AddImpact} onError={() => null}>
+          <ValidatorForm onSubmit={AddRequestType} onError={() => null}>
               <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="name">Name</label>
-                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={ImpactInput.name}  />
-                        <span className="text-danger">{ImpactInput.error_list.name}</span>
+                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={RequestTypeInput.name}  />
+                        <span className="text-danger">{RequestTypeInput.error_list.name}</span>
                 </div>
                 
 
@@ -107,24 +107,24 @@ const IMG = styled('img')(() => ({
                       
                 <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{ImpactInput.Is_Active}</label>
-                    <select className="form-select" name="Is_Active" value={ImpactInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
+                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{RequestTypeInput.Is_Active}</label>
+                    <select className="form-select" name="Is_Active" value={RequestTypeInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     
                     </select>
-                    <span className="text-danger">{ImpactInput.error_list.Is_Active}</span>
+                    <span className="text-danger">{RequestTypeInput.error_list.Is_Active}</span>
                      </div>
 
                      <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{ImpactInput.Is_Client_Visible}</label>
-                    <select className="form-select" name="Is_Client_Visible" value={ImpactInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
+                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{RequestTypeInput.Is_Client_Visible}</label>
+                    <select className="form-select" name="Is_Client_Visible" value={RequestTypeInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     
                     </select>
-                    <span className="text-danger">{ImpactInput.error_list.Is_Client_Visible}</span>
+                    <span className="text-danger">{RequestTypeInput.error_list.Is_Client_Visible}</span>
                      </div>
 
                 
@@ -133,13 +133,12 @@ const IMG = styled('img')(() => ({
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
-                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={ImpactInput.description}/>
-                        <span className="text-danger">{ImpactInput.error_list.description}</span>
+                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={RequestTypeInput.description}/>
+                        <span className="text-danger">{RequestTypeInput.error_list.description}</span>
                 </div>
 
                       
-                      
-              
+            
 
 
                   </Grid>

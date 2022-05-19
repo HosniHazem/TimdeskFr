@@ -35,7 +35,7 @@ const IMG = styled('img')(() => ({
         name:"",
         Is_Active:"Active",
         description:"",
-        Is_Defaults:"Active",
+
         Is_Client_Visible:"Active",
         external_code:"",
         error_list: [],
@@ -60,7 +60,7 @@ const IMG = styled('img')(() => ({
                 name: CategoryInput.name,
                 Is_Active: CategoryInput.Is_Active,
                 description: CategoryInput.description,
-                Is_Defaults: CategoryInput.Is_Defaults,
+
                 Is_Client_Visible:CategoryInput.Is_Client_Visible,
                 external_code:CategoryInput.external_code,
             }
@@ -145,15 +145,7 @@ const IMG = styled('img')(() => ({
                         <span className="text-danger">{CategoryInput.error_list.external_code}</span>
                 </div>
                       
-                <label htmlFor="exampleFormControlInput1" className="Is_Defaults">Is Default</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Defaults" htmlFor="inputGroupSelect01">{CategoryInput.Is_Defaults}</label>
-                    <select className="form-select" name="Is_Defaults" value={CategoryInput.Is_Defaults}  onChange={handleInput} id="inputGroupSelect02">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    </select>
-                    <span className="text-danger">{CategoryInput.error_list.Is_Defaults}</span>
-                </div>
+             
 
 
 

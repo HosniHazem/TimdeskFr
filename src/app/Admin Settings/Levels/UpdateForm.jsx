@@ -65,7 +65,7 @@ const IMG = styled('img')(() => ({
                 name: LevelsInput.name,
                 Is_Active: LevelsInput.Is_Active,
                 description: LevelsInput.description,
-                Is_Defaults: LevelsInput.Is_Defaults,
+            
              
             }
         
@@ -138,18 +138,7 @@ const IMG = styled('img')(() => ({
 
                 </div>
 
-                      
-                      
-                <label htmlFor="exampleFormControlInput1" className="Is_Defaults">Is Default</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Defaults" htmlFor="inputGroupSelect01">{LevelsInput.Is_Defaults}</label>
-                    <select className="form-select" name="Is_Defaults" value={LevelsInput.Is_Defaults}  onChange={handleInput} id="inputGroupSelect02">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    </select>
-                    
-
-                </div>
+         
 
 
 

@@ -32,17 +32,26 @@ const IMG = styled('img')(() => ({
   
   export default function SimpleForm (props) {
 
+    const [Category, setCategory] = useState([]);
+
+    useEffect(() => {
+      axios.get('api/Category').then((res) => {
+        if(res.status === 200){
+        setCategory(res.data.Category);
+   }
+      });
+    }, []);
 
     const id=props.match.params.id;
-    const [CategoryInput, setCategory] = useState([]);
+    const [SubCategoryInput, setSubCategory] = useState([]);
     const [errorInput, setError] = useState([]);
 
 
     useEffect(() => {
-      axios.get(`api/Category/${id}/show`).then((res) => {
+      axios.get(`api/SubCategory/${id}/show`).then((res) => {
         if(res.data.status === 200){
-        setCategory(res.data.Category);
-        console.log(res.data.Category)
+        setSubCategory(res.data.SubCategory);
+        console.log(res.data.SubCategory)
    } else if(res.data.status === 404){
     
    }
@@ -54,34 +63,35 @@ const IMG = styled('img')(() => ({
 
     const handleInput = (e) => {
         e.persist();
-        setCategory({...CategoryInput, [e.target.name]: e.target.value });
+        setSubCategory({...SubCategoryInput, [e.target.name]: e.target.value });
     }
-    const updateCategory = (e) => {
+    const updateSubCategory = (e) => {
     
        
         e.preventDefault();
         
        
             const  data = {
-                name: CategoryInput.name,
-                Is_Active: CategoryInput.Is_Active,
-                description: CategoryInput.description,
-  
-                Is_Client_Visible:CategoryInput.Is_Client_Visible,
-                external_code:CategoryInput.external_code,
+                name: SubCategoryInput.name,
+                Is_Active: SubCategoryInput.Is_Active,
+                description: SubCategoryInput.description,
+                Category:SubCategoryInput.category?.name,
+                Is_Client_Visible:SubCategoryInput.Is_Client_Visible,
+                external_code:SubCategoryInput.external_code,
+                category_id:SubCategoryInput.category_id
             }
         
    
 
-    axios.put(`api/Category/${id}/update`, data).then(res=>{
+    axios.put(`api/SubCategory/${id}/update`, data).then(res=>{
         
       
         if(res.data.status === 200)
         {
-            swal("Updated",CategoryInput.name,"success");
+            swal("Updated",SubCategoryInput.name,"success");
             setError([]);
             
-           history.push('/Category')
+           history.push('/SubCategory')
         } if(res.data.status === 422)
         {
             swal("All fields are mandetory","","error");
@@ -89,7 +99,7 @@ const IMG = styled('img')(() => ({
         }
         else if(res.data.status === 404)
         {
-            swal("Error",CategoryInput.name,"error");
+            swal("Error",SubCategoryInput.name,"error");
             setError([]);
         }
     });
@@ -104,20 +114,20 @@ const IMG = styled('img')(() => ({
       <Container>
       <div>
     
-          <ValidatorForm onSubmit={updateCategory} >
+          <ValidatorForm onSubmit={updateSubCategory} >
               <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="name">Name</label>
-                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={CategoryInput.name}  />
+                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.name}  />
                         <span className="text-danger">{errorInput.name}</span>
                 </div>
                       
                 <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{CategoryInput.Is_Active}</label>
-                    <select className="form-select" name="Is_Active" value={CategoryInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
+                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{SubCategoryInput.Is_Active}</label>
+                    <select className="form-select" name="Is_Active" value={SubCategoryInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     
@@ -127,8 +137,8 @@ const IMG = styled('img')(() => ({
 
                      <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
                       <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{CategoryInput.Is_Client_Visible}</label>
-                    <select className="form-select" name="Is_Client_Visible" value={CategoryInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
+                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{SubCategoryInput.Is_Client_Visible}</label>
+                    <select className="form-select" name="Is_Client_Visible" value={SubCategoryInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
                     <option defaultValue value="Active">Active</option>
                     <option value="Inactive">Inactive</option>
                     
@@ -142,13 +152,34 @@ const IMG = styled('img')(() => ({
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
-                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={CategoryInput.description}/>
+                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.description}/>
                         <span className="text-danger">{errorInput.description}</span>
                 </div>
 
+                <div class="form-group">
+    <label for="exampleFormControlSelect1">Category</label>
+    <select
+                        name="category_id"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={SubCategoryInput.category_id}
+                      >
+                        <option value="DEFAULT"></option>
+                        {Category.map((item,index) => {
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+  </div>
+
+
+
                 <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="external_code">External Code</label>
-                        <input type="text" name="external_code" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={CategoryInput.external_code}  />
+                        <input type="text" name="external_code" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.external_code}  />
                         <span className="text-danger">{errorInput.external_code}</span>
                 </div>
                       

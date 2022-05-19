@@ -11,7 +11,23 @@ const UpdateForm = lazy(() => import('./Admin Settings/Levels/UpdateForm'))
 const Datatable = lazy(() => import('./Admin Settings/Levels/Datatable'))
 //
 
-// Levels
+// RequestType
+const AddFormRT = lazy(() => import('./Admin Settings/RequestType/AddForm'))
+
+const UpdateFormRT = lazy(() => import('./Admin Settings/RequestType/UpdateForm'))
+
+const DatatableRT = lazy(() => import('./Admin Settings/RequestType/Datatable'))
+//
+
+// TicketModel
+const AddFormTM = lazy(() => import('./Admin Settings/Module/AddForm'))
+
+const UpdateFormTM = lazy(() => import('./Admin Settings/Module/UpdateForm'))
+
+const DatatableTM = lazy(() => import('./Admin Settings/Module/Datatable'))
+//
+
+// Category
 const AddFormC = lazy(() => import('./Admin Settings/Category/AddForm'))
 
 const UpdateFormC = lazy(() => import('./Admin Settings/Category/UpdateForm'))
@@ -72,9 +88,26 @@ export class AppRoutes extends Component {
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Dashboard/>}
             </Route>
             
+{/* RequestType */}
+<Route exact path="/requesttype">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableRT/>} 
+             </Route>
+            <Route exact path="/requesttype/new" component={ AddFormRT } />
+
+            <Route exact path="/requesttype/current/:id" component={ UpdateFormRT } />
+            {/* //// */}
 
 
-            {/* Levels */}
+            {/* Model */}
+            <Route exact path="/subcategory">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableTM/>} 
+             </Route>
+            <Route exact path="/subcategory/new" component={ AddFormTM } />
+
+            <Route exact path="/subcategory/current/:id" component={ UpdateFormTM } />
+            {/* //// */}
+
+            {/* Category */}
             <Route exact path="/category">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableC/>} 
              </Route>
