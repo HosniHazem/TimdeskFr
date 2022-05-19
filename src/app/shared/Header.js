@@ -72,28 +72,18 @@ export class Header extends Component {
                 
                 <li
                   className={
-                    this.isPathActive("*")
+                    this.isPathActive("/ticket")
                       ? "nav-item active"
                       : "nav-item"
                   }
                 >
-                  <Link to="*" className="nav-link">
+                  <Link to="/ticket" className="nav-link">
                     <i className=" typcn typcn-ticket"></i> Ticket
                   </Link>
                 </li>
 
                 
-                <li
-                  className={
-                    this.isPathActive("#")
-                      ? "nav-item active"
-                      : "nav-item"
-                  }
-                >
-                  <Link to="#" className="nav-link">
-                    <i className="  typcn typcn-document-text"></i> Solution
-                  </Link>
-                </li>
+              
 {/* 
                 <li className="nav-item">
                   <Dropdown

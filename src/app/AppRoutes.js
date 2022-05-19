@@ -3,6 +3,16 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios';
 axios.defaults.baseURL = "http://localhost:8000/";
 
+
+
+// Ticket
+const AddFormT = lazy(() => import('./Ticket/AddForm'))
+
+const UpdateFormT = lazy(() => import('./Ticket/UpdateForm'))
+
+const DatatableT = lazy(() => import('./Ticket/Datatable'))
+//
+
 // Levels
 const AddForm = lazy(() => import('./Admin Settings/Levels/AddForm'))
 
@@ -87,7 +97,19 @@ export class AppRoutes extends Component {
           <Route exact path="/dashboard">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Dashboard/>}
             </Route>
-            
+{/* Ticket */}
+<Route exact path="/ticket">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableT/>} 
+             </Route>
+            <Route exact path="/ticket/new" component={ AddFormT } />
+
+            <Route exact path="/ticket/current/:id" component={ UpdateFormT } />
+            {/* //// */}
+
+
+
+
+
 {/* RequestType */}
 <Route exact path="/requesttype">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableRT/>} 
