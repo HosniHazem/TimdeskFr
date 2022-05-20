@@ -226,6 +226,16 @@ export class Header extends Component {
                             >
                               Impact
                             </Link>
+                            <Link
+                              to="/Priority"
+                              className={
+                                this.isPathActive("/Priority")
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              Priority
+                            </Link>
                           </nav>
                         </div>
                       </div>

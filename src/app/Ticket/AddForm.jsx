@@ -28,8 +28,9 @@ const IMG = styled('img')(() => ({
     width: '30%',
   }))
  
-  
 
+  
+  
   export default function SimpleForm () {
 
     const [SubCategoryInput, setSubCategory] = useState({
@@ -113,36 +114,71 @@ const IMG = styled('img')(() => ({
               <Grid container spacing={6}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
-                  <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="name">Name</label>
-                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.name}  />
-                        <span className="text-danger">{SubCategoryInput.error_list.name}</span>
-                </div>
-                
+                  
+                <div class="form-group">
+    <label for="exampleFormControlSelect1">Demander</label>
+    <select
+                        name="category_id"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={SubCategoryInput.category_id}
+                      >
+                        <option value="DEFAULT"></option>
+                        {Category.map((item,index) => {
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+  </div>
 
                                           
                       
-                <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{SubCategoryInput.Is_Active}</label>
-                    <select className="form-select" name="Is_Active" value={SubCategoryInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Request type</label>
+    <select
+                        name="category_id"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={SubCategoryInput.category_id}
+                      >
+                        <option value="DEFAULT"></option>
+                        {Category.map((item,index) => {
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+  </div>
                     
-                    </select>
-                    <span className="text-danger">{SubCategoryInput.error_list.Is_Active}</span>
-                     </div>
-
-                     <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{SubCategoryInput.Is_Client_Visible}</label>
-                    <select className="form-select" name="Is_Client_Visible" value={SubCategoryInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
+                   
+                <div class="form-group">
+    <label for="exampleFormControlSelect1">Category</label>
+    <select
+                        name="category_id"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={SubCategoryInput.category_id}
+                      >
+                        <option value="DEFAULT"></option>
+                        {Category.map((item,index) => {
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+  </div>
+                   
+ 
+ 
                     
-                    </select>
-                    <span className="text-danger">{SubCategoryInput.error_list.Is_Client_Visible}</span>
-                     </div>
 
                 
                   </Grid>

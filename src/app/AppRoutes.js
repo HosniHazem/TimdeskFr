@@ -13,6 +13,14 @@ const UpdateFormT = lazy(() => import('./Ticket/UpdateForm'))
 const DatatableT = lazy(() => import('./Ticket/Datatable'))
 //
 
+// Ticket
+const AddFormP = lazy(() => import('./Admin Settings/Periority/AddForm'))
+
+const UpdateFormP = lazy(() => import('./Admin Settings/Periority/UpdateForm'))
+
+const DatatableP = lazy(() => import('./Admin Settings/Periority/Datatable'))
+//
+
 // Levels
 const AddForm = lazy(() => import('./Admin Settings/Levels/AddForm'))
 
@@ -107,7 +115,14 @@ export class AppRoutes extends Component {
             {/* //// */}
 
 
+{/* Priority */}
+<Route exact path="/Priority">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableP/>} 
+             </Route>
+            <Route exact path="/Priority/new" component={ AddFormP } />
 
+            <Route exact path="/Priority/current/:id" component={ UpdateFormP } />
+            {/* //// */}
 
 
 {/* RequestType */}
