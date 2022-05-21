@@ -4,7 +4,11 @@ import { Dropdown } from "react-bootstrap";
 import Logout from '../Session/logout'
 import Getname from '../Session/Getname'
 import Getemail from "../Session/Getemail";
+import {styled } from '@mui/system'
 
+const IMG = styled('img')(() => ({
+  width: '15%',
+}))
 
 export class Header extends Component {
 
@@ -31,10 +35,12 @@ export class Header extends Component {
       <div>
         <div className="az-header">
           <div className="container">
-            <div className="az-header-left">
-              <a href="#/" className="az-logo">
-                <span></span> Timdesk
-              </a>
+            
+            
+                            <IMG
+                                    src="/assets/Timdesk.png"
+                                    alt=""
+                                />
               <a
                 id="azMenuShow"
                 onClick={event => this.toggleHeaderMenu(event)}
@@ -43,7 +49,7 @@ export class Header extends Component {
               >
                 <span></span>
               </a>
-            </div>
+        
             <div className="az-header-menu">
               <div className="az-header-menu-header">
                 <Link to="/" className="az-logo">

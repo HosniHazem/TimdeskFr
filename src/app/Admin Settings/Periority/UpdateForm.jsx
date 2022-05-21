@@ -37,20 +37,19 @@ const IMG = styled('img')(() => ({
     const id=props.match.params.id;
     const [PriorityInput, setPriority] = useState([]);
     const [errorInput, setError] = useState([]);
-   
+    const [colorInput, setcolor]= useState('#210998')
 
     useEffect(() => {
       axios.get(`api/Priority/${id}/show`).then((res) => {
         if(res.data.status === 200){
         setPriority(res.data.Priority);
-        
+        setcolor(res.data.Priority.color)      
    } else if(res.data.status === 404){
     
    }
       });
     }, [id]);
-    
-    const [colorInput, setcolor]= useState(PriorityInput.color)
+
     const history = useHistory();
 
     const handleInput = (e) => {
@@ -59,7 +58,7 @@ const IMG = styled('img')(() => ({
     }
 
     const updatePriority = (e) => {
-    
+
        
         e.preventDefault();
         
@@ -150,10 +149,11 @@ const IMG = styled('img')(() => ({
                       
               
                 <ChromePicker
+                  onChange={updatedColor => setcolor(updatedColor)}
                 color={colorInput}
-      onChange={updatedColor => setcolor(updatedColor)}
+              
       />
-                 
+                 <span className="text-danger">{errorInput.color}</span>
                 
 
 

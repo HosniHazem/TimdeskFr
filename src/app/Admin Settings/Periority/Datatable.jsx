@@ -73,10 +73,11 @@ const Datatable = () => {
   const colorColumn = [
     
     {
-      field: "colors",
-      headerName: "colors",
+      field: "Color",
+      headerName: "Color",
       width: 160,
       renderCell: (params) => {
+        console.log("salem")
         return (
          
          

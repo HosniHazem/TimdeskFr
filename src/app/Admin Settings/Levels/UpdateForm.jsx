@@ -10,6 +10,7 @@ import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import swal from 'sweetalert';
+import {  ChromePicker } from 'react-color';
 
 const Container = styled('div')(({ theme }) => ({
     margin: '100px',
@@ -36,27 +37,28 @@ const IMG = styled('img')(() => ({
     const id=props.match.params.id;
     const [LevelsInput, setLevels] = useState([]);
     const [errorInput, setError] = useState([]);
-
+    const [colorInput, setcolor]= useState('#210998')
 
     useEffect(() => {
       axios.get(`api/Levels/${id}/show`).then((res) => {
         if(res.data.status === 200){
         setLevels(res.data.Levels);
+        setcolor(res.data.Levels.color)      
    } else if(res.data.status === 404){
     
    }
       });
     }, [id]);
-    
-    
+
     const history = useHistory();
 
     const handleInput = (e) => {
         e.persist();
         setLevels({...LevelsInput, [e.target.name]: e.target.value });
     }
+
     const updateLevels = (e) => {
-    
+
        
         e.preventDefault();
         
@@ -65,8 +67,8 @@ const IMG = styled('img')(() => ({
                 name: LevelsInput.name,
                 Is_Active: LevelsInput.Is_Active,
                 description: LevelsInput.description,
-            
-             
+                color: colorInput.hex,
+        
             }
         
    
@@ -79,7 +81,7 @@ const IMG = styled('img')(() => ({
             swal("Updated",LevelsInput.name,"success");
             setError([]);
             
-           history.push('/levels')
+           history.push('/Levels')
         } if(res.data.status === 422)
         {
             swal("All fields are mandetory","","error");
@@ -112,8 +114,6 @@ const IMG = styled('img')(() => ({
                         <span className="text-danger">{errorInput.name}</span>
                 </div>
                       
-                                          
-                      
                 <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                       <div className="input-group mb-3">
                     <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{LevelsInput.Is_Active}</label>
@@ -122,8 +122,7 @@ const IMG = styled('img')(() => ({
                     <option value="Inactive">Inactive</option>
                     
                     </select>
-                    
-
+                    <span className="text-danger">{errorInput.Is_Active}</span>
                      </div>
 
 
@@ -135,10 +134,17 @@ const IMG = styled('img')(() => ({
                     <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
                         <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={LevelsInput.description}/>
                         <span className="text-danger">{errorInput.description}</span>
-
                 </div>
 
-         
+                      
+              
+                <ChromePicker
+                  onChange={updatedColor => setcolor(updatedColor)}
+                color={colorInput}
+              
+      />
+                 <span className="text-danger">{errorInput.color}</span>
+                
 
 
 

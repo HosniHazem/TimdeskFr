@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
-
+import Box from '@mui/material/Box';
 
 const http = axios.create({
   baseURL:"http://localhost:8000/api",
@@ -19,41 +19,43 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [levels, setlevels] = useState([]);
+  const [Levels, setLevels] = useState([]);
 
  useEffect(() => {
    axios.get('api/Levels').then((res) => {
      if(res.status === 200){
-     setlevels(res.data.Levels);
+     setLevels(res.data.Levels);
 }
    });
  }, []);
 
 
-var dataRows = "";
+
+ var dataRows = "";  
+ dataRows = Levels.map((n) =>{
+   
+   return ( 
+    
+     {
+       id: n.id,
+       Name: n.name,
+       Description: n.description,
+       UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
+       Is_Active: n.Is_Active,
+       color: n.color,
        
-dataRows = levels.map((n) =>{
-  return ( 
-   
-    {
-      id: n.id,
-      Name: n.name,
-      Description: n.description,
-      UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
-      Is_Active: n.Is_Active,
-
-    }
-   );
-   
-
-})
+     }
+    );
+    
+ 
+ })
 
 
-  
+
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`Levels/delete/${id}`).then(res=>{
+     await http.delete(`Levels/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -67,16 +69,44 @@ dataRows = levels.map((n) =>{
         }
     });
   };
+  const colorColumn = [
+    
+    {
+      field: "Color",
+      headerName: "Color",
+      width: 160,
+      renderCell: (params) => {
+        console.log("salem")
+        return (
+         
+         
+
+              <Box
+              sx={{
+                width: 30,
+                height: 30,
+                backgroundColor: params.row.color ,
+                
+              }}
+              
+            />
+         
+         
+        );  
+      },
+    },
+
+  ];
 
   const actionColumn = [
     {
       field: "action",
       headerName: "Action",
-      width: 200,
+      width: 160,
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/levels/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/Levels/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -99,15 +129,15 @@ dataRows = levels.map((n) =>{
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Level
-        <Link to="/levels/new" className="link">
+        Add New Levels
+        <Link to="/Levels/new" className="link">
           Add New
         </Link>
       </div>
       <DataGrid
         className="datagrid"
         rows={dataRows}
-        columns={userColumns.concat(actionColumn)}
+        columns={userColumns.concat(colorColumn,actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

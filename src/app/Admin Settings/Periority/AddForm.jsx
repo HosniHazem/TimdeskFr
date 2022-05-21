@@ -149,7 +149,7 @@ const IMG = styled('img')(() => ({
                 color={colorInput}
       onChange={updatedColor => setcolor(updatedColor)}
       />
-                      
+          <span className="text-danger">{PriorityInput.error_list.color}</span>             
               
 
 

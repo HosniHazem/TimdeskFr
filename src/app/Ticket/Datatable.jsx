@@ -103,7 +103,7 @@ console.log(dataRows)
     <div className="datatable">
       <div className="datatableTitle">
         Add New SubCategory
-        <Link to="/subcategory/new" className="link">
+        <Link to="/ticket/new" className="link">
           Add New
         </Link>
       </div>

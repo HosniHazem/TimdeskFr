@@ -10,15 +10,20 @@ import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import swal from 'sweetalert';
+import TextField from '@mui/material/TextField';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import { MDBInput } from "mdbreact";
 
 const Container = styled('div')(({ theme }) => ({
-    margin: '100px',
+    margin: '30px',
     [theme.breakpoints.down('sm')]: {
         margin: '16px',
     },
     '& .breadcrumb': {
-        marginBottom: '30px',
+        marginBottom: '20px',
         [theme.breakpoints.down('sm')]: {
             marginBottom: '16px',
         },
@@ -32,7 +37,7 @@ const IMG = styled('img')(() => ({
   
   
   export default function SimpleForm () {
-
+    const [value, setValue] = React.useState(null);
     const [SubCategoryInput, setSubCategory] = useState({
         name:"",
         Is_Active:"Active",
@@ -111,7 +116,7 @@ const IMG = styled('img')(() => ({
       <div>
     
           <ValidatorForm onSubmit={AddSubCategory} onError={() => null}>
-              <Grid container spacing={6}>
+              <Grid container spacing={3}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   
@@ -176,22 +181,60 @@ const IMG = styled('img')(() => ({
                       </select>
   </div>
                    
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Priority</label>
+    <select
+                        name="category_id"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={SubCategoryInput.category_id}
+                      >
+                        <option value="DEFAULT"></option>
+                        {Category.map((item,index) => {
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+  </div>
  
- 
-                    
+  <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        label="Due date"
+        value={value}
+        onChange={(newValue) => {
+          setValue(newValue);
+        }}
+        renderInput={(params) => <TextField {...params} />}
+      />
+    </LocalizationProvider> 
 
                 
                   </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                  <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
-                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.description}/>
-                        <span className="text-danger">{SubCategoryInput.error_list.description}</span>
-                </div>
-
+                  <div class="form-group">
+    <label for="exampleFormControlSelect1">Technician</label>
+    <select
+                        name="category_id"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={SubCategoryInput.category_id}
+                      >
+                        <option value="DEFAULT"></option>
+                        {Category.map((item,index) => {
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+  </div>
                 <div class="form-group">
-    <label for="exampleFormControlSelect1">Category</label>
+    <label for="exampleFormControlSelect1">Status</label>
     <select
                         name="category_id"
                         className="form-control"
@@ -209,19 +252,88 @@ const IMG = styled('img')(() => ({
                       </select>
   </div>
 
-
-                <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="external_code">External Code</label>
-                        <input type="text" name="external_code" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.external_code}  />
-                        <span className="text-danger">{SubCategoryInput.error_list.external_code}</span>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Module</label>
+    <select
+                        name="category_id"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={SubCategoryInput.category_id}
+                      >
+                        <option value="DEFAULT"></option>
+                        {Category.map((item,index) => {
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlSelect1">Level</label>
+    <select
+                        name="category_id"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={SubCategoryInput.category_id}
+                      >
+                        <option value="DEFAULT"></option>
+                        {Category.map((item,index) => {
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+  </div>
+  <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="name">Estimated Time</label>
+                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.name}  />
+                        <span className="text-danger">{SubCategoryInput.error_list.name}</span>
                 </div>
-                      
-            
-
 
 
                   </Grid>
+
+                  <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+                  <div className="mb-4">
+                    <label htmlFor="exampleFormControlInput1" className="name">Sujet</label>
+                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.name}  />
+                        <span className="text-danger">{SubCategoryInput.error_list.name}</span>
+                </div>
+                {/* <Editor
+    // value={this.state.content}
+    init={{
+      height: 500,
+      menubar: false
+    }}
+    // onEditorChange={this.handleChange}
+  /> */}
+ <label htmlFor="exampleFormControlInput1" className="name">Description</label>
+<MDBInput type="textarea"  rows="5" />
+<div className="mb-5">
+<Button
+  variant="contained"
+  component="label"
+>
+  Upload File
+  <input
+    type="file"
+    hidden
+  />
+  
+</Button>
+</div>
+<div className="mb-3">
+  <label htmlFor="exampleFormControlInput1" className="name">Solution</label>
+<MDBInput type="textarea"  rows="5" />
+</div>
+                  </Grid>
               </Grid>
+           
+              
               <Button color="primary" variant="contained" type="submit">
                   <IMG
                                     src="/assets/send.png"

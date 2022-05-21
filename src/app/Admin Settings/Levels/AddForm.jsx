@@ -10,6 +10,8 @@ import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import swal from 'sweetalert';
+import {  ChromePicker } from 'react-color';
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '100px',
@@ -27,21 +29,28 @@ const IMG = styled('img')(() => ({
     width: '30%',
   }))
  
+ 
+
+
   
-
+  
+  
   export default function SimpleForm () {
-
+    const [colorInput, setcolor]= useState('#fff')
     const [LevelsInput, setLevels] = useState({
         name:"",
         Is_Active:"Active",
         description:"",
-
+        color:colorInput,
         error_list: [],
     });
-  
-
+    console.log(colorInput)
+    
     
     const history = useHistory();
+    
+   
+   
 
     const handleInput = (e) => {
         e.persist();
@@ -52,22 +61,22 @@ const IMG = styled('img')(() => ({
     
        
         e.preventDefault();
-        
-       
+
             const  data = {
                 name: LevelsInput.name,
                 Is_Active: LevelsInput.Is_Active,
                 description: LevelsInput.description,
-               
-             
+                color: colorInput.hex,
+
             }
       
 
     axios.post(`api/Levels/create`, data).then(res=>{
         if(res.data.status === 200)
         {
+            
             swal("Created",LevelsInput.name,"success");
-           history.push('/levels')
+           history.push('/Levels')
         }
         else if(res.data.status === 404)
         {
@@ -125,9 +134,12 @@ const IMG = styled('img')(() => ({
                         <span className="text-danger">{LevelsInput.error_list.description}</span>
                 </div>
 
-                      
-                      
-               
+                <ChromePicker
+                color={colorInput}
+      onChange={updatedColor => setcolor(updatedColor)}
+      />
+          <span className="text-danger">{LevelsInput.error_list.color}</span>             
+              
 
 
                   </Grid>
