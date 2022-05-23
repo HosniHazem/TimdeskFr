@@ -5,6 +5,9 @@ axios.defaults.baseURL = "http://localhost:8000/";
 
 
 
+// Profile
+const New = lazy(() => import('./Profile/New'))
+
 // Ticket
 const AddFormT = lazy(() => import('./Ticket/AddForm'))
 
@@ -71,9 +74,7 @@ const DatatableI = lazy(() => import('./Admin Settings/Impact/Datatable'))
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'))
 
-const Signin = lazy(() => import('./general-pages/Signin'))
 
-const Signup = lazy(() => import('./general-pages/Signup'))
 
 const Buttons = lazy(() => import('./ui-elements/Buttons'))
 
@@ -105,6 +106,12 @@ export class AppRoutes extends Component {
           <Route exact path="/dashboard">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Dashboard/>}
             </Route>
+
+            <Route exact path="/profil">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < New/>} 
+             </Route>
+
+
 {/* Ticket */}
 <Route exact path="/ticket">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableT/>} 
@@ -180,12 +187,6 @@ export class AppRoutes extends Component {
 
             <Route exact path="/impact/current/:id" component={ UpdateFormI } />
             {/* //// */}
-
-
-          <Route exact path="/general-pages/signin">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Signin/>}
-            </Route>
-          <Route exact path="/general-pages/signup" component={ Signup } />
 
           <Route exact path="/ui-elements/buttons" component={ Buttons } />
 

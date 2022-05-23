@@ -151,11 +151,13 @@ export default function Login() {
                                         label="Remeber me"
                                     /> */}
                                      {message && (
+                                         <div className="mb-3">
                                         <Paragraph className="Er" sx={{ color: ERR }}>
                                            <span className="text-danger">
                                             {message}
                                             </span>
                                         </Paragraph>
+                                        </div>
                                     )}
     
                                     <FlexBox mb={2} flexWrap="wrap">
