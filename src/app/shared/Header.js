@@ -188,18 +188,9 @@ export class Header extends Component {
                                   : "nav-link"
                               }
                             >
-                              Module
+                              SubCategory
                             </Link>
-                            <Link
-                              to="/form/form-elements"
-                              className={
-                                this.isPathActive("/form/form-elements")
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                            >
-                              TicketAttachment
-                            </Link>
+                           
                             
                           </nav>
                           
@@ -375,23 +366,18 @@ export class Header extends Component {
                     <span>< Getemail/></span>
                   </div>
 
-                  <a href="#/" className="dropdown-item">
+                  <a href="/profil" className="dropdown-item">
                     <i className="typcn typcn-user-outline"></i> My Profile
                   </a>
-                  <a href="#/" className="dropdown-item">
-                    <i className="typcn typcn-edit"></i> Edit Profile
-                  </a>
-                  <a href="#/" className="dropdown-item">
-                    <i className="typcn typcn-time"></i> Activity Logs
-                  </a>
+                  
                   <a href="#/" className="dropdown-item">
                     <i className="typcn typcn-cog-outline"></i> Account Settings
                   </a>
 
+                  
                   <div className="dropdown-item">
-          
                     <i className="typcn typcn-power-outline dropdown-item"></i>< Logout/>
-                  </div>
+                    </div>
                 </Dropdown.Menu>
               </Dropdown>
             </div>

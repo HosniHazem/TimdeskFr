@@ -58,11 +58,58 @@ const IMG = styled('img')(() => ({
       });
     }, []);
    
+    const [SubCategory, setsubCategory] = useState([]);
+
+    useEffect(() => {
+      axios.get('api/SubCategory').then((res) => {
+        if(res.status === 200){
+        setsubCategory(res.data.SubCategory);
+   }
+      });
+    }, []);
+
+    const [RequestType, setRequestType] = useState([]);
+
+    useEffect(() => {
+      axios.get('api/RequestType').then((res) => {
+        if(res.status === 200){
+        setRequestType(res.data.RequestType);
+   }
+      });
+    }, []);
+    
+    const [Levels, setLevels] = useState([]);
+
+    useEffect(() => {
+      axios.get('api/Levels').then((res) => {
+        if(res.status === 200){
+        setLevels(res.data.Levels);
+   }
+      });
+    }, []);
    
+    const [Status, setStatus] = useState([]);
+
+    useEffect(() => {
+      axios.get('api/Status').then((res) => {
+        if(res.status === 200){
+        setStatus(res.data.Status);
+   }
+      });
+    }, []);
     
+    const [Priority, setPriority] = useState([]);
+
+    useEffect(() => {
+      axios.get('api/Priority').then((res) => {
+        if(res.status === 200){
+        setPriority(res.data.Priority);
+   }
+      });
+    }, []);
+
     
-   
-    
+
     const history = useHistory();
 
     const handleInput = (e) => {
@@ -148,10 +195,10 @@ const IMG = styled('img')(() => ({
                         name="category_id"
                         className="form-control"
                         onChange={handleInput}
-                        value={SubCategoryInput.category_id}
+                        value={RequestType.id}
                       >
                         <option value="DEFAULT"></option>
-                        {Category.map((item,index) => {
+                        {RequestType.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -187,10 +234,10 @@ const IMG = styled('img')(() => ({
                         name="category_id"
                         className="form-control"
                         onChange={handleInput}
-                        value={SubCategoryInput.category_id}
+                        value={Priority.id}
                       >
                         <option value="DEFAULT"></option>
-                        {Category.map((item,index) => {
+                        {Priority.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -239,10 +286,10 @@ const IMG = styled('img')(() => ({
                         name="category_id"
                         className="form-control"
                         onChange={handleInput}
-                        value={SubCategoryInput.category_id}
+                        value={Status.id}
                       >
                         <option value="DEFAULT"></option>
-                        {Category.map((item,index) => {
+                        {Status.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -258,10 +305,10 @@ const IMG = styled('img')(() => ({
                         name="category_id"
                         className="form-control"
                         onChange={handleInput}
-                        value={SubCategoryInput.category_id}
+                        value={SubCategory.id}
                       >
                         <option value="DEFAULT"></option>
-                        {Category.map((item,index) => {
+                        {SubCategory.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -276,10 +323,10 @@ const IMG = styled('img')(() => ({
                         name="category_id"
                         className="form-control"
                         onChange={handleInput}
-                        value={SubCategoryInput.category_id}
+                        value={Levels.id}
                       >
                         <option value="DEFAULT"></option>
-                        {Category.map((item,index) => {
+                        {Levels.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -314,9 +361,13 @@ const IMG = styled('img')(() => ({
  <label htmlFor="exampleFormControlInput1" className="name">Description</label>
 <MDBInput type="textarea"  rows="5" />
 <div className="mb-5">
-<Button
+
+<Button 
+className="bg-secondary"
   variant="contained"
   component="label"
+ 
+ 
 >
   Upload File
   <input

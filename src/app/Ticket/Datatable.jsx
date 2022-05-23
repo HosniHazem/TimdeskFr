@@ -19,12 +19,12 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [SubCategory, setSubCategory] = useState([]);
+  const [Tickets, setTickets] = useState([]);
 
  useEffect(() => {
-   axios.get('api/SubCategory').then((res) => {
+   axios.get('api/Tickets').then((res) => {
      if(res.status === 200){
-     setSubCategory(res.data.SubCategory);
+     setTickets(res.data.Ticket);
 }
    });
  }, []);
@@ -32,7 +32,7 @@ const Datatable = () => {
 
  var dataRows = "";
        
- dataRows = SubCategory.map((n) =>{
+ dataRows = Tickets.map((n) =>{
    return ( 
     
      {
@@ -56,7 +56,7 @@ console.log(dataRows)
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`SubCategory/${id}/delete`).then(res=>{
+     await http.delete(`Tickets/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -79,7 +79,7 @@ console.log(dataRows)
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/SubCategory/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/Tickets/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -102,7 +102,7 @@ console.log(dataRows)
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New SubCategory
+        Add New Tickets
         <Link to="/ticket/new" className="link">
           Add New
         </Link>

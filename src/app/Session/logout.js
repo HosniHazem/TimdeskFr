@@ -1,7 +1,7 @@
 import AuthUser from './AuthUser';
 import React from 'react'
   
-export default function Login() {
+export default function Logout() {
     
     const {token,logout} = AuthUser();
     const logoutUser = () => {
@@ -12,5 +12,5 @@ export default function Login() {
    
     return(
        
-        <span role="button" onClick={logoutUser}>Logout </span> 
+        <div role="button" onClick={logoutUser}>Logout </div> 
     )}
