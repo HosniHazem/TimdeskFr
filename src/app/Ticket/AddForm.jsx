@@ -14,7 +14,7 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
+import moment from 'moment';
 import { MDBInput } from "mdbreact";
 
 const Container = styled('div')(({ theme }) => ({
@@ -38,14 +38,21 @@ const IMG = styled('img')(() => ({
   
   export default function SimpleForm () {
     const [value, setValue] = React.useState(null);
-    const [SubCategoryInput, setSubCategory] = useState({
-        name:"",
-        Is_Active:"Active",
-        description:"",
-
-        Is_Client_Visible:"Active",
-        external_code:"",
-        error_list: [],
+    const [TicketsInput, setTickets] = useState({
+      Subject:"",
+      Description:"",
+      RequestTypeID:"",
+      SolutionDescription:"",
+      DueDate:"",
+      EstimatedTime:"",
+      StatusID:"",
+      RequestedUser:"",
+      AssignedUser:"",
+      SubCategoryID:"",
+      CategoryID:"",
+      PriorityID:"",
+      LevelID:"",
+      TicketAttachment:"",
     });
   
     const [Category, setCategory] = useState([]);
@@ -108,49 +115,66 @@ const IMG = styled('img')(() => ({
       });
     }, []);
 
-    
+    const [User, setUser] = useState([]);
+
+    useEffect(() => {
+      axios.get('api/User').then((res) => {
+        if(res.status === 200){
+        setUser(res.data.User);
+   }
+      });
+    }, []);
 
     const history = useHistory();
 
     const handleInput = (e) => {
         e.persist();
        
-        setSubCategory({...SubCategoryInput, [e.target.name]: e.target.value });
+        setTickets({...TicketsInput, [e.target.name]: e.target.value });
     }
-    const AddSubCategory = (e) => {
+    console.log(moment(value).format("HH:mm DD/MM/YYYY"))
+    const AddTickets = (e) => {
     
        
         e.preventDefault();
         
        
             const  data = {
-                name: SubCategoryInput.name,
-                Is_Active: SubCategoryInput.Is_Active,
-                description: SubCategoryInput.description,
-     
-                Is_Client_Visible:SubCategoryInput.Is_Client_Visible,
-                external_code:SubCategoryInput.external_code,
-                category_id:SubCategoryInput.category_id,
+                Subject: TicketsInput.Subject,
+                Description:TicketsInput.Description,
+                RequestTypeID:TicketsInput.RequestTypeID,
+                EstimatedTime:TicketsInput.EstimatedTime,
+                StatusID:TicketsInput.StatusID,
+                RequestedUser:TicketsInput.RequestedUser,
+                SolutionDescription:TicketsInput.SolutionDescription,
+                DueDate:value,
+                AssignedUser:TicketsInput.AssignedUser,
+                SubCategoryID:TicketsInput.SubCategoryID,
+                CategoryID:TicketsInput.CategoryID,
+                PriorityID:TicketsInput.PriorityID,
+                TicketAttachment:TicketsInput.TicketAttachment,
+                LevelID:TicketsInput.LevelID,
             }
       
 
-    axios.post(`api/SubCategory/create`, data).then(res=>{
+    axios.post(`api/Tickets/create`, data).then(res=>{
         if(res.data.status === 200)
         {
             
-            swal("Created",SubCategoryInput.name,"success");
-           history.push('/subcategory')
+            swal("Created","Ticket","success");
+           history.push('/ticket')
         }
         else if(res.data.status === 404)
         {
-            swal("Error",SubCategoryInput.name,"error");
+            swal("Error",TicketsInput.name,"error");
         }
         else if(res.data.status === 422)
         {
          
-                     setSubCategory({...SubCategoryInput, error_list: res.data.validate_err });
+                     setTickets({...TicketsInput });
         }
     });
+ 
 }
 
   
@@ -162,21 +186,21 @@ const IMG = styled('img')(() => ({
       <Container>
       <div>
     
-          <ValidatorForm onSubmit={AddSubCategory} onError={() => null}>
+          <ValidatorForm onSubmit={AddTickets} onError={() => null}>
               <Grid container spacing={3}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   
-                <div class="form-group">
-    <label for="exampleFormControlSelect1">Demander</label>
+                <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Demander</label>
     <select
-                        name="category_id"
+                        name="RequestedUser"
                         className="form-control"
                         onChange={handleInput}
-                        value={SubCategoryInput.category_id}
+                        value={TicketsInput.RequestedUser}
                       >
                         <option value="DEFAULT"></option>
-                        {Category.map((item,index) => {
+                        {User.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -189,13 +213,13 @@ const IMG = styled('img')(() => ({
                                           
                       
                 
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Request type</label>
+  <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Request type</label>
     <select
-                        name="category_id"
+                        name="RequestTypeID"
                         className="form-control"
                         onChange={handleInput}
-                        value={RequestType.id}
+                        value={TicketsInput.RequestTypeID}
                       >
                         <option value="DEFAULT"></option>
                         {RequestType.map((item,index) => {
@@ -209,13 +233,13 @@ const IMG = styled('img')(() => ({
   </div>
                     
                    
-                <div class="form-group">
-    <label for="exampleFormControlSelect1">Category</label>
+                <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Category</label>
     <select
-                        name="category_id"
+                        name="CategoryID"
                         className="form-control"
                         onChange={handleInput}
-                        value={SubCategoryInput.category_id}
+                        value={TicketsInput.CategoryID}
                       >
                         <option value="DEFAULT"></option>
                         {Category.map((item,index) => {
@@ -228,13 +252,13 @@ const IMG = styled('img')(() => ({
                       </select>
   </div>
                    
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Priority</label>
+  <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Priority</label>
     <select
-                        name="category_id"
+                        name="PriorityID"
                         className="form-control"
                         onChange={handleInput}
-                        value={Priority.id}
+                        value={TicketsInput.PriorityID}
                       >
                         <option value="DEFAULT"></option>
                         {Priority.map((item,index) => {
@@ -249,7 +273,7 @@ const IMG = styled('img')(() => ({
  
   <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
-        label="Due date"
+        label="DueDate"
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
@@ -262,16 +286,16 @@ const IMG = styled('img')(() => ({
                   </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                  <div class="form-group">
-    <label for="exampleFormControlSelect1">Technician</label>
+                  <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Agent</label>
     <select
-                        name="category_id"
+                        name="AssignedUser"
                         className="form-control"
                         onChange={handleInput}
-                        value={SubCategoryInput.category_id}
+                        value={TicketsInput.AssignedUser}
                       >
                         <option value="DEFAULT"></option>
-                        {Category.map((item,index) => {
+                        {User.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -280,13 +304,13 @@ const IMG = styled('img')(() => ({
                         })}
                       </select>
   </div>
-                <div class="form-group">
-    <label for="exampleFormControlSelect1">Status</label>
+                <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Status</label>
     <select
-                        name="category_id"
+                        name="StatusID"
                         className="form-control"
                         onChange={handleInput}
-                        value={Status.id}
+                        value={TicketsInput.StatusID}
                       >
                         <option value="DEFAULT"></option>
                         {Status.map((item,index) => {
@@ -299,13 +323,13 @@ const IMG = styled('img')(() => ({
                       </select>
   </div>
 
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Module</label>
+  <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Module</label>
     <select
-                        name="category_id"
+                        name="SubCategoryID"
                         className="form-control"
                         onChange={handleInput}
-                        value={SubCategory.id}
+                        value={TicketsInput.SubCategoryID}
                       >
                         <option value="DEFAULT"></option>
                         {SubCategory.map((item,index) => {
@@ -317,13 +341,13 @@ const IMG = styled('img')(() => ({
                         })}
                       </select>
   </div>
-  <div class="form-group">
-    <label for="exampleFormControlSelect1">Level</label>
+  <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Level</label>
     <select
-                        name="category_id"
+                        name="LevelID"
                         className="form-control"
                         onChange={handleInput}
-                        value={Levels.id}
+                        value={TicketsInput.LevelID}
                       >
                         <option value="DEFAULT"></option>
                         {Levels.map((item,index) => {
@@ -337,8 +361,8 @@ const IMG = styled('img')(() => ({
   </div>
   <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="name">Estimated Time</label>
-                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.name}  />
-                        <span className="text-danger">{SubCategoryInput.error_list.name}</span>
+                        <input type="text" name="EstimatedTime" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketsInput.EstimatedTime}  />
+                       
                 </div>
 
 
@@ -347,19 +371,12 @@ const IMG = styled('img')(() => ({
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-4">
                     <label htmlFor="exampleFormControlInput1" className="name">Sujet</label>
-                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={SubCategoryInput.name}  />
-                        <span className="text-danger">{SubCategoryInput.error_list.name}</span>
+                        <input type="text" name="Subject" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketsInput.Subject}  />
+                        
                 </div>
-                {/* <Editor
-    // value={this.state.content}
-    init={{
-      height: 500,
-      menubar: false
-    }}
-    // onEditorChange={this.handleChange}
-  /> */}
- <label htmlFor="exampleFormControlInput1" className="name">Description</label>
-<MDBInput type="textarea"  rows="5" />
+
+ <label htmlFor="exampleFormControlInput1" >Description</label>
+<MDBInput type="textarea" name="Description"  value={TicketsInput.Description} onChange={handleInput}  rows="5" />
 <div className="mb-5">
 
 <Button 
@@ -378,8 +395,8 @@ className="bg-secondary"
 </Button>
 </div>
 <div className="mb-3">
-  <label htmlFor="exampleFormControlInput1" className="name">Solution</label>
-<MDBInput type="textarea"  rows="5" />
+  <label htmlFor="exampleFormControlInput1"  >Solution</label>
+<MDBInput type="textarea" name="SolutionDescription" value={TicketsInput.SolutionDescription} onChange={handleInput}  rows="5" />
 </div>
                   </Grid>
               </Grid>

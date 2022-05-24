@@ -1,11 +1,9 @@
-import React from 'react'
-
 
 export const userColumns = [
   { field: "id", headerName: "ID", width: 70 },
   {
-    field: "Name",
-    headerName: "Name",
+    field: "Sujet",
+    headerName: "Sujet",
     width: 100,
     renderCell: (params) => {
       return (
@@ -16,53 +14,30 @@ export const userColumns = [
     },
   },
   {
-    field: "Description",
-    headerName: "Description",
+    field: "Status",
+    headerName: "Status",
     width: 130,
   },
   {
-    field: "UpadatedDate",
-    headerName: "UpadatedDate",
+    field: "Applicant",
+    headerName: "Applicant",
     width: 160,
   },
   {
-    field: "external_code",
-    headerName: "external_code",
+    field: "AssignedUser",
+    headerName: "AssignedUser",
     width: 130,
   },
   {
-    field: "Category",
-    headerName: "Category",
+    field: "CreatedDate",
+    headerName: "CreatedDate",
     width: 130,
   },
   {
-    field: "Is_Active",
-    headerName: "Is_Active",
+    field: "DueDate",
+    headerName: "DueDate",
     width: 130,
-    renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.Is_Active}`}>
-          {params.row.Is_Active}
-        </div>
-      );
-    },
   },
-
-
-  
-  {
-    field: "Is_Client_Visible",
-    headerName: "Is_Client_Visible",
-    width: 130,
-    renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.Is_Client_Visible}`}>
-          {params.row.Is_Client_Visible}
-        </div>
-      );
-    },
-  },
-
 ];
 
 //temporary data
