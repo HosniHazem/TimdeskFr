@@ -1,4 +1,4 @@
-node_modules/.package-lock.json
+node_modules/
 node_modules/.bin/tsc
 node_modules/.bin/tsc.cmd
 node_modules/.bin/tsc.ps1
@@ -25947,3 +25947,4 @@ node_modules/react-color/lib/helpers/saturation.js
 node_modules/react-color/lib/helpers/spec.js
 node_modules/sass/package.json
 node_modules/sass/sass.dart.js
+node_modules/react/package.json
