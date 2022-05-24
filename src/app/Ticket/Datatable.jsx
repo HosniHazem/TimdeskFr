@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
-
+import Box from '@mui/material/Box';
 
 const http = axios.create({
   baseURL:"http://localhost:8000/api",
@@ -20,6 +20,10 @@ const http = axios.create({
 const Datatable = () => {
   
   const [Tickets, setTickets] = useState([]);
+  const [Priority, setPriority] = useState([]);
+  const [Levels, setLevels] = useState([]);
+  const [loading, setLoading] = useState(false)
+  const [loadingL, setLoadingL] = useState(false)
 
  useEffect(() => {
    axios.get('api/Tickets').then((res) => {
@@ -36,22 +40,28 @@ const Datatable = () => {
    return ( 
     
      {
-       id: n.id,
-       Name: n.name,
-       Description: n.description,
-       UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
-       external_code:n.external_code,
-       Is_Active: n.Is_Active,
-       Category:n.category?.name,
-       Is_Client_Visible:n.Is_Client_Visible,
+                 id: n.id,
+                 Sujet: n.Subject,
+                Description:n.Description,
+                RequestTypeID:n.RequestTypeID,
+                EstimatedTime:n.EstimatedTime,
+                Status:n.StatusID,
+                Applicant:n.RequestedUser,
+                SolutionDescription:n.SolutionDescription,
+                DueDate:moment(n.DueDate).format("HH:mm DD/MM/YYYY"),
+                AssignedUser:n.AssignedUser,
+                SubCategoryID:n.SubCategoryID,
+                CategoryID:n.CategoryID,
+                Priority:n.PriorityID,
+                TicketAttachment:n.TicketAttachment,
+                Levels:n.LevelID,
+                CreatedDate:moment(n.updated_at).format("DD/MM/YYYY"),
      }
     );
     
  
  })
  
-
-console.log(dataRows)
   
   const handleDelete = async (e,id) => {
 
@@ -70,6 +80,102 @@ console.log(dataRows)
         }
     });
   };
+
+  const PriorityColumn = [
+    
+    {
+      field: "Priority",
+      headerName: "Priority",
+      width: 110,
+      renderCell: (params) => {
+    if(loading===false){
+
+          axios.get(`api/Priority/${params.row.Priority}/show`).then((res) => {
+            if(res.data.status === 200){
+              setPriority(res.data.Priority);
+       } else if(res.data.status === 404){
+        
+       }
+          });
+          setLoading(true);
+        }
+        return (
+        
+         
+          <div>
+       
+              <Box
+              sx={{
+                width: 30,
+                height: 30,
+                backgroundColor: Priority.color,
+                
+              }}
+              
+            /><span style={{textAlign: 'right'}}>{Priority.name}</span>
+            
+
+     
+</div>
+         
+        );  
+      },
+    },
+
+  ];
+
+
+
+  const LevelsColumn = [
+    
+    {
+      field: "Levels",
+      headerName: "Levels",
+      width: 110,
+  
+      renderCell: (params) => {
+        var num=0;
+      console.log("salem")
+
+        
+
+
+          axios.get(`api/Levels`).then((res) => {
+            if((res.data.status === 200)&&(res.data.Levels.id===params.row.Levels)){
+              setLevels(res.data.Levels);
+              
+       } else if(res.data.status === 404){
+        
+       }
+          });
+    
+          
+        
+        return (
+        
+         
+          <div>
+       
+              <Box
+              sx={{
+                width: 30,
+                height: 30,
+                backgroundColor: Levels.color,
+                
+              }}
+              
+            /><span style={{textAlign: 'right'}}>{Levels.name}</span>
+            
+
+     
+</div>
+         
+         
+        );  
+      },
+    },
+
+  ];
 
   const actionColumn = [
     {
@@ -110,7 +216,7 @@ console.log(dataRows)
       <DataGrid
         className="datagrid"
         rows={dataRows}
-        columns={userColumns.concat(actionColumn)}
+        columns={userColumns.concat(PriorityColumn,LevelsColumn,actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
         checkboxSelection

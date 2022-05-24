@@ -34,13 +34,14 @@ export class Header extends Component {
     return (
       <div>
         <div className="az-header">
-          <div className="container">
+          <div className="container" >
             
-            
-                            <IMG
+          
+                            <IMG 
                                     src="/assets/Timdesk.png"
                                     alt=""
                                 />
+                             
               <a
                 id="azMenuShow"
                 onClick={event => this.toggleHeaderMenu(event)}
