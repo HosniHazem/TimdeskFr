@@ -76,7 +76,7 @@ const Datatable = () => {
       headerName: "Color",
       width: 160,
       renderCell: (params) => {
-        console.log("salem")
+       
         return (
          
          
