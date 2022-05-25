@@ -38,9 +38,9 @@ const handleInput = (e) => {
   setUser({...handleInput, [e.target.name]: e.target.value });
 }
 
-  useEffect(() => {
-    fetchConge();
-  }, []);
+  // useEffect(() => {
+  //   fetchConge();
+  // }, []);
   const fetchConge = () => {
     http.post('/me').then((res) => {
       if (res.data.status === 200) {

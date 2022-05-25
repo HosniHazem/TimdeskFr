@@ -20,10 +20,6 @@ const http = axios.create({
 const Datatable = () => {
   
   const [Tickets, setTickets] = useState([]);
-  const [Priority, setPriority] = useState([]);
-  const [Levels, setLevels] = useState([]);
-  const [loading, setLoading] = useState(false)
-  const [loadingL, setLoadingL] = useState(false)
 
  useEffect(() => {
    axios.get('api/Tickets').then((res) => {
@@ -40,28 +36,32 @@ const Datatable = () => {
    return ( 
     
      {
-                 id: n.id,
-                 Sujet: n.Subject,
+                id: n.id,
+                Sujet: n.Subject,
                 Description:n.Description,
                 RequestTypeID:n.RequestTypeID,
                 EstimatedTime:n.EstimatedTime,
                 Status:n.StatusID,
                 Applicant:n.RequestedUser,
                 SolutionDescription:n.SolutionDescription,
-                DueDate:moment(n.DueDate).format("HH:mm DD/MM/YYYY"),
+                DueDate:moment(n.DueDate).format("DD/MM/YYYY"),
                 AssignedUser:n.AssignedUser,
                 SubCategoryID:n.SubCategoryID,
                 CategoryID:n.CategoryID,
-                Priority:n.PriorityID,
+                PriorityName:n.priority.name,
+                PriorityColor:n.priority.color,
                 TicketAttachment:n.TicketAttachment,
-                Levels:n.LevelID,
+                LevelsName:n.levels.name,
+                LevelsColor:n.levels.color,
                 CreatedDate:moment(n.updated_at).format("DD/MM/YYYY"),
+
      }
     );
     
  
  })
  
+console.log(dataRows)
   
   const handleDelete = async (e,id) => {
 
@@ -88,17 +88,7 @@ const Datatable = () => {
       headerName: "Priority",
       width: 110,
       renderCell: (params) => {
-    if(loading===false){
-
-          axios.get(`api/Priority/${params.row.Priority}/show`).then((res) => {
-            if(res.data.status === 200){
-              setPriority(res.data.Priority);
-       } else if(res.data.status === 404){
-        
-       }
-          });
-          setLoading(true);
-        }
+  
         return (
         
          
@@ -108,11 +98,11 @@ const Datatable = () => {
               sx={{
                 width: 30,
                 height: 30,
-                backgroundColor: Priority.color,
+                backgroundColor: params.row.PriorityColor,
                 
               }}
               
-            /><span style={{textAlign: 'right'}}>{Priority.name}</span>
+            /><span style={{textAlign: 'right'}}>{params.row.PriorityName}</span>
             
 
      
@@ -132,39 +122,21 @@ const Datatable = () => {
       field: "Levels",
       headerName: "Levels",
       width: 110,
-  
       renderCell: (params) => {
-        var num=0;
-      console.log("salem")
-
-        
-
-
-          axios.get(`api/Levels`).then((res) => {
-            if((res.data.status === 200)&&(res.data.Levels.id===params.row.Levels)){
-              setLevels(res.data.Levels);
-              
-       } else if(res.data.status === 404){
-        
-       }
-          });
-    
-          
-        
         return (
         
          
           <div>
        
-              <Box
+       <Box
               sx={{
                 width: 30,
                 height: 30,
-                backgroundColor: Levels.color,
+                backgroundColor: params.row.LevelsColor,
                 
               }}
               
-            /><span style={{textAlign: 'right'}}>{Levels.name}</span>
+            /><span style={{textAlign: 'right'}}>{params.row.LevelsName}</span>
             
 
      
