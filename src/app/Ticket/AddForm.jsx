@@ -16,6 +16,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import moment from 'moment';
 import { MDBInput } from "mdbreact";
+import AuthUser from '../Session/AuthUser';
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -45,6 +46,7 @@ const IMG = styled('img')(() => ({
       SolutionDescription:"",
       DueDate:"",
       EstimatedTime:"",
+      EstimatedDate:"",
       StatusID:"",
       RequestedUser:"",
       AssignedUser:"",
@@ -54,7 +56,13 @@ const IMG = styled('img')(() => ({
       LevelID:"",
       TicketAttachment:"",
     });
-  
+    let info = sessionStorage.getItem("user");
+    const userInfo = JSON.parse(info);
+        const {http} = AuthUser();
+        const [userdetail,setUserdetail] = useState('');
+    
+        
+    
     const [Category, setCategory] = useState([]);
 
     useEffect(() => {
@@ -132,7 +140,6 @@ const IMG = styled('img')(() => ({
        
         setTickets({...TicketsInput, [e.target.name]: e.target.value });
     }
-    console.log(moment(value).format("HH:mm DD/MM/YYYY"))
     const AddTickets = (e) => {
     
        
@@ -142,12 +149,13 @@ const IMG = styled('img')(() => ({
             const  data = {
                 Subject: TicketsInput.Subject,
                 Description:TicketsInput.Description,
-                RequestTypeID:TicketsInput.RequestTypeID,
                 EstimatedTime:TicketsInput.EstimatedTime,
+                EstimatedDate:TicketsInput.EstimatedDate,
                 StatusID:TicketsInput.StatusID,
-                RequestedUser:TicketsInput.RequestedUser,
+                RequestedUser:userInfo.name,
                 SolutionDescription:TicketsInput.SolutionDescription,
                 DueDate:value,
+                RequestTypeID:TicketsInput.RequestTypeID,
                 AssignedUser:TicketsInput.AssignedUser,
                 SubCategoryID:TicketsInput.SubCategoryID,
                 CategoryID:TicketsInput.CategoryID,
@@ -156,7 +164,7 @@ const IMG = styled('img')(() => ({
                 LevelID:TicketsInput.LevelID,
             }
       
-
+console.log(data)
     axios.post(`api/Tickets/create`, data).then(res=>{
         if(res.data.status === 200)
         {
@@ -196,17 +204,11 @@ const IMG = styled('img')(() => ({
     <select
                         name="RequestedUser"
                         className="form-control"
-                        onChange={handleInput}
-                        value={TicketsInput.RequestedUser}
+                        defaultValue={userInfo.name}
                       >
-                        <option value="DEFAULT"></option>
-                        {User.map((item,index) => {
-                          return (
-                            <option value={item.id} key={index}>
-                              {item.name}
+                         <option value={userInfo.name}>
+                              {userInfo.name}
                             </option>
-                          );
-                        })}
                       </select>
   </div>
 
@@ -364,7 +366,11 @@ const IMG = styled('img')(() => ({
                         <input type="text" name="EstimatedTime" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketsInput.EstimatedTime}  />
                        
                 </div>
-
+                <div className="mb-3">
+                <label htmlFor="exampleFormControlInput1" className="name">Estimated Date</label>
+                        <input type="text" name="EstimatedDate" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketsInput.EstimatedDate}  />
+                       
+                </div>
 
                   </Grid>
 

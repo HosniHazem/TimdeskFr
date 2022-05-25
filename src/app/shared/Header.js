@@ -9,7 +9,8 @@ import {styled } from '@mui/system'
 const IMG = styled('img')(() => ({
   width: '15%',
 }))
-
+let info = sessionStorage.getItem("user");
+const userInfo = JSON.parse(info);
 export class Header extends Component {
 
 
@@ -363,8 +364,8 @@ export class Header extends Component {
                         alt=""
                       ></img>
                     </div>
-                    <h6>< Getname/></h6>
-                    <span>< Getemail/></span>
+                    <h6>{userInfo.name}</h6>
+                    <span>{userInfo.email}</span>
                   </div>
 
                   <a href="/profil" className="dropdown-item">

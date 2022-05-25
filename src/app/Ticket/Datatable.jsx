@@ -41,11 +41,11 @@ const Datatable = () => {
                 Description:n.Description,
                 RequestTypeID:n.RequestTypeID,
                 EstimatedTime:n.EstimatedTime,
-                Status:n.StatusID,
+                Status:n.status.name,
                 Applicant:n.RequestedUser,
                 SolutionDescription:n.SolutionDescription,
                 DueDate:moment(n.DueDate).format("DD/MM/YYYY"),
-                AssignedUser:n.AssignedUser,
+                AssignedUser:n.users.name,
                 SubCategoryID:n.SubCategoryID,
                 CategoryID:n.CategoryID,
                 PriorityName:n.priority.name,
@@ -157,7 +157,7 @@ console.log(dataRows)
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/Tickets/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/ticket/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
