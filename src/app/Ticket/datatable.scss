@@ -1,6 +1,6 @@
 .datatable {
-  height: 600px;
-  padding: 20px;
+  height: 500px;
+  padding: 10px;
   
   .datatableTitle{
     width: 100%;
@@ -59,6 +59,14 @@
     align-items: center;
     gap: 15px;
 
+    .updateButton {
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: rgb(4, 107, 38);
+      border: 1px dotted rgb(4, 107, 38);
+      cursor: pointer;
+    }
+    
     .viewButton {
       padding: 2px 5px;
       border-radius: 5px;

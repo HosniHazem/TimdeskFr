@@ -2,15 +2,22 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import Logout from '../Session/logout'
-import Getname from '../Session/Getname'
-import Getemail from "../Session/Getemail";
 import {styled } from '@mui/system'
 
 const IMG = styled('img')(() => ({
   width: '15%',
 }))
 let info = sessionStorage.getItem("user");
-const userInfo = JSON.parse(info);
+// eslint-disable-next-line 
+let userInfo = JSON.parse(info);
+// eslint-disable-next-line 
+var NameInfo="";
+ var EmailInfo="";
+if(userInfo){
+  
+   NameInfo=userInfo.name;
+   EmailInfo=userInfo.email;
+}
 export class Header extends Component {
 
 
@@ -307,7 +314,7 @@ export class Header extends Component {
                     <div className="media">
                       <div className="az-img-user">
                         <img
-                          src={require("../../assets/images/Defaultuse.png")}
+                          src={require("../../images/default.png")}
                           alt=""
                         ></img>
                       </div>
@@ -322,7 +329,7 @@ export class Header extends Component {
                     <div className="media">
                       <div className="az-img-user">
                         <img
-                          src={require("../../assets/images/Defaultuse.png")}
+                          src={require("../../images/default.png")}
                           alt=""
                         ></img>
                       </div>
@@ -340,11 +347,13 @@ export class Header extends Component {
                   </div>
                 </Dropdown.Menu>
               </Dropdown>
-              <Dropdown className="az-profile-menu">
+          
+              <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">
+                  
                   <img
-                    src={require("../../assets/images/Defaultuse.png")}
-                    alt=""
+                    src={`http://localhost:8000/images/uploads/${userInfo.profile_picture}`}
+                    alt="../../assets/images/Defaultuse.png"
                   ></img>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
@@ -360,22 +369,19 @@ export class Header extends Component {
                   <div className="az-header-profile">
                     <div className="az-img-user">
                       <img
-                        src={require("../../assets/images/Defaultuse.png")}
-                        alt=""
+                       src={`http://localhost:8000/images/uploads/${userInfo.profile_picture}`}
+                      alt="../../assets/images/Defaultuse.png"
                       ></img>
                     </div>
-                    <h6>{userInfo.name}</h6>
-                    <span>{userInfo.email}</span>
+                    <h6>{NameInfo}</h6>
+                    <span>{EmailInfo}</span>
                   </div>
 
                   <a href="/profil" className="dropdown-item">
                     <i className="typcn typcn-user-outline"></i> My Profile
                   </a>
                   
-                  <a href="#/" className="dropdown-item">
-                    <i className="typcn typcn-cog-outline"></i> Account Settings
-                  </a>
-
+                  
                   
                   <div className="dropdown-item">
                     <i className="typcn typcn-power-outline dropdown-item"></i>< Logout/>

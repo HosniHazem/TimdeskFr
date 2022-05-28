@@ -14,9 +14,7 @@ import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import moment from 'moment';
 import { MDBInput } from "mdbreact";
-import AuthUser from '../Session/AuthUser';
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -39,6 +37,7 @@ const IMG = styled('img')(() => ({
   
   export default function SimpleForm () {
     const [value, setValue] = React.useState(null);
+    const [attach, setattach] = useState([]);
     const [TicketsInput, setTickets] = useState({
       Subject:"",
       Description:"",
@@ -54,12 +53,11 @@ const IMG = styled('img')(() => ({
       CategoryID:"",
       PriorityID:"",
       LevelID:"",
-      TicketAttachment:"",
+      attach:attach,
     });
     let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
-        const {http} = AuthUser();
-        const [userdetail,setUserdetail] = useState('');
+      
     
         
     
@@ -140,9 +138,43 @@ const IMG = styled('img')(() => ({
        
         setTickets({...TicketsInput, [e.target.name]: e.target.value });
     }
-    const AddTickets = (e) => {
+
+
+
+    const [Fich, setFich] = useState("");
     
-       
+
+const [picture,setPicture] = useState({
+  attach:""
+});
+const [error,setError] = useState([]);
+const handleImage = (e) => {
+  e.preventDefault();
+  setPicture({attach : e.target.files[0]});
+ 
+  setFich(e.target.files[0].name)
+ 
+
+}
+
+
+
+    const AddTickets = (e) => {
+      if(Fich!==''){
+      const formData = new FormData();
+  formData.append('attach',picture.attach);
+   axios.post('api/image',formData).then(res=>{
+     if(res.status=== 200){
+      
+       setError(res.data.error);
+
+     }
+     else if (res.status=== 422){
+       setError(res.data.error);
+     }
+   },
+   )
+  }  
         e.preventDefault();
         
        
@@ -160,11 +192,10 @@ const IMG = styled('img')(() => ({
                 SubCategoryID:TicketsInput.SubCategoryID,
                 CategoryID:TicketsInput.CategoryID,
                 PriorityID:TicketsInput.PriorityID,
-                TicketAttachment:TicketsInput.TicketAttachment,
+                attach:Fich,
                 LevelID:TicketsInput.LevelID,
             }
-      
-console.log(data)
+      console.log(data)
     axios.post(`api/Tickets/create`, data).then(res=>{
         if(res.data.status === 200)
         {
@@ -194,7 +225,7 @@ console.log(data)
       <Container>
       <div>
     
-          <ValidatorForm onSubmit={AddTickets} onError={() => null}>
+          <ValidatorForm onSubmit={AddTickets} onError={() => null} encType="multipart/form-data">
               <Grid container spacing={3}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
@@ -212,7 +243,7 @@ console.log(data)
                       </select>
   </div>
 
-                                          
+     <img src={TicketsInput.attach} alt="" ></img>                                  
                       
                 
   <div className="form-group">
@@ -335,6 +366,7 @@ console.log(data)
                       >
                         <option value="DEFAULT"></option>
                         {SubCategory.map((item,index) => {
+                          if((TicketsInput.CategoryID===item.id))
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -395,10 +427,15 @@ className="bg-secondary"
   Upload File
   <input
     type="file"
+    name="attach"
+    onChange={handleImage}
     hidden
   />
   
 </Button>
+
+<div className="font-weight-bold">{Fich}</div>
+
 </div>
 <div className="mb-3">
   <label htmlFor="exampleFormControlInput1"  >Solution</label>
@@ -417,6 +454,7 @@ className="bg-secondary"
                       ADD
                   </Span>
               </Button>
+              
           </ValidatorForm>
       </div>
       </Container>

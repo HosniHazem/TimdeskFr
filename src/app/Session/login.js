@@ -73,14 +73,14 @@ export default function Login() {
         e.preventDefault();
         setLoading(true);
         try{
-            const response = await http.post('/login',{email:email,password:password}).then((res)=>{
+            await http.post('/login',{email:email,password:password}).then((res)=>{
             setToken(res.data.user,res.data.access_token);
         })
                 setEmail('');
                 setPwd('');
-                console.log(JSON.stringify(response?.data));
+                
         }catch(err){
-            console.log(err);
+           
             setMessage(err.message);
             setLoading(false);
           }

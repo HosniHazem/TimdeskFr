@@ -1,6 +1,6 @@
 
 export const userColumns = [
-  { field: "id", headerName: "ID", width: 70 },
+  { field: "id", headerName: "ID", width: 50 },
   {
     field: "Sujet",
     headerName: "Sujet",
@@ -21,7 +21,7 @@ export const userColumns = [
   {
     field: "Applicant",
     headerName: "Applicant",
-    width: 160,
+    width: 120,
   },
   {
     field: "AssignedUser",

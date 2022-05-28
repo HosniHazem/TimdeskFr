@@ -8,7 +8,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
 import Box from '@mui/material/Box';
-
+import CustomizedDialogs from './Modal'
 const http = axios.create({
   baseURL:"http://localhost:8000/api",
   headers:{
@@ -17,7 +17,9 @@ const http = axios.create({
 });
 
 
+
 const Datatable = () => {
+
   
   const [Tickets, setTickets] = useState([]);
 
@@ -60,8 +62,10 @@ const Datatable = () => {
     
  
  })
+
  
-console.log(dataRows)
+ 
+
   
   const handleDelete = async (e,id) => {
 
@@ -86,7 +90,7 @@ console.log(dataRows)
     {
       field: "Priority",
       headerName: "Priority",
-      width: 110,
+      width: 90,
       renderCell: (params) => {
   
         return (
@@ -121,7 +125,7 @@ console.log(dataRows)
     {
       field: "Levels",
       headerName: "Levels",
-      width: 110,
+      width: 90,
       renderCell: (params) => {
         return (
         
@@ -153,12 +157,14 @@ console.log(dataRows)
     {
       field: "action",
       headerName: "Action",
-      width: 160,
+      width: 300,
       renderCell: (params) => {
         return (
           <div className="cellAction">
+           
+            {CustomizedDialogs(params.row.id)}
             <Link to={`/ticket/current/${params.row.id}`} style={{ textDecoration: "none" }}>
-              <div className="viewButton">View</div>
+              <div className="viewButton">Update</div>
             </Link>
             <div
               className="deleteButton"
@@ -191,7 +197,7 @@ console.log(dataRows)
         columns={userColumns.concat(PriorityColumn,LevelsColumn,actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
-        checkboxSelection
+        
       />
     </div>
     

@@ -1,96 +1,120 @@
-import { useEffect, useState } from "react";
-import AuthUser from "../Session/AuthUser";
-import DefaultUserPic from "../../images/default.png";
-import React from "react";
 import "./new.scss";
-import axios from "axios";
-import swal from "sweetalert";
+import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
+import DefaultUserPic from "../../images/default.png";
 
-export default function New() {
-  const { http } = AuthUser();
-  const [userdetail, setUserdetail] = useState("");
-  const [errorInput, setError] = useState([]);
+import React,{ useEffect, useState } from 'react';
+import axios from 'axios';
+import {useHistory} from 'react-router-dom';
+import swal from 'sweetalert'
 
-  const [handleInputChangee, setHandleInputChange] = useState({
-    selectedFile: "",
-  });
-  const [changeProfileImage, setchangeProfileImage] = useState({
-    uploadedFile: null,
-  });
-  const changeProfileImagee = (event) => {
-    setchangeProfileImage({
-      ...changeProfileImage,
-      uploadedFile: event.target.files[0],
-    });
-  };
-
-  const handleInputChange = (event) => {
-    event.persist();
-    setHandleInputChange({
-      ...handleInputChangee,
-      selectedFile: event.target.files[0],
-    });
-  };
-  const handleInput = (e) => {
-    setUserdetail({ ...userdetail, [e.target.name]: e.target.value });
-  };
-
-  useEffect(() => {
-    const fetchUserDetail = () => {
-      http.post("/me").then((res) => {
-        setUserdetail(res.data);
+const New = ({ inputs, title }) => {
+  const history = useHistory();
+  let info = sessionStorage.getItem("user");
+   
+    const userInfo = JSON.parse(info);
+    const [userdetail,setUserdetail] = useState([]);
+    const [file, setFile] = useState([]);
+    const [filex, setFilex] = useState([]);
+    useEffect(() => {
+      axios.get(`api/User/${userInfo.id}/show`).then((res) => {
+        if(res.status === 200){
+          setUserdetail(res.data.User);
+          setFile(res.data.User.profile_picture)
+   } else if(res.status === 404){
+    
+   }
       });
-    };
-    fetchUserDetail();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const UpdateProfileHandler = async (e) => {
+    }, []);
+    console.log(file)
+  
+    
+    
+   
+    const handleInput = (e) => {
+      e.persist();
+     
+      setUserdetail({...userdetail, [e.target.name]: e.target.value });
+  }
+  const [picture,setPicture] = useState({
+    attach:""
+  });
+  const [error,setError] = useState([]);
+  const handleImage = (e) => {
     e.preventDefault();
+    setPicture({attach : e.target.files[0]});
+    setFile(e.target.files[0].name);
+  
+  }
+ 
+  const updateProfile = (e) => {
 
-    const data = {
-      name: userdetail.name,
-      phone_no: userdetail.phone_no,
+  const formData = new FormData();
+  formData.append('attach',picture.attach);
+   axios.post('api/imageProfil',formData).then(res=>{
+     if(res.status=== 200){
+      
+       setError(res.data.error);
 
-      profile_picture: userdetail.profile_picture,
-    };
+     }
+     else if (res.status=== 422){
+       setError(res.data.error);
+     }
+   },
+   )
+   e.preventDefault();
 
-    //create object of form data
-    const formData = new FormData();
-    formData.append("profile_picture", changeProfileImagee.uploadedFile);
+  const  data = {
+    name: userdetail.name,
+    city:userdetail.city,
+    country:userdetail.country,
+    phone_no:userdetail.phone_no,
+    organization:userdetail.organization,
+    profile_picture:file,
+  }
+  const  profil = {
+    id:userdetail.id,
+    name: userdetail.name,
+    email: userdetail.email,
+    city:userdetail.city,
+    country:userdetail.country,
+    phone_no:userdetail.phone_no,
+    organization:userdetail.organization,
+    profile_picture:file,
+    Is_Active:userdetail.Is_Active,
+    Is_Sendmail_Password:userdetail.Is_Sendmail_Password,
+    address:userdetail.address,
+    company_id:userdetail.company_id,
+    description:userdetail.description,
+    email_verified_at:userdetail.email_verified_at,
+    external_code:userdetail.external_code,
+    job_title:userdetail.job_title,
+    role_id:userdetail.role_id,
+    state:userdetail.state,
+    time_zone_id:userdetail.time_zone_id,
+    updated_at:userdetail.updated_at,
+  }
+  axios.put(`api/User/${userInfo.id}/update`, data).then(res=>{
+        
+      
+    if(res.data.status === 200)
+    {
+        swal("Updated","Profil","success");
+        window.location.reload();
+    } if(res.data.status === 422)
+    {
+        swal("All fields are mandetory","","error");
 
-    formData.append("id", changeProfileImagee.id);
-
-    const res = http.put(`/profile/update-profile`, data);
-
-    const res1 = axios.post("/api/sample-restful-apis", formData, {
-      headers: {
-        "content-type": "application/json",
-      },
-    });
-
-    if (res.status === 200 && res1.status === 200) {
-        swal({
-            title: "Succès",
-            text: res.data.message,
-            icon: "success",
-            button: "Fermer",
-          });
-      window.location.reload();
-
-      console.log("Congé modifier avec succès");
-    } else if (res.status === 404 && res1.status === 404) {
-        swal({
-            title: "Echec !",
-            text: res.data.message,
-            icon: "warning",
-            button: "Fermer",
-          });
-        } else {
-      swal("Error", userdetail.name, "error");
-      setError([]);
     }
-  };
+    else if(res.data.status === 404)
+    {
+        swal("Error","Profil","error");
+
+    }
+});
+sessionStorage.removeItem('user');
+sessionStorage.setItem('user',JSON.stringify(profil));
+  }
+
   if (userdetail.profile_picture) {
     var imagestr = userdetail.profile_picture;
     imagestr = imagestr.replace("http://localhost:8000/images/uploads/", "");
@@ -98,57 +122,68 @@ export default function New() {
   } else {
     profilePic = DefaultUserPic;
   }
-  function renderElement() {
-    if (userdetail) {
-      return (
-        <div className="new">
-          <div className="newContainer">
-            <div className="top">
-              <h1></h1>
-            </div>
-            <div className="bottom">
-              <div className="left">
-                <img src={profilePic} alt="" />
+  return (
+    
+    <div className="new">
+  
+      <div className="newContainer">
+   
+        <div className="top">
+        
+        </div>
+        <div className="bottom">
+          <div className="left">
+            <img
+              src={
+                profilePic
+              }
+              alt=""
+            />
+          </div>
+          <div className="right">
+            <form onSubmit={updateProfile} encType="multipart/form-data">
+              <div className="formInput">
+                <label htmlFor="file">
+                  Image: <DriveFolderUploadOutlinedIcon className="icon" />
+                </label>
+                <input
+                  type="file"
+                  id="file"
+                  onChange={handleImage}
+                  style={{ display: "none" }}
+                />
               </div>
-              <div className="right">
-                <form onSubmit={UpdateProfileHandler}>
-                  <div className="formInput">
-                    <label>Name</label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={userdetail.name}
-                      onChange={handleInput}
-                    />
-                  </div>
-                  <div className="formInput">
-                    <label>Phone</label>
-                    <input
-                      type="text"
-                      name="phone_no"
-                      value={userdetail.phone_no}
-                      onChange={handleInput}
-                    />
-                  </div>
 
-                  <div className="formInput">
-                    <label htmlFor="file">Image:</label>
-                    <input
-                      class="form-control"
-                      type="file"
-                      name="profile_picture"
-                      onChange={changeProfileImagee}
-                    />
-                  </div>
-                  <button type="submit" id="updatetn">Send</button>
-                </form>
+                <div className="formInput" >
+                <label>Name</label>
+                <input type="text" name="name"className="form-control" onChange={handleInput} htmlFor="exampleFormControlInput1"  value={userdetail.name} />
+                </div>
+                <div className="formInput" >
+                <label>Phone</label>
+                <input type="text" name="phone_no"   className="form-control" onChange={handleInput} htmlFor="exampleFormControlInput1" value={userdetail.phone_no}  />
+                </div>
+                <div className="formInput" >
+             <label>City</label>
+             <input type="text" name="city"   className="form-control" onChange={handleInput} htmlFor="exampleFormControlInput1" value={userdetail.city}  />
+                </div>
+                
+                <div className="formInput" >
+                <label>Country</label>
+                <input type="text" name="country"   className="form-control" onChange={handleInput} htmlFor="exampleFormControlInput1" value={userdetail.country} />
+                </div>
+                <div className="formInput" >
+                <label>Organization</label>
+                <input type="text" name="organization"   className="form-control" onChange={handleInput} htmlFor="exampleFormControlInput1" value={userdetail.organization} />
+                </div>
+                <div>
+              <button type="submit">Send</button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
-      );
-    }
-  }
+      </div>
+    </div>
+  );
+};
 
-  return <div>{renderElement()}</div>;
-}
+export default New;

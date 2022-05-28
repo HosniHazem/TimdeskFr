@@ -4,7 +4,7 @@ import axios from 'axios';
 axios.defaults.baseURL = "http://localhost:8000/";
 
 
-
+const Modal = lazy(() => import('./Ticket/Modal'))
 // Profile
 const New = lazy(() => import('./Profile/New'))
 
@@ -102,7 +102,10 @@ export class AppRoutes extends Component {
           </Route>
 
           {/* <Route exact path="/dashboard" component={ Dashboard } /> */}
-     
+          <Route exact path="/modal">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Modal/>} 
+             </Route>
+
           <Route exact path="/dashboard">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Dashboard/>}
             </Route>

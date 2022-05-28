@@ -1,4 +1,4 @@
-import React,{ useState,useEffect } from "react";
+import React,{ useState,useEffect,Image } from "react";
 import {
   Button,
   Grid,
@@ -32,7 +32,7 @@ const Container = styled('div')(({ theme }) => ({
 const IMG = styled('img')(() => ({
     width: '30%',
   }))
- 
+
   
 
   
@@ -42,19 +42,22 @@ const IMG = styled('img')(() => ({
     const id=props.match.params.id;
   
     const [TicketInput, setTicket] = useState([]);
-    const [errorInput, setError] = useState([]);
-console.log()
+   
+    const [value, setValue] = React.useState(null);
 
     useEffect(() => {
       axios.get(`api/Tickets/${id}/show`).then((res) => {
         if(res.data.status === 200){
         setTicket(res.data.Ticket);
+        setValue(res.data.Ticket.DueDate);
    } else if(res.data.status === 404){
     
    }
       });
     }, [id]);
-    const [Category, setCategory] = useState([]);
+    const [Fich, setFich] = useState(TicketInput.attach);
+  
+const [Category, setCategory] = useState([]);
 
     useEffect(() => {
       axios.get('api/Category').then((res) => {
@@ -124,15 +127,40 @@ console.log()
       });
     }, []);
     
-    const [value, setValue] = React.useState(TicketInput.DueDate);
+  
     const history = useHistory();
 
     const handleInput = (e) => {
         e.persist();
         setTicket({...TicketInput, [e.target.name]: e.target.value });
     }
+    const [picture,setPicture] = useState({
+      attach:""
+    });
+    const [error,setError] = useState([]);
+    const handleImage = (e) => {
+      e.preventDefault();
+      setPicture({attach : e.target.files[0]});
+     
+      setFich(e.target.files[0].name)
+     
+    
+    }
     const updateTicket = (e) => {
     
+      const formData = new FormData();
+      formData.append('attach',picture.attach);
+       axios.post('api/image',formData).then(res=>{
+         if(res.status=== 200){
+          
+           setError(res.data.error);
+    
+         }
+         else if (res.status=== 422){
+           setError(res.data.error);
+         }
+       },
+       )
        
         e.preventDefault();
         
@@ -151,7 +179,7 @@ console.log()
               SubCategoryID:TicketInput.SubCategoryID,
               CategoryID:TicketInput.CategoryID,
               PriorityID:TicketInput.PriorityID,
-              TicketAttachment:TicketInput.TicketAttachment,
+              attach:Fich,
               LevelID:TicketInput.LevelID,
             }
         
@@ -168,12 +196,12 @@ console.log()
         } if(res.data.status === 422)
         {
             swal("All fields are mandetory","","error");
-            setError(res.data.validate_err);
+    
         }
         else if(res.data.status === 404)
         {
             swal("Error","Ticket","error");
-            setError([]);
+    
         }
     });
 }
@@ -188,7 +216,7 @@ console.log()
       <Container>
       <div>
     
-          <ValidatorForm onSubmit={updateTicket} onError={() => null}>
+          <ValidatorForm onSubmit={updateTicket} onError={() => null} encType="multipart/form-data">
               <Grid container spacing={3}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
@@ -206,8 +234,11 @@ console.log()
                       </select>
   </div>
 
-                                          
-                      
+  {/* <IMG
+                                    src={`http://localhost:8000/images/uploads/${TicketInput.attach}`}
+                                    alt=""
+                                /> */}
+           
                 
   <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">Request type</label>
@@ -355,7 +386,7 @@ console.log()
                         })}
                       </select>
   </div>
-              <div className="mb-3">
+  <div className="mb-3">
                     <label htmlFor="exampleFormControlInput1" className="name">Estimated Time</label>
                         <input type="text" name="EstimatedTime" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.EstimatedTime}  />
                        
@@ -389,10 +420,14 @@ className="bg-secondary"
   Upload File
   <input
     type="file"
+    name="attach"
+    onChange={handleImage}
     hidden
   />
   
 </Button>
+
+<div className="font-weight-bold">{Fich}</div>
 </div>
 <div className="mb-3">
   <label htmlFor="exampleFormControlInput1"  >Solution</label>
