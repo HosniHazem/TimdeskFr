@@ -4,7 +4,7 @@ import axios from 'axios';
 axios.defaults.baseURL = "http://localhost:8000/";
 
 
-const Modal = lazy(() => import('./Ticket/Modal'))
+const Modal = lazy(() => import('./Ticket/Views'))
 // Profile
 const New = lazy(() => import('./Profile/New'))
 
