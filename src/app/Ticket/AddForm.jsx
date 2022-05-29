@@ -37,7 +37,6 @@ const IMG = styled('img')(() => ({
   
   export default function SimpleForm () {
     const [value, setValue] = React.useState(null);
-    const [attach, setattach] = useState([]);
     const [TicketsInput, setTickets] = useState({
       Subject:"",
       Description:"",
@@ -53,7 +52,7 @@ const IMG = styled('img')(() => ({
       CategoryID:"",
       PriorityID:"",
       LevelID:"",
-      attach:attach,
+      attach:"",
     });
     let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
@@ -366,7 +365,7 @@ const handleImage = (e) => {
                       >
                         <option value="DEFAULT"></option>
                         {SubCategory.map((item,index) => {
-                          if((TicketsInput.CategoryID===item.id))
+                          if((item.category_id==TicketsInput.CategoryID))
                           return (
                             <option value={item.id} key={index}>
                               {item.name}

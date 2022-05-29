@@ -1,0 +1,8 @@
+#elgrid {
+  margin: 3%;
+  padding: 5%;
+}
+#grid {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}

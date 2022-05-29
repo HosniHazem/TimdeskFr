@@ -8,7 +8,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
 import Box from '@mui/material/Box';
-import CustomizedDialogs from './Modal'
+import CustomizedDialogs from './Views'
 const http = axios.create({
   baseURL:"http://localhost:8000/api",
   headers:{

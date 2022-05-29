@@ -7,7 +7,7 @@ const forget = lazy(() => import('./Forget/Forget'))
 // Profile
 const Reset = lazy(() => import('./ForgetPassword/Reset'))
 
-const Modal = lazy(() => import('./Ticket/Modal'))
+const Modal = lazy(() => import('./Ticket/Views'))
 // Profile
 const New = lazy(() => import('./Profile/New'))
 
