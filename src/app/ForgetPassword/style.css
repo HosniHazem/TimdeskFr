@@ -1,0 +1,10 @@
+/** @format */
+
+
+
+.box {
+
+	box-sizing: border-box;
+	font-family: 'Quicksand', sans-serif;
+	box-shadow: 0 0.5rem 3rem rgba(89, 76, 121, 0.4);
+}

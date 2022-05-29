@@ -3,6 +3,9 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios';
 axios.defaults.baseURL = "http://localhost:8000/";
 
+const forget = lazy(() => import('./Forget/Forget'))
+// Profile
+const Reset = lazy(() => import('./ForgetPassword/Reset'))
 
 const Modal = lazy(() => import('./Ticket/Modal'))
 // Profile
@@ -211,7 +214,10 @@ export class AppRoutes extends Component {
             <Route exact path="/forgetpassword">
             {sessionStorage.getItem('token') ? <Redirect to='/login'/> : < ForgetPassword/>}
             </Route>
-  
+            <Route path='/forget' component={forget} />
+        <Route exact path="/reset/:token">
+            {sessionStorage.getItem('token') ? <Redirect to='/reset/:token'/> : < Reset/>}
+            </Route>
         </Switch>
       </Suspense>
     )

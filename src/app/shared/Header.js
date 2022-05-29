@@ -3,6 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import Logout from '../Session/logout'
 import {styled } from '@mui/system'
+import DefaultUserPic from "../../images/default.png";
 
 const IMG = styled('img')(() => ({
   width: '15%',
@@ -352,7 +353,7 @@ export class Header extends Component {
                 <Dropdown.Toggle as={"a"} className="az-img-user">
                   
                   <img
-                    src={`http://localhost:8000/images/uploads/${userInfo.profile_picture}`}
+                    src={DefaultUserPic}
                     alt="../../assets/images/Defaultuse.png"
                   ></img>
                 </Dropdown.Toggle>
@@ -369,7 +370,7 @@ export class Header extends Component {
                   <div className="az-header-profile">
                     <div className="az-img-user">
                       <img
-                       src={`http://localhost:8000/images/uploads/${userInfo.profile_picture}`}
+                       src={DefaultUserPic}
                       alt="../../assets/images/Defaultuse.png"
                       ></img>
                     </div>
