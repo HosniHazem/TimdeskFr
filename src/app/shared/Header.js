@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import Logout from '../Session/logout'
 import {styled } from '@mui/system'
-import DefaultUserPic from "../../images/default.png";
+
 
 const IMG = styled('img')(() => ({
   width: '15%',
@@ -14,10 +14,22 @@ let userInfo = JSON.parse(info);
 // eslint-disable-next-line 
 var NameInfo="";
  var EmailInfo="";
+ var PhotoInfo="";
 if(userInfo){
   
    NameInfo=userInfo.name;
    EmailInfo=userInfo.email;
+   PhotoInfo=userInfo.profile_picture;
+}
+
+if (PhotoInfo!="") {
+  var imagestr = userInfo.profile_picture;
+  imagestr = imagestr.replace("http://localhost:8000/images/uploads/", "");
+  var profilePic = "http://localhost:8000/images/uploads/" + imagestr;
+  
+} else {
+  profilePic = "http://localhost:3000/Assets/default.png";
+
 }
 export class Header extends Component {
 
@@ -353,8 +365,8 @@ export class Header extends Component {
                 <Dropdown.Toggle as={"a"} className="az-img-user">
                   
                   <img
-                    src={DefaultUserPic}
-                    alt="../../assets/images/Defaultuse.png"
+                    src={profilePic}
+                    alt=""
                   ></img>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
@@ -370,8 +382,8 @@ export class Header extends Component {
                   <div className="az-header-profile">
                     <div className="az-img-user">
                       <img
-                       src={DefaultUserPic}
-                      alt="../../assets/images/Defaultuse.png"
+                       src={profilePic}
+                      alt=""
                       ></img>
                     </div>
                     <h6>{NameInfo}</h6>

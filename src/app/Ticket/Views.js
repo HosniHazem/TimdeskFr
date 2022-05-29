@@ -13,6 +13,14 @@ import {
  
 } from '@mui/material'
 import axios from 'axios';
+import Stepper from '@mui/material/Stepper'
+import Step from '@mui/material/Step'
+import StepLabel from '@mui/material/StepLabel'
+import Typography from '@mui/material/Typography'
+import { Box } from '@mui/system'
+
+
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
     padding: theme.spacing(2),
@@ -50,6 +58,28 @@ BootstrapDialogTitle.propTypes = {
   children: PropTypes.node,
   onClose: PropTypes.func.isRequired,
 };
+
+function getSteps() {
+  return [
+      'Select master blaster campaign settings',
+      'Create an ad group',
+      'Create an ad',
+  ]
+}
+
+function getStepContent(stepIndex) {
+  switch (stepIndex) {
+      case 0:
+          return ``
+      case 1:
+          return ``
+      case 2:
+          return ``
+      default:
+          return ``
+  }
+}
+
 
 export default function CustomizedDialogs(id) {
 
@@ -141,6 +171,21 @@ export default function CustomizedDialogs(id) {
     setOpen(false);
   };
 
+
+  const [activeStep, setActiveStep] = React.useState(0)
+  const steps = getSteps()
+
+  const handleNext = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1)
+  }
+
+  const handleBack = () => {
+      setActiveStep((prevActiveStep) => prevActiveStep - 1)
+  }
+
+  const handleReset = () => {
+      setActiveStep(0)
+  }
   return (
     <div>
      <div
@@ -160,7 +205,54 @@ export default function CustomizedDialogs(id) {
         
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {TicketInput.Subject}
+        <div>
+            <Stepper activeStep={activeStep} alternativeLabel>
+                {steps.map((label) => (
+                    <Step key={label}>
+                        <StepLabel>{label}</StepLabel>
+                    </Step>
+                ))}
+            </Stepper>
+            <div>
+                {activeStep === steps.length ? (
+                    <div>
+                        <Typography>All steps completed</Typography>
+                        <Button
+                            sx={{ mt: 2 }}
+                            variant="contained"
+                            color="secondary"
+                            onClick={handleReset}
+                        >
+                            Reset
+                        </Button>
+                    </div>
+                ) : (
+                    <div>
+                        <Typography>{getStepContent(activeStep)}</Typography>
+                        <Box pt={2}>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                disabled={activeStep === 0}
+                                onClick={handleBack}
+                            >
+                                Back
+                            </Button>
+                            <Button
+                                sx={{ ml: 2 }}
+                                variant="contained"
+                                color="primary"
+                                onClick={handleNext}
+                            >
+                                {activeStep === steps.length - 1
+                                    ? 'Finish'
+                                    : 'Next'}
+                            </Button>
+                        </Box>
+                    </div>
+                )}
+            </div>
+        </div>
         </BootstrapDialogTitle>
         <DialogActions id="elgrid">
 
@@ -168,21 +260,6 @@ export default function CustomizedDialogs(id) {
                 <Grid container spacing={7} id="grid">
                     <Grid item  lg={15} md={6} sm={12} xs={6} sx={{ mt: 2 }}>
                      
-                    {/* Subject: TicketsInput.Subject,
-                Description:TicketsInput.Description,
-                EstimatedTime:TicketsInput.EstimatedTime,
-                EstimatedDate:TicketsInput.EstimatedDate,
-                StatusID:TicketsInput.StatusID,
-                RequestedUser:userInfo.name,
-                SolutionDescription:TicketsInput.SolutionDescription,
-                DueDate:value,
-                RequestTypeID:TicketsInput.RequestTypeID,
-                AssignedUser:TicketsInput.AssignedUser,
-                SubCategoryID:TicketsInput.SubCategoryID,
-                CategoryID:TicketsInput.CategoryID,
-                PriorityID:TicketsInput.PriorityID,
-                attach:Fich,
-                LevelID:TicketsInput.LevelID, */}
                 <div>
                 <label class="font-weight-bold" >Demander:</label>
                 <p>{TicketInput.RequestedUser}</p>
@@ -204,7 +281,7 @@ export default function CustomizedDialogs(id) {
                 <p>{TicketInput.DueDate}</p>
                 </div>
                     </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={4} sx={{ mt: 2 }}>
+                    <Grid item lg={15} md={6} sm={12} xs={4} sx={{ mt: 2 }}>
                     <div>
                 <label class="font-weight-bold">Agent:</label>
                 <p>{UserInput.name}</p>
@@ -223,7 +300,7 @@ export default function CustomizedDialogs(id) {
                 <p>{TicketInput.EstimatedTime}</p>
                 </div>
                     </Grid>
-                    <Grid item lg={6} md={6} sm={12} xs={4} sx={{ mt: 2 }}>
+                    <Grid item lg={15} md={6} sm={12} xs={4} sx={{ mt: 2 }}>
                     <div>
                 <label class="font-weight-bold">Estimated Date:</label>
                 <p>{TicketInput.EstimatedDate}</p>

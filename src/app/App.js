@@ -32,7 +32,7 @@ class App extends Component {
   onRouteChanged() {
 
     window.scrollTo(0, 0);
-    const fullPageLayoutRoutes = ['/general-pages/signin', '/general-pages/signup', '/general-pages/page-404', '/login' , '/forgetpassword'];
+    const fullPageLayoutRoutes = ['/general-pages/signin', '/general-pages/signup', '/general-pages/page-404', '/login' , '/forgetpassword','/reset/:token'];
     for ( let i = 0; i < fullPageLayoutRoutes.length; i++ ) {
       if (this.props.location.pathname === fullPageLayoutRoutes[i]) {
         this.setState({
@@ -47,6 +47,15 @@ class App extends Component {
         document.querySelector('.az-content-wrapper').classList.remove('p-0');
       }
     }
+    if(this.props.location.pathname.slice(0, 7)==='/reset/'){
+      this.setState({
+        isFullPageLayout: true
+      })
+      document.querySelector('.az-content-wrapper').classList.add('p-0');
+      
+    }
+
+
   }
 
 }
