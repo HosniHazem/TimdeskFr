@@ -64,10 +64,10 @@ const Datatable = () => {
  })
 
  
- 
+
 
   
-  const handleDelete = async (e,id) => {
+  const handleDelete = async (id,e) => {
 
     e.preventDefault();
      await http.delete(`Tickets/${id}/delete`).then(res=>{
@@ -91,7 +91,7 @@ const Datatable = () => {
       field: "Priority",
       headerName: "Priority",
       width: 90,
-      renderCell: (params) => {
+      renderCell:  (params) => {
   
         return (
         
@@ -158,17 +158,20 @@ const Datatable = () => {
       field: "action",
       headerName: "Action",
       width: 300,
+      
       renderCell: (params) => {
+        
+       var id=params.row.id
         return (
           <div className="cellAction">
            
-            {CustomizedDialogs(params.row.id)}
-            <Link to={`/ticket/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            {CustomizedDialogs(id)}
+            <Link to={`/ticket/current/${id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">Update</div>
             </Link>
             <div
               className="deleteButton"
-              onClick={(e) => handleDelete(e, params.row.id)}
+              onClick={(e) => handleDelete(e, id)}
               
               
             >
@@ -179,10 +182,11 @@ const Datatable = () => {
           </div>
           
         );
-       
+      
       },
     },
   ];
+  
   return (
     <div className="datatable">
       <div className="datatableTitle">
@@ -193,12 +197,14 @@ const Datatable = () => {
       </div>
       <DataGrid
         className="datagrid"
+        
         rows={dataRows}
         columns={userColumns.concat(PriorityColumn,LevelsColumn,actionColumn)}
         pageSize={9}
-        rowsPerPageOptions={[9]}
+        
         
       />
+      
     </div>
     
 

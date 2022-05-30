@@ -5,13 +5,6 @@ export const userColumns = [
     field: "Sujet",
     headerName: "Sujet",
     width: 100,
-    renderCell: (params) => {
-      return (
-        
-          params.row.username
-        
-      );
-    },
   },
   {
     field: "Status",
@@ -38,6 +31,7 @@ export const userColumns = [
     headerName: "DueDate",
     width: 130,
   },
+  
 ];
 
 //temporary data
