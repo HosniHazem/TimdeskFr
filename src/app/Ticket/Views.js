@@ -59,33 +59,15 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-function getSteps() {
-  return [
-      'Select master blaster campaign settings',
-      'Create an ad group',
-      'Create an ad',
-  ]
-}
 
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-      case 0:
-          return ``
-      case 1:
-          return ``
-      case 2:
-          return ``
-      default:
-          return ``
-  }
-}
 
 
 export default function CustomizedDialogs(id) {
 
-
+  
   const [TicketInput, setTicket] = useState([]);
   useEffect(() => {
+    
     axios.get(`api/Tickets/${id}/show`).then((res) => {
       if(res.data.status === 200){
       setTicket(res.data.Ticket);
@@ -94,9 +76,35 @@ export default function CustomizedDialogs(id) {
  }
     });
   }, [id]);
+
+  const [Status, setStatus] = useState([]);
+
+ useEffect(() => {
+   axios.get('api/Status').then((res) => {
+     if(res.status === 200){
+     setStatus(res.data.Status);
+}
+   });
+ }, []);
+
+ var dataRows = "";
+       
+dataRows = Status.map((n) =>{
+  return ( 
+   
+    
+   n.name
+     
+
+    
+   );
+   
+
+})
+
   const [RequestTypeInput, setRequestType] = useState([]);
   useEffect(() => {
-    axios.get(`api/RequestType/${TicketInput.RequestTypeID}/show`).then((res) => {
+    axios.get(`api/RequestType`).then((res) => {
       if(res.data.status === 200){
       setRequestType(res.data.RequestType);
       
@@ -104,25 +112,41 @@ export default function CustomizedDialogs(id) {
   
  }
     });
-  }, [TicketInput.RequestTypeID]);
+  }, []);
+
+       
+  RequestTypeInput.map((n) =>{
+    if(n.id===TicketInput.RequestType)
+    return ( 
+     
+      setRequestType(n.name)
+     
+       
+  
+      
+     );
+     
+  
+  })
+console.log
   const [CategoryInput, setCategory] = useState([]);
   useEffect(() => {
     axios.get(`api/Category/${TicketInput.CategoryID}/show`).then((res) => {
       if(res.data.status === 200){
       setCategory(res.data.Category);
-      console.log(res.data.Category)
+
  } else if(res.data.status === 404){
   
  }
     });
-  }, [TicketInput.CategoryID]);
+  }, []);
 
   const [SubCategoryInput, setSubCategory] = useState([]);
     useEffect(() => {
       axios.get(`api/SubCategory/${TicketInput.SubCategoryID}/show`).then((res) => {
         if(res.data.status === 200){
         setSubCategory(res.data.SubCategory);
-        console.log(res.data.SubCategory)
+
    } else if(res.data.status === 404){
     
    }
@@ -133,7 +157,7 @@ export default function CustomizedDialogs(id) {
       axios.get(`api/Levels/${TicketInput.LevelID}/show`).then((res) => {
         if(res.data.status === 200){
         setLevels(res.data.Levels);
-        console.log(res.data.Levels)
+      
    } else if(res.data.status === 404){
     
    }
@@ -144,7 +168,7 @@ export default function CustomizedDialogs(id) {
       axios.get(`api/Priority/${TicketInput.PriorityID}/show`).then((res) => {
         if(res.data.status === 200){
         setPriority(res.data.Priority);
-        console.log(res.data.Priority)
+    
    } else if(res.data.status === 404){
     
    }
@@ -155,7 +179,7 @@ export default function CustomizedDialogs(id) {
       axios.get(`api/User/${TicketInput.AssignedUser}/show`).then((res) => {
         if(res.status === 200){
         setUser(res.data.User);
-        console.log(res.data.User)
+       
    } else if(res.data.status === 404){
     
    }
@@ -173,7 +197,8 @@ export default function CustomizedDialogs(id) {
 
 
   const [activeStep, setActiveStep] = React.useState(0)
-  const steps = getSteps()
+  const steps = dataRows;
+
 
   const handleNext = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1)
@@ -186,6 +211,7 @@ export default function CustomizedDialogs(id) {
   const handleReset = () => {
       setActiveStep(0)
   }
+
   return (
     <div>
      <div
@@ -228,7 +254,7 @@ export default function CustomizedDialogs(id) {
                     </div>
                 ) : (
                     <div>
-                        <Typography>{getStepContent(activeStep)}</Typography>
+                        
                         <Box pt={2}>
                             <Button
                                 variant="contained"
@@ -261,64 +287,64 @@ export default function CustomizedDialogs(id) {
                     <Grid item  lg={15} md={6} sm={12} xs={6} sx={{ mt: 2 }}>
                      
                 <div>
-                <label class="font-weight-bold" >Demander:</label>
+                <label className="font-weight-bold" >Demander:</label>
                 <p>{TicketInput.RequestedUser}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">Request type:</label>
+                <label className="font-weight-bold">Request type:</label>
                 <p>{RequestTypeInput.name}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">Category:</label>
+                <label className="font-weight-bold">Category:</label>
                 <p>{CategoryInput.name}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">Priority:</label>
+                <label className="font-weight-bold">Priority:</label>
                 <p>{PriorityInput.name}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">DueDate:</label>
+                <label className="font-weight-bold">DueDate:</label>
                 <p>{TicketInput.DueDate}</p>
                 </div>
                     </Grid>
                     <Grid item lg={15} md={6} sm={12} xs={4} sx={{ mt: 2 }}>
                     <div>
-                <label class="font-weight-bold">Agent:</label>
+                <label className="font-weight-bold">Agent:</label>
                 <p>{UserInput.name}</p>
                 </div>
                 
                 <div>
-                <label class="font-weight-bold">Module:</label>
+                <label className="font-weight-bold">Module:</label>
                 <p>{SubCategoryInput.name}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">Level:</label>
+                <label className="font-weight-bold">Level:</label>
                 <p>{LevelsInput.name}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">Estimated Time:</label>
+                <label className="font-weight-bold">Estimated Time:</label>
                 <p>{TicketInput.EstimatedTime}</p>
                 </div>
                     </Grid>
                     <Grid item lg={15} md={6} sm={12} xs={4} sx={{ mt: 2 }}>
                     <div>
-                <label class="font-weight-bold">Estimated Date:</label>
+                <label className="font-weight-bold">Estimated Date:</label>
                 <p>{TicketInput.EstimatedDate}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">Subject:</label>
+                <label className="font-weight-bold">Subject:</label>
                 <p>{TicketInput.Subject}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">Description:</label>
+                <label className="font-weight-bold">Description:</label>
                 <p>{TicketInput.Description}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">Solution:</label>
+                <label className="font-weight-bold">Solution:</label>
                 <p>{TicketInput.SolutionDescription}</p>
                 </div>
                 <div>
-                <label class="font-weight-bold">Ticket Attachment:</label>
+                <label className="font-weight-bold">Ticket Attachment:</label>
                 <a href={`http://localhost:8000/images/uploads/${TicketInput.attach}`} >{TicketInput.attach}</a>
                 </div> 
                   
