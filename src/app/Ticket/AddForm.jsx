@@ -194,7 +194,7 @@ const handleImage = (e) => {
                 attach:Fich,
                 LevelID:TicketsInput.LevelID,
             }
-      console.log(data)
+  
     axios.post(`api/Tickets/create`, data).then(res=>{
         if(res.data.status === 200)
         {

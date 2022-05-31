@@ -55,7 +55,7 @@ const IMG = styled('img')(() => ({
    }
       });
     }, [id]);
-    console.log(TicketInput)
+
     const [Fich, setFich] = useState(TicketInput.attach);
   
 const [Category, setCategory] = useState([]);
@@ -184,7 +184,6 @@ const [Category, setCategory] = useState([]);
               LevelID:TicketInput.LevelID,
             }
         
-   console.log(data)
 
     axios.put(`api/Tickets/${id}/update`, data).then(res=>{
         

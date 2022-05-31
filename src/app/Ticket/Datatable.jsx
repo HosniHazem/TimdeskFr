@@ -160,7 +160,10 @@ const Datatable = () => {
       width: 300,
       
       renderCell: (params) => {
-        
+       
+       
+     
+
        var id=params.row.id
         return (
           <div className="cellAction">
@@ -201,7 +204,7 @@ const Datatable = () => {
         rows={dataRows}
         columns={userColumns.concat(PriorityColumn,LevelsColumn,actionColumn)}
         pageSize={9}
-        
+        rowsPerPageOptions={[9]}
         
       />
       
