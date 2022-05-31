@@ -19,12 +19,12 @@ const http = axios.create({
 
 const Datatable = () => {
   
-  const [Impact, setImpact] = useState([]);
+  const [User, setUser] = useState([]);
 
  useEffect(() => {
-   axios.get('api/Impact').then((res) => {
+   axios.get('api/User').then((res) => {
      if(res.status === 200){
-     setImpact(res.data.Impacts);
+     setUser(res.data.User);
 }
    });
  }, []);
@@ -32,17 +32,17 @@ const Datatable = () => {
 
  var dataRows = "";
        
- dataRows = Impact.map((n) =>{
+ dataRows = User.map((n) =>{
    return ( 
     
      {
        id: n.id,
        Name: n.name,
-       Description: n.description,
+       Role: n.RoleID,
        UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
        Is_Active: n.Is_Active,
-  
-       Is_Client_Visible:n.Is_Client_Visible,
+       Email:n.email,
+       Organization:n.organization,
      }
     );
     
@@ -55,7 +55,7 @@ console.log(dataRows)
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`Impact/${id}/delete`).then(res=>{
+     await http.delete(`User/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -78,7 +78,7 @@ console.log(dataRows)
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/Impact/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/User/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -101,8 +101,8 @@ console.log(dataRows)
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Impact
-        <Link to="/impact/new" className="link">
+        Add New User
+        <Link to="/User/new" className="link">
           Add New
         </Link>
       </div>

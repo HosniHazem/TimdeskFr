@@ -8,7 +8,7 @@ import { Span } from './Typography'
 
 import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
-import {useHistory} from 'react-router-dom';
+import {useHistory,useParams} from 'react-router-dom';
 import swal from 'sweetalert';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -36,11 +36,11 @@ const IMG = styled('img')(() => ({
   
 
   
-  export default function SimpleForm (props) {
+  export default function SimpleForm () {
 
 
-    const id=props.match.params.id;
-  
+    const { id } = useParams();
+    
     const [TicketInput, setTicket] = useState([]);
    
     const [value, setValue] = React.useState(null);

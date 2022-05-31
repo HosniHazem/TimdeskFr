@@ -3,7 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import { Dropdown } from "react-bootstrap";
 import Logout from '../Session/logout'
 import {styled } from '@mui/system'
-
+import DefaultUserPic from "../../images/default.png";
 
 const IMG = styled('img')(() => ({
   width: '15%',
@@ -22,14 +22,11 @@ if(userInfo){
    PhotoInfo=userInfo.profile_picture;
 }
 
-if (PhotoInfo!="") {
+if (userInfo.profile_picture) {
   var imagestr = userInfo.profile_picture;
-  imagestr = imagestr.replace("http://localhost:8000/images/uploads/", "");
   var profilePic = "http://localhost:8000/images/uploads/" + imagestr;
-  
 } else {
-  profilePic = "http://localhost:3000/Assets/default.png";
-
+  profilePic = DefaultUserPic;
 }
 export class Header extends Component {
 
@@ -201,7 +198,16 @@ export class Header extends Component {
                         </div>
                         <div>
                           <nav className="nav">
-                           
+                          <Link
+                              to="/Priority"
+                              className={
+                                this.isPathActive("/Priority")
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              Priority
+                            </Link>
                             <Link
                               to="/subcategory"
                               className={
@@ -235,26 +241,17 @@ export class Header extends Component {
                         <div>
                           <nav className="nav">
                            
-                            <Link
-                              to="/impact"
+                          <Link
+                              to="/user"
                               className={
-                                this.isPathActive("/impact")
+                                this.isPathActive("/user")
                                   ? "nav-link active"
                                   : "nav-link"
                               }
                             >
-                              Impact
+                              Users
                             </Link>
-                            <Link
-                              to="/Priority"
-                              className={
-                                this.isPathActive("/Priority")
-                                  ? "nav-link active"
-                                  : "nav-link"
-                              }
-                            >
-                              Priority
-                            </Link>
+                           
                           </nav>
                         </div>
                       </div>

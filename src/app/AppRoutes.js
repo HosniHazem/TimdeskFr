@@ -19,7 +19,7 @@ const UpdateFormT = lazy(() => import('./Ticket/UpdateForm'))
 const DatatableT = lazy(() => import('./Ticket/Datatable'))
 //
 
-// Ticket
+// Periority
 const AddFormP = lazy(() => import('./Admin Settings/Periority/AddForm'))
 
 const UpdateFormP = lazy(() => import('./Admin Settings/Periority/UpdateForm'))
@@ -67,12 +67,12 @@ const UpdateFormS = lazy(() => import('./Admin Settings/Status/UpdateForm'))
 const DatatableS = lazy(() => import('./Admin Settings/Status/Datatable'))
 //
 
-// Impact
-const AddFormI = lazy(() => import('./Admin Settings/Impact/AddForm'))
+// User
+const AddFormI = lazy(() => import('./Admin Settings/Users/AddForm'))
 
-const UpdateFormI = lazy(() => import('./Admin Settings/Impact/UpdateForm'))
+const UpdateFormI = lazy(() => import('./Admin Settings/Users/UpdateForm'))
 
-const DatatableI = lazy(() => import('./Admin Settings/Impact/Datatable'))
+const DatatableI = lazy(() => import('./Admin Settings/Users/Datatable'))
 //
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'))
@@ -122,9 +122,13 @@ export class AppRoutes extends Component {
 <Route exact path="/ticket">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableT/>} 
              </Route>
-            <Route exact path="/ticket/new" component={ AddFormT } />
-
-            <Route exact path="/ticket/current/:id" component={ UpdateFormT } />
+             <Route exact path="/ticket/new">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormT/>} 
+             </Route>
+             <Route exact path="/ticket/current/:id">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormT/>} 
+             </Route>
+             
             {/* //// */}
 
 
@@ -132,9 +136,12 @@ export class AppRoutes extends Component {
 <Route exact path="/Priority">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableP/>} 
              </Route>
-            <Route exact path="/Priority/new" component={ AddFormP } />
-
-            <Route exact path="/Priority/current/:id" component={ UpdateFormP } />
+            <Route exact path="/Priority/new">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormP/>} 
+             </Route>
+             <Route exact path="/Priority/current/:id">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormP/>} 
+             </Route>
             {/* //// */}
 
 
@@ -142,9 +149,13 @@ export class AppRoutes extends Component {
 <Route exact path="/requesttype">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableRT/>} 
              </Route>
-            <Route exact path="/requesttype/new" component={ AddFormRT } />
-
-            <Route exact path="/requesttype/current/:id" component={ UpdateFormRT } />
+            <Route exact path="/requesttype/new">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormRT/>} 
+             </Route>
+             <Route exact path="/requesttype/current/:id">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormRT/>} 
+             </Route>
+             
             {/* //// */}
 
 
@@ -152,27 +163,36 @@ export class AppRoutes extends Component {
             <Route exact path="/subcategory">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableTM/>} 
              </Route>
-            <Route exact path="/subcategory/new" component={ AddFormTM } />
-
-            <Route exact path="/subcategory/current/:id" component={ UpdateFormTM } />
+            <Route exact path="/subcategory/new">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormTM/>} 
+             </Route>
+             <Route exact path="/subcategory/current/:id">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormTM/>} 
+             </Route>
             {/* //// */}
 
             {/* Category */}
             <Route exact path="/category">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableC/>} 
              </Route>
-            <Route exact path="/category/new" component={ AddFormC } />
-
-            <Route exact path="/category/current/:id" component={ UpdateFormC } />
+            <Route exact path="/category/new">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormC/>} 
+             </Route>
+             <Route exact path="/category/current/:id">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormC/>} 
+             </Route>
             {/* //// */}
 
             {/* Levels */}
             <Route exact path="/levels">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Datatable/>} 
              </Route>
-            <Route exact path="/levels/new" component={ AddForm } />
-
-            <Route exact path="/levels/current/:id" component={ UpdateForm } />
+            <Route exact path="/levels/new">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddForm/>} 
+             </Route>
+             <Route exact path="/levels/current/:id">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateForm/>} 
+             </Route>
             {/* //// */}
 
 
@@ -180,18 +200,24 @@ export class AppRoutes extends Component {
             <Route exact path="/status">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableS/>} 
              </Route>
-            <Route exact path="/status/new" component={ AddFormS } />
-
-            <Route exact path="/status/current/:id" component={ UpdateFormS } />
+            <Route exact path="/status/new">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormS/>} 
+             </Route>
+             <Route exact path="/status/current/:id">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormS/>} 
+             </Route>
             {/* //// */}
 
-            {/* Impact */}
-            <Route exact path="/impact">
+            {/* User */}
+            <Route exact path="/user">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableI/>} 
              </Route>
-            <Route exact path="/impact/new" component={ AddFormI } />
-
-            <Route exact path="/impact/current/:id" component={ UpdateFormI } />
+            <Route exact path="/user/new">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormI/>} 
+             </Route>
+             <Route exact path="/user/current/:id">
+            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormI/>} 
+             </Route>
             {/* //// */}
 
           <Route exact path="/ui-elements/buttons" component={ Buttons } />

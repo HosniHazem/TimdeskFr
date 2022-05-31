@@ -8,7 +8,7 @@ import { Span } from './Typography'
 
 import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
-import {useHistory} from 'react-router-dom';
+import {useHistory,useParams} from 'react-router-dom';
 import swal from 'sweetalert';
 
 const Container = styled('div')(({ theme }) => ({
@@ -30,10 +30,10 @@ const IMG = styled('img')(() => ({
   
 
   
-  export default function SimpleForm (props) {
+  export default function SimpleForm () {
 
 
-    const id=props.match.params.id;
+    const { id } = useParams();
     const [RequestTypeInput, setRequestType] = useState([]);
     const [errorInput, setError] = useState([]);
 
