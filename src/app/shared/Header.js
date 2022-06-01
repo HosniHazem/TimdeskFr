@@ -22,7 +22,7 @@ if(userInfo){
    PhotoInfo=userInfo.profile_picture;
 }
 
-if (userInfo.profile_picture) {
+if (PhotoInfo!="") {
   var imagestr = userInfo.profile_picture;
   var profilePic = "http://localhost:8000/images/uploads/" + imagestr;
 } else {

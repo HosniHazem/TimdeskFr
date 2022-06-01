@@ -1,6 +1,6 @@
 
 import React,{ useState,useEffect } from "react";
-import "./datatable.scss";
+import "./datatableU.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns } from './datatablesource';
 import { Link } from "react-router-dom";
@@ -33,16 +33,28 @@ const Datatable = () => {
  var dataRows = "";
        
  dataRows = User.map((n) =>{
+   var role=""
+   if(n.RoleID==="1"){
+    role="Admin"         
+ }else if (n.RoleID==="2"){
+     role="Agent"
+ }else if(n.RoleID==="3"){
+     role="Client"
+ }else(
+  role=""
+ )
    return ( 
     
      {
        id: n.id,
        Name: n.name,
-       Role: n.RoleID,
+       Role: role,
        UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
        Is_Active: n.Is_Active,
        Email:n.email,
        Organization:n.organization,
+       Solde:n.sold_total,
+       
      }
     );
     

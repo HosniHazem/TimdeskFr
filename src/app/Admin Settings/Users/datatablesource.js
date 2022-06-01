@@ -34,6 +34,11 @@ export const userColumns = [
     headerName: "Is_Active",
     width: 130,
   },
+  {
+    field: "Solde",
+    headerName: "Solde",
+    width: 130,
+  },
 ];
 
 //temporary data

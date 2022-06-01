@@ -34,19 +34,17 @@ const IMG = styled('img')(() => ({
 
     const [UserInput, setUser] = useState({
         name:"",
-        RoleID: "",
+        RoleID: "Client",
        Is_Active: "Active",
        email:"",
        organization:"",
         phone:"",
         city:"",
         country:"",
+        sold_total:"",
         error_list: [],
     });
 
-    var randomstring = require("randomstring");
-
-    console.log(randomstring.generate(8));
     
     const history = useHistory();
 
@@ -56,22 +54,30 @@ const IMG = styled('img')(() => ({
         setUser({...UserInput, [e.target.name]: e.target.value });
     }
     const AddUser = (e) => {
-    
+    var ID=""
         e.preventDefault();
-        
+        if(UserInput.RoleID==="Admin"){
+           ID="1"         
+        }else if (UserInput.RoleID==="Agent"){
+            ID="2"
+        }else{
+            ID="3"
+        }
        
             const  data = {
                 name: UserInput.name,
-                RoleID: UserInput.RoleID,
+                
+                RoleID: ID,
                 Is_Active: UserInput.Is_Active,
                 email:UserInput.email,
                 organization:UserInput.organization,
                 phone_no:UserInput.phone_no,
                 city:UserInput.city,
                 country:UserInput.country,
+                sold_total:UserInput.sold_total,
             }
             
-
+console.log(data)
     axios.post(`api/User/create`, data).then(res=>{
         if(res.data.status === 200)
         {
@@ -125,9 +131,9 @@ const IMG = styled('img')(() => ({
                       <div className="input-group mb-3">
                     <label className="input-group-text" name="RoleID" htmlFor="inputGroupSelect01">{UserInput.RoleID}</label>
                     <select className="form-select" name="RoleID" value={UserInput.RoleID} onChange={handleInput} id="inputGroupSelect01">
-                    <option defaultValue value="1">Admin</option>
-                    <option value="2">Agent</option>
-                    <option value="0">Client</option>
+                    <option defaultValue value="Admin">Admin</option>
+                    <option value="Agent">Agent</option>
+                    <option value="Client">Client</option>
                     </select>
                     <span className="text-danger">{UserInput.error_list.RoleID}</span>
                      </div>
@@ -150,7 +156,12 @@ const IMG = styled('img')(() => ({
                         <input type="text" name="country" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.country}/>
                         <span className="text-danger">{UserInput.error_list.country}</span>
                 </div>  
-                      
+                <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="form-label">Solde</label>
+                        <input type="text" name="sold_total" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.sold_total}/>
+                        <span className="text-danger">{UserInput.error_list.sold_total}</span>
+                </div>  
+
                 <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                       <div className="input-group mb-3">
                     <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{UserInput.Is_Active}</label>

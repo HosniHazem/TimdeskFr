@@ -34,53 +34,74 @@ const IMG = styled('img')(() => ({
 
 
     const { id } = useParams();
-    const [ImpactInput, setImpact] = useState([]);
+    const [UserInput, setUser] = useState([]);
     const [errorInput, setError] = useState([]);
-
+    const [soldInput, setsold] = useState([]);
 
     useEffect(() => {
-      axios.get(`api/Impact/${id}/show`).then((res) => {
+      axios.get(`api/User/${id}/show`).then((res) => {
         if(res.data.status === 200){
-        setImpact(res.data.Impacts);
-        
+        setUser(res.data.User);
+        setsold(res.data.User.sold_total)
    } else if(res.data.status === 404){
     
    }
       });
     }, [id]);
     
-    
+   
     const history = useHistory();
 
     const handleInput = (e) => {
         e.persist();
-        setImpact({...ImpactInput, [e.target.name]: e.target.value });
+        setUser({...UserInput, [e.target.name]: e.target.value });
     }
-    const updateImpact = (e) => {
-    
-       
+    var D=UserInput.RoleID
+
+    if(UserInput.RoleID==="1"){
+       D="Admin"         
+    }else if (UserInput.RoleID==="2"){
+        D="Agent"
+    }else if (UserInput.RoleID==="3"){
+        D="Client"
+    }
+    const updateUser = (e) => {
+        var ID=UserInput.RoleID
         e.preventDefault();
-        
-       
+        if(UserInput.RoleID==="Admin"){
+           ID="1"         
+        }else if (UserInput.RoleID==="Agent"){
+            ID="2"
+        }else{
+            ID="3"
+        }
             const  data = {
-                name: ImpactInput.name,
-                Is_Active: ImpactInput.Is_Active,
-                description: ImpactInput.description,
-    
-                Is_Client_Visible:ImpactInput.Is_Client_Visible,
+                
+                name: UserInput.name,
+                
+                RoleID: ID,
+                Is_Active: UserInput.Is_Active,
+                email:UserInput.email,
+                organization:UserInput.organization,
+                phone_no:UserInput.phone_no,
+                city:UserInput.city,
+                country:UserInput.country,
+                sold_total:UserInput.sold_total,
+                sold:(Number(UserInput.sold_total)-Number(soldInput))+Number(UserInput.sold),
+                sold_consumed:UserInput.sold_consumed,
             }
         
-   
+   console.log(data)
 
-    axios.put(`api/Impact/${id}/update`, data).then(res=>{
+    axios.put(`api/User/${id}/update`, data).then(res=>{
         
       
         if(res.data.status === 200)
         {
-            swal("Updated",ImpactInput.name,"success");
+            swal("Updated",UserInput.name,"success");
             setError([]);
             
-           history.push('/Impact')
+           history.push('/User')
         } if(res.data.status === 422)
         {
             swal("All fields are mandetory","","error");
@@ -88,7 +109,7 @@ const IMG = styled('img')(() => ({
         }
         else if(res.data.status === 404)
         {
-            swal("Error",ImpactInput.name,"error");
+            swal("Error",UserInput.name,"error");
             setError([]);
         }
     });
@@ -100,71 +121,90 @@ const IMG = styled('img')(() => ({
 
   return (   
     
-      <Container>
-      <div>
-    
-          <ValidatorForm onSubmit={updateImpact} >
-              <Grid container spacing={6}>
-                  <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                     
-                  <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="name">Name</label>
-                        <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={ImpactInput.name}  />
-                        <span className="text-danger">{errorInput.name}</span>
-                </div>
-                      
-                <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{ImpactInput.Is_Active}</label>
-                    <select className="form-select" name="Is_Active" value={ImpactInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    
-                    </select>
-                    <span className="text-danger">{errorInput.Is_Active}</span>
-                     </div>
-
-                     <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{ImpactInput.Is_Client_Visible}</label>
-                    <select className="form-select" name="Is_Client_Visible" value={ImpactInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    
-                    </select>
-                    <span className="text-danger">{errorInput.Is_Client_Visible}</span>
-                     </div>
-
-                
-                  </Grid>
-
-                  <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                  <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="form-label">Description</label>
-                        <input type="text" name="description" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={ImpactInput.description}/>
-                        <span className="text-danger">{errorInput.description}</span>
-                </div>
-
-                      
+    <Container>
+    <div>
+  
+        <ValidatorForm onSubmit={updateUser} onError={() => null}>
+            <Grid container spacing={6}>
+                <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+                   
+                <div className="mb-3">
+                  <label htmlFor="exampleFormControlInput1" className="name">Name</label>
+                      <input type="text" name="name" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.name}  />
+                      <span className="text-danger">{errorInput.name}</span>
+              </div>
               
+              <div className="mb-3">
+                  <label htmlFor="exampleFormControlInput1" className="email">Email</label>
+                      <input type="text" name="email" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.email}  />
+                      <span className="text-danger">{errorInput.email}</span>
+              </div>
+              <div className="mb-3">
+                  <label htmlFor="exampleFormControlInput1" className="city">City</label>
+                      <input type="text" name="city" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.city}  />
+                      <span className="text-danger">{errorInput.city}</span>
+              </div>                       
+                    
+              <label htmlFor="exampleFormControlInput1" className="RoleID">Role</label>
+                    <div className="input-group mb-3">
+                  <label className="input-group-text" name="RoleID" htmlFor="inputGroupSelect01">{D}</label>
+                  <select className="form-select" name="RoleID" value={D} onChange={handleInput} id="inputGroupSelect01">
+                  <option defaultValue value="Admin">Admin</option>
+                  <option value="Agent">Agent</option>
+                  <option value="Client">Client</option>
+                  </select>
+                  <span className="text-danger">{errorInput.RoleID}</span>
+                   </div>
+              
+                </Grid>
 
-                
+                <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+                <div className="mb-3">
+                  <label htmlFor="exampleFormControlInput1" className="form-label">Organization</label>
+                      <input type="text" name="organization" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.organization}/>
+                      <span className="text-danger">{errorInput.organization}</span>
+              </div>
+              <div className="mb-3">
+                  <label htmlFor="exampleFormControlInput1" className="form-label">Phone</label>
+                      <input type="text" name="phone_no" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.phone_no}/>
+                      <span className="text-danger">{errorInput.phone_no}</span>
+              </div>
+              <div className="mb-3">
+                  <label htmlFor="exampleFormControlInput1" className="form-label">Country</label>
+                      <input type="text" name="country" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.country}/>
+                      <span className="text-danger">{errorInput.country}</span>
+              </div>  
+              <div className="mb-3">
+                  <label htmlFor="exampleFormControlInput1" className="form-label">Solde</label>
+                      <input type="text" name="sold_total" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.sold_total}/>
+                      <span className="text-danger">{errorInput.sold_total}</span>
+              </div>  
+
+              <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
+                    <div className="input-group mb-3">
+                  <label className="input-group-text" name="Is_Active" htmlFor="inputGroupSelect01">{UserInput.Is_Active}</label>
+                  <select className="form-select" name="Is_Active" value={UserInput.Is_Active} onChange={handleInput} id="inputGroupSelect01">
+                  <option defaultValue value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                  
+                  </select>
+                  <span className="text-danger">{errorInput.Is_Active}</span>
+                   </div>
 
 
-
-                  </Grid>
-              </Grid>
-              <Button color="primary" variant="contained" type="submit">
-                  <IMG
-                                    src="/assets/send.png"
-                                    alt=""
-                                />
-                  <Span sx={{ pl: 1, textTransform: 'capitalize' }}>
-                      update
-                  </Span>
-              </Button>
-          </ValidatorForm>
-      </div>
-      </Container>
+                </Grid>
+            </Grid>
+            <Button color="primary" variant="contained" type="submit">
+                <IMG
+                                  src="/assets/send.png"
+                                  alt=""
+                              />
+                <Span sx={{ pl: 1, textTransform: 'capitalize' }}>
+                    Update
+                </Span>
+            </Button>
+        </ValidatorForm>
+    </div>
+    </Container>
   )
 }
