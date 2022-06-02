@@ -33,6 +33,13 @@ export const userColumns = [
     field: "Is_Active",
     headerName: "Is_Active",
     width: 130,
+    renderCell: (params) => {
+      return (
+        <div className={`cellWithStatus ${params.row.Is_Active}`}>
+          {params.row.Is_Active}
+        </div>
+      );
+    },
   },
   {
     field: "Solde",

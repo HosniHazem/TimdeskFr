@@ -50,6 +50,7 @@ const New = ({ inputs, title }) => {
 
   const formData = new FormData();
   formData.append('attach',picture.attach);
+  console.log(formData)
    axios.post('api/imageProfil',formData).then(res=>{
      if(res.status=== 200){
       

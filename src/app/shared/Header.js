@@ -22,12 +22,13 @@ if(userInfo){
    PhotoInfo=userInfo.profile_picture;
 }
 
-if (PhotoInfo!="") {
+if (PhotoInfo!=null) {
   var imagestr = userInfo.profile_picture;
   var profilePic = "http://localhost:8000/images/uploads/" + imagestr;
 } else {
   profilePic = DefaultUserPic;
 }
+console.log(PhotoInfo)
 export class Header extends Component {
 
 
