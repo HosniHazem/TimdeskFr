@@ -3,7 +3,7 @@ import {Line, Bar, Pie } from 'react-chartjs-2';
 
 let info = sessionStorage.getItem("user");   
 const userInfo = JSON.parse(info);
-if(userInfo==""){
+if(userInfo==null){
   window.location.reload();
 }
 export class Dashboard extends Component { 
@@ -419,7 +419,7 @@ export class Dashboard extends Component {
           <div className="az-content-body">
             <div className="az-dashboard-one-title">
               <div>
-                <h2 className="az-dashboard-title">Hi, welcome back!</h2>
+                <h2 className="az-dashboard-title">Hi {userInfo.name}, welcome back!</h2>
                 <p className="az-dashboard-text">Your web analytics dashboard template.</p>
               </div>
               <div className="az-content-header-right">

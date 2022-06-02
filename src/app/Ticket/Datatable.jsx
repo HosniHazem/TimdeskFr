@@ -16,7 +16,8 @@ const http = axios.create({
   }
 });
 
-
+let info = sessionStorage.getItem("user");
+    const userInfo = JSON.parse(info);
 
 const Datatable = () => {
 
@@ -33,8 +34,16 @@ const Datatable = () => {
 
 
  var dataRows = "";
-       
+var Pick="" 
+var Requser=""   
  dataRows = Tickets.map((n) =>{
+   if(n.users!=null){
+  Pick=n.users.id
+  Requser=n.users.name
+}else{
+  Requser=null
+  Pick=null
+}
    return ( 
     
      {
@@ -47,7 +56,8 @@ const Datatable = () => {
                 Applicant:n.RequestedUser,
                 SolutionDescription:n.SolutionDescription,
                 DueDate:moment(n.DueDate).format("DD/MM/YYYY"),
-                AssignedUser:n.users.name,
+                AssignedUser:Requser,
+                
                 SubCategoryID:n.SubCategoryID,
                 CategoryID:n.CategoryID,
                 PriorityName:n.priority.name,
@@ -56,6 +66,7 @@ const Datatable = () => {
                 LevelsName:n.levels.name,
                 LevelsColor:n.levels.color,
                 CreatedDate:moment(n.updated_at).format("DD/MM/YYYY"),
+                
 
      }
     );
@@ -83,6 +94,82 @@ const Datatable = () => {
             
         }
     });
+  };
+  const [NewInput, setNew] = useState([]);
+  var Category=""
+  var  Subject=""
+  var  Description=""
+  var EstimatedTime=""
+  var EstimatedDate=""
+  var StatusID=""
+  var RequestedUser=""
+  var RequestTypeID=""
+  var SolutionDescription=""
+  var DueDate=""
+  var AssignedUser=""
+  var SubCategoryID=""
+  var CategoryID=""
+  var PriorityID=""
+  var attach=""
+  var LevelID="";
+  const handlePick = async (id,e) => {
+
+    
+    console.log(id)
+
+
+    await axios.get(`api/Tickets/${id}/show`).then((res) => {
+        if(res.data.status === 200){
+          setNew(res.data.Ticket);
+          Subject=res.data.Ticket.Subject
+          Description=res.data.Ticket.Description
+          EstimatedTime=res.data.Ticket.EstimatedTime
+          EstimatedDate=res.data.Ticket.EstimatedDate
+          StatusID=res.data.Ticket.StatusID
+          RequestedUser=res.data.Ticket.RequestedUser
+          RequestTypeID=res.data.Ticket.RequestTypeID
+          SolutionDescription=res.data.Ticket.SolutionDescription
+          DueDate=res.data.Ticket.DueDate
+          SubCategoryID=res.data.Ticket.SubCategoryID
+          CategoryID=res.data.Ticket.CategoryID
+          PriorityID=res.data.Ticket.PriorityID
+          attach=res.data.Ticket.attach
+          LevelID=res.data.Ticket.LevelID
+   } else if(res.data.status === 404){
+    
+   }
+      });
+        
+    const dataU = {
+      Subject: Subject,
+      Description:Description,
+      EstimatedTime:EstimatedTime,
+      EstimatedDate:EstimatedDate,
+      StatusID:StatusID,
+      RequestedUser:RequestedUser,
+      RequestTypeID:RequestTypeID,
+      SolutionDescription:SolutionDescription,
+      DueDate:DueDate,
+      AssignedUser:userInfo.id,
+      SubCategoryID:SubCategoryID,
+      CategoryID:CategoryID,
+      PriorityID:PriorityID,
+      attach:attach,
+      LevelID:LevelID,
+    }
+
+console.log(dataU)
+axios.put(`api/Tickets/${id}/update`, dataU).then(res=>{
+
+
+if(res.data.status === 200)
+{
+    swal("Picked Successfully");
+    
+   window.location.reload()
+} 
+
+});
   };
 
   const PriorityColumn = [
@@ -167,7 +254,33 @@ const Datatable = () => {
        var id=params.row.id
         return (
           <div className="cellAction">
-           
+           { params.row.AssignedUser===null ? (
+           <div
+              className="PickButton"
+              onClick={
+                
+                (e) => handlePick(id,e)
+              }
+              
+              
+            >
+              
+              Pick Up
+            </div>
+            )
+          :
+          (
+            <div
+              className="PickedButton"
+              
+              
+              
+            >
+              
+              Picked
+            </div>
+            )
+          }
             {CustomizedDialogs(id)}
             <Link to={`/ticket/current/${id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">Update</div>

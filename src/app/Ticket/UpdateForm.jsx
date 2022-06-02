@@ -183,7 +183,6 @@ const [Category, setCategory] = useState([]);
               attach:Fich,
               LevelID:TicketInput.LevelID,
             }
-        
 
     axios.put(`api/Tickets/${id}/update`, data).then(res=>{
         

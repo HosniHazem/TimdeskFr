@@ -82,5 +82,20 @@
       border: 1px dotted rgba(220, 20, 60, 0.6);
       cursor: pointer;
     }
+    .PickedButton {
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: rgb(250, 246, 249);
+      background-color: rgb(248, 9, 9);
+      border: 1px dotted rgb(250, 246, 249);
+      cursor: pointer;
+    }
+    .PickButton {
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: rgb(180, 34, 124);
+      border: 1px dotted rgb(180, 34, 124);
+      cursor: pointer;
+    }
   }
 }

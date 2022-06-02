@@ -134,7 +134,9 @@ export default function CustomizedDialogs(id) {
     setOpen(true);
     if(TicketInput){
       setPriority(TicketInput.priority.name)
+      if(TicketInput.users!=null){
       setUser(TicketInput.users.name)
+    }
       setLevels(TicketInput.levels.name)
       setCategory(TicketInput.category.name)
       setRequestType(TicketInput.request_types.name)

@@ -9,7 +9,7 @@ export const userColumns = [
   {
     field: "Status",
     headerName: "Status",
-    width: 130,
+    width: 90,
   },
   {
     field: "Applicant",

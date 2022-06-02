@@ -29,6 +29,7 @@ export default function AuthUser(){
         setToken(token);
         setUser(user);
         history.push("/dashboard");
+        window.location.reload();
     }
 
     const logout = () => {

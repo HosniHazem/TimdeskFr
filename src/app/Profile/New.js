@@ -64,13 +64,26 @@ const New = ({ inputs, title }) => {
    )
    e.preventDefault();
 
-  const  data = {
+  const  data = {  
     name: userdetail.name,
+    email: userdetail.email,
     city:userdetail.city,
     country:userdetail.country,
     phone_no:userdetail.phone_no,
     organization:userdetail.organization,
     profile_picture:file,
+    Is_Active:userdetail.Is_Active,
+    Is_Sendmail_Password:userdetail.Is_Sendmail_Password,
+    address:userdetail.address,
+    company_id:userdetail.company_id,
+    description:userdetail.description,
+    email_verified_at:userdetail.email_verified_at,
+    external_code:userdetail.external_code,
+    job_title:userdetail.job_title,
+    RoleID:userdetail.RoleID,
+    state:userdetail.state,
+    time_zone_id:userdetail.time_zone_id,
+    updated_at:userdetail.updated_at,
   }
   const  profil = {
     id:userdetail.id,
@@ -89,7 +102,7 @@ const New = ({ inputs, title }) => {
     email_verified_at:userdetail.email_verified_at,
     external_code:userdetail.external_code,
     job_title:userdetail.job_title,
-    role_id:userdetail.role_id,
+    RoleID:userdetail.RoleID,
     state:userdetail.state,
     time_zone_id:userdetail.time_zone_id,
     updated_at:userdetail.updated_at,

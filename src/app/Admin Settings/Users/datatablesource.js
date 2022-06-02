@@ -6,7 +6,7 @@ export const userColumns = [
   {
     field: "Name",
     headerName: "Name",
-    width: 100,
+    width: 150,
   },
   {
     field: "Organization",
@@ -16,23 +16,23 @@ export const userColumns = [
   {
     field: "Email",
     headerName: "Email",
-    width: 130,
+    width: 200,
   },
   {
     field: "Role",
     headerName: "Role",
-    width: 130,
+    width: 100,
   },
   {
     field: "UpadatedDate",
     headerName: "UpadatedDate",
-    width: 180,
+    width: 130,
   },
 
   {
     field: "Is_Active",
     headerName: "Is_Active",
-    width: 130,
+    width: 100,
     renderCell: (params) => {
       return (
         <div className={`cellWithStatus ${params.row.Is_Active}`}>
@@ -44,7 +44,7 @@ export const userColumns = [
   {
     field: "Solde",
     headerName: "Solde",
-    width: 130,
+    width: 80,
   },
 ];
 
