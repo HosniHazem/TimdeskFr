@@ -182,6 +182,8 @@ const [Category, setCategory] = useState([]);
               PriorityID:TicketInput.PriorityID,
               attach:Fich,
               LevelID:TicketInput.LevelID,
+              TicketClose:TicketInput.TicketClose,
+              Organization:TicketInput.Organization,
             }
 
     axios.put(`api/Tickets/${id}/update`, data).then(res=>{
@@ -191,7 +193,7 @@ const [Category, setCategory] = useState([]);
         {
             swal("Updated","Ticket","success");
             
-           history.push('/ticket')
+           history.push('/client/ticket')
         } if(res.data.status === 422)
         {
             swal("All fields are mandetory","","error");
@@ -232,12 +234,6 @@ const [Category, setCategory] = useState([]);
                             </option>
                       </select>
   </div>
-
-  {/* <IMG
-                                    src={`http://localhost:8000/images/uploads/${TicketInput.attach}`}
-                                    alt=""
-                                /> */}
-           
                 
   <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">Request type</label>
@@ -277,7 +273,26 @@ const [Category, setCategory] = useState([]);
                         })}
                       </select>
   </div>
-                   
+  <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Module</label>
+    <select
+                        name="SubCategoryID"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={TicketInput.SubCategoryID}
+                      >
+                        <option value="DEFAULT"></option>
+                        {SubCategory.map((item,index) => {
+                          if((item.category_id==TicketInput.CategoryID))
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+  </div>
+
   <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">Priority</label>
     <select
@@ -311,93 +326,7 @@ const [Category, setCategory] = useState([]);
                 
                   </Grid>
 
-                  <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
-                  <div className="form-group">
-    <label htmlFor="exampleFormControlSelect1">Agent</label>
-    <select
-                        name="AssignedUser"
-                        className="form-control"
-                        onChange={handleInput}
-                        value={TicketInput.AssignedUser}
-                      >
-                        <option value="DEFAULT"></option>
-                        {User.map((item,index) => {
-                          return (
-                            <option value={item.id} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-  </div>
-                <div className="form-group">
-    <label htmlFor="exampleFormControlSelect1">Status</label>
-    <select
-                        name="StatusID"
-                        className="form-control"
-                        onChange={handleInput}
-                        value={TicketInput.StatusID}
-                      >
-                        <option value="DEFAULT"></option>
-                        {Status.map((item,index) => {
-                          return (
-                            <option value={item.id} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-  </div>
-
-  <div className="form-group">
-    <label htmlFor="exampleFormControlSelect1">Module</label>
-    <select
-                        name="SubCategoryID"
-                        className="form-control"
-                        onChange={handleInput}
-                        value={TicketInput.SubCategoryID}
-                      >
-                        <option value="DEFAULT"></option>
-                        {SubCategory.map((item,index) => {
-                          if((item.category_id==TicketInput.CategoryID))
-                          return (
-                            <option value={item.id} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-  </div>
-  <div className="form-group">
-    <label htmlFor="exampleFormControlSelect1">Level</label>
-    <select
-                        name="LevelID"
-                        className="form-control"
-                        onChange={handleInput}
-                        value={TicketInput.LevelID}
-                      >
-                        <option value="DEFAULT"></option>
-                        {Levels.map((item,index) => {
-                          return (
-                            <option value={item.id} key={index}>
-                              {item.name}
-                            </option>
-                          );
-                        })}
-                      </select>
-  </div>
-  <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="name">Estimated Time</label>
-                        <input type="text" name="EstimatedTime" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.EstimatedTime}  />
-                       
-                </div>
-                <div className="mb-3">
-                <label htmlFor="exampleFormControlInput1" className="name">Estimated Date</label>
-                        <input type="text" name="EstimatedDate" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.EstimatedDate}  />
-                       
-                </div>
-
-                  </Grid>
+                  
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-4">

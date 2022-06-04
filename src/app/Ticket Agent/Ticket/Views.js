@@ -133,17 +133,31 @@ export default function CustomizedDialogs(id) {
   const handleClickOpen = () => {
     setOpen(true);
     if(TicketInput){
+      if(TicketInput.priority!=null){
       setPriority(TicketInput.priority.name)
+      }
       if(TicketInput.users!=null){
-      setUser(TicketInput.users.name)
-    }
-      setLevels(TicketInput.levels.name)
-      setCategory(TicketInput.category.name)
-      setRequestType(TicketInput.request_types.name)
-      setSubCategory(TicketInput.sub_category.name)
-      setStatutActive(TicketInput.status.id-1)
+        setUser(TicketInput.users.name)
+      }
+      if(TicketInput.levels!=null){
+        setLevels(TicketInput.levels.name)
+      }
+      if(TicketInput.category!=null){
+        setCategory(TicketInput.category.name)
+      }
+        if(TicketInput.request_types!=null){
+        setRequestType(TicketInput.request_types.name)
+        }
+        if(TicketInput.sub_category!=null){
+        setSubCategory(TicketInput.sub_category.name)
+        }
+        if(TicketInput.status!=null){
+          setStatutActive(TicketInput.status.id-1)
+            }
   if(StatutActive){
-     i=TicketInput.status.id-1
+    if(TicketInput.status!=null){
+      i=TicketInput.status.id-1
+     }
   }
     }
   };
@@ -175,6 +189,8 @@ export default function CustomizedDialogs(id) {
         PriorityID:TicketInput.PriorityID,
         attach:TicketInput.attach,
         LevelID:TicketInput.LevelID,
+        TicketClose:TicketInput.TicketClose,
+        Organization:TicketInput.Organization,
       }
   
 
@@ -210,6 +226,8 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
         PriorityID:TicketInput.PriorityID,
         attach:TicketInput.attach,
         LevelID:TicketInput.LevelID,
+        TicketClose:TicketInput.TicketClose,
+        Organization:TicketInput.Organization,
       }
   
 
@@ -245,6 +263,8 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
   PriorityID:TicketInput.PriorityID,
   attach:TicketInput.attach,
   LevelID:TicketInput.LevelID,
+  TicketClose:TicketInput.TicketClose,
+  Organization:TicketInput.Organization,
 }
 
 

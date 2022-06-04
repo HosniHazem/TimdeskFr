@@ -3,7 +3,7 @@ import React,{ useState,useEffect } from "react";
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns } from './datatablesource';
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
@@ -15,7 +15,6 @@ const http = axios.create({
       "Content-type" : "application/json",
   }
 });
-
 let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
 
@@ -34,15 +33,24 @@ const Datatable = () => {
 
 
  var dataRows = "";
-var Pick="" 
-var Requser=""   
+var status="" 
+var levels=""
+var levelsC="" 
+var Requser=""  
+var Etime=""
  dataRows = Tickets.map((n) =>{
    if(n.users!=null){
-  Pick=n.users.id
+  status=n.status.name
+  levels=n.levels.name
+  levelsC=n.levels.color
   Requser=n.users.name
+  Etime=EstimatedTime
 }else{
   Requser=null
-  Pick=null
+  status=null
+  levels=null
+  levelsC=null
+  Etime=null
 }
    return ( 
     
@@ -51,8 +59,8 @@ var Requser=""
                 Sujet: n.Subject,
                 Description:n.Description,
                 RequestTypeID:n.RequestTypeID,
-                EstimatedTime:n.EstimatedTime,
-                Status:n.status.name,
+                EstimatedTime:Etime,
+                Status:status,
                 Applicant:n.RequestedUser,
                 SolutionDescription:n.SolutionDescription,
                 DueDate:moment(n.DueDate).format("DD/MM/YYYY"),
@@ -63,9 +71,11 @@ var Requser=""
                 PriorityName:n.priority.name,
                 PriorityColor:n.priority.color,
                 TicketAttachment:n.TicketAttachment,
-                LevelsName:n.levels.name,
-                LevelsColor:n.levels.color,
+                LevelsName:levels,
+                LevelsColor:levelsC,
                 CreatedDate:moment(n.updated_at).format("DD/MM/YYYY"),
+                TicketClose:n.TicketClose,
+                Organization:n.Organization,
                 
 
      }
@@ -78,23 +88,23 @@ var Requser=""
 
 
   
-  const handleDelete = async (id,e) => {
+  // const handleDelete = async (id,e) => {
 
-    e.preventDefault();
-     await http.delete(`Tickets/${id}/delete`).then(res=>{
-      if(res.status === 200)
-        {
+  //   e.preventDefault();
+  //    await http.delete(`Tickets/${id}/delete`).then(res=>{
+  //     if(res.status === 200)
+  //       {
           
-            swal("Deleted!",res.data.message,"success");
-            window.location.reload();
-        }
-        else if(res.data.status === 404)
-        {
-            swal("Error",res.data.message,"error");
+  //           swal("Deleted!",res.data.message,"success");
+  //           window.location.reload();
+  //       }
+  //       else if(res.data.status === 404)
+  //       {
+  //           swal("Error",res.data.message,"error");
             
-        }
-    });
-  };
+  //       }
+  //   });
+  // };
   const [NewInput, setNew] = useState([]);
   var Category=""
   var  Subject=""
@@ -112,8 +122,11 @@ var Requser=""
   var PriorityID=""
   var attach=""
   var LevelID="";
+  var TicketClose="";
+  var Organization="";
+  const history = useHistory();
   const handlePick = async (id,e) => {
-
+  
     
     console.log(id)
 
@@ -135,6 +148,8 @@ var Requser=""
           PriorityID=res.data.Ticket.PriorityID
           attach=res.data.Ticket.attach
           LevelID=res.data.Ticket.LevelID
+          TicketClose=res.data.Ticket.TicketClose
+          Organization=res.data.Ticket.Organization
    } else if(res.data.status === 404){
     
    }
@@ -156,17 +171,17 @@ var Requser=""
       PriorityID:PriorityID,
       attach:attach,
       LevelID:LevelID,
+      TicketClose:TicketClose,
+      Organization:Organization,
     }
 
-console.log(dataU)
 axios.put(`api/Tickets/${id}/update`, dataU).then(res=>{
 
 
 if(res.data.status === 200)
 {
     swal("Picked Successfully");
-    
-   window.location.reload()
+   history.push(`/ticket/current/${id}`)
 } 
 
 });
@@ -254,46 +269,54 @@ if(res.data.status === 200)
        var id=params.row.id
         return (
           <div className="cellAction">
-           { params.row.AssignedUser===null ? (
-           <div
-              className="PickButton"
-              onClick={
+            { params.row.AssignedUser===null 
+           
+              ?
+              
+              (
+              <div
+                 className="PickButton"
+                 onClick={
                 
-                (e) => handlePick(id,e)
-              }
-              
-              
-            >
-              
-              Pick Up
-            </div>
-            )
-          :
-          (
-            <div
-              className="PickedButton"
-              
-              
-              
-            >
-              
-              Picked
-            </div>
-            )
+                  (e) => handlePick(id,e)
+                } 
+               >
+                 
+                 Pick Up
+               </div>
+               )
+             :
+             
+               params.row.TicketClose===null
+             ?
+             (
+               <div
+                 className="PiButton"
+                 
+                 
+                 
+               >
+                 
+                 Picked
+               </div>
+               )
+               :
+               (
+                 <div
+                   className="PickedButton"
+                   
+                   
+                   
+                 >
+                   
+                   Close
+                 </div>
+                 )
           }
             {CustomizedDialogs(id)}
-            <Link to={`/ticket/current/${id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/agent/ticket/current/${id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">Update</div>
             </Link>
-            <div
-              className="deleteButton"
-              onClick={(e) => handleDelete(e, id)}
-              
-              
-            >
-              
-              Delete
-            </div>
             
           </div>
           
@@ -306,10 +329,8 @@ if(res.data.status === 200)
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Tickets
-        <Link to="/ticket/new" className="link">
-          Add New
-        </Link>
+         Ticket list
+  
       </div>
       <DataGrid
         className="datagrid"

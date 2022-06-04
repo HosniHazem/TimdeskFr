@@ -12,8 +12,8 @@ export const userColumns = [
     width: 90,
   },
   {
-    field: "Applicant",
-    headerName: "Applicant",
+    field: "Organization",
+    headerName: "Organization",
     width: 120,
   },
   {

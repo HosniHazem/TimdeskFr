@@ -2,21 +2,35 @@ import React, { Component, Suspense, lazy } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios';
 axios.defaults.baseURL = "http://localhost:8000/";
+let info = sessionStorage.getItem("user");
+// eslint-disable-next-line 
+let userInfo = JSON.parse(info);
 
-const forget = lazy(() => import('./Forget/Forget'))
 // Profile
 const Reset = lazy(() => import('./ForgetPassword/Reset'))
 
-const Modal = lazy(() => import('./Ticket/Views'))
+const Modal = lazy(() => import('./Ticket Admin/Ticket/Views'))
 // Profile
 const New = lazy(() => import('./Profile/New'))
 
-// Ticket
-const AddFormT = lazy(() => import('./Ticket/AddForm'))
+// Ticket Admin
+const AddFormT = lazy(() => import('./Ticket Admin/Ticket/AddForm'))
 
-const UpdateFormT = lazy(() => import('./Ticket/UpdateForm'))
+const UpdateFormT = lazy(() => import('./Ticket Admin/Ticket/UpdateForm'))
 
-const DatatableT = lazy(() => import('./Ticket/Datatable'))
+const DatatableT = lazy(() => import('./Ticket Admin/Ticket/Datatable'))
+//
+// Ticket Agent
+const UpdateFormTG = lazy(() => import('./Ticket Agent/Ticket/UpdateForm'))
+
+const DatatableTG = lazy(() => import('./Ticket Agent/Ticket/Datatable'))
+//
+// Ticket Client
+const AddFormTC = lazy(() => import('./Ticket Client/Ticket/AddForm'))
+
+const UpdateFormTC = lazy(() => import('./Ticket Client/Ticket/UpdateForm'))
+
+const DatatableTC = lazy(() => import('./Ticket Client/Ticket/Datatable'))
 //
 
 // Periority
@@ -118,15 +132,39 @@ export class AppRoutes extends Component {
              </Route>
 
 
-{/* Ticket */}
+{/* Ticket Admin */}
 <Route exact path="/ticket">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableT/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < DatatableT/>} 
              </Route>
              <Route exact path="/ticket/new">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormT/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < AddFormT/>} 
              </Route>
              <Route exact path="/ticket/current/:id">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormT/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < UpdateFormT/>} 
+             </Route>
+             
+            {/* //// */}
+
+            {/* Ticket Client */}
+<Route exact path="/client/ticket">
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="3") ? <Redirect to='/login'/> : < DatatableTC/>} 
+             </Route>
+             <Route exact path="/client/ticket/new">
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="3") ? <Redirect to='/login'/> : < AddFormTC/>} 
+             </Route>
+             <Route exact path="/client/ticket/current/:id">
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="3") ? <Redirect to='/login'/> : < UpdateFormTC/>} 
+             </Route>
+             
+            {/* //// */}
+
+            {/* Ticket Agent */}
+<Route exact path="/agent/ticket">
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="2") ? <Redirect to='/login'/> : < DatatableTG/>} 
+             </Route>
+            
+             <Route exact path="/agent/ticket/current/:id">
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="2") ? <Redirect to='/login'/> : < UpdateFormTG/>} 
              </Route>
              
             {/* //// */}
@@ -134,26 +172,26 @@ export class AppRoutes extends Component {
 
 {/* Priority */}
 <Route exact path="/Priority">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableP/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < DatatableP/>} 
              </Route>
             <Route exact path="/Priority/new">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormP/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < AddFormP/>} 
              </Route>
              <Route exact path="/Priority/current/:id">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormP/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < UpdateFormP/>} 
              </Route>
             {/* //// */}
 
 
 {/* RequestType */}
 <Route exact path="/requesttype">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableRT/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < DatatableRT/>} 
              </Route>
             <Route exact path="/requesttype/new">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormRT/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < AddFormRT/>} 
              </Route>
              <Route exact path="/requesttype/current/:id">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormRT/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < UpdateFormRT/>} 
              </Route>
              
             {/* //// */}
@@ -161,75 +199,65 @@ export class AppRoutes extends Component {
 
             {/* Model */}
             <Route exact path="/subcategory">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableTM/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < DatatableTM/>} 
              </Route>
             <Route exact path="/subcategory/new">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormTM/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < AddFormTM/>} 
              </Route>
              <Route exact path="/subcategory/current/:id">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormTM/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < UpdateFormTM/>} 
              </Route>
             {/* //// */}
 
             {/* Category */}
             <Route exact path="/category">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableC/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < DatatableC/>} 
              </Route>
             <Route exact path="/category/new">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormC/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < AddFormC/>} 
              </Route>
              <Route exact path="/category/current/:id">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormC/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < UpdateFormC/>} 
              </Route>
             {/* //// */}
 
             {/* Levels */}
             <Route exact path="/levels">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Datatable/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < Datatable/>} 
              </Route>
             <Route exact path="/levels/new">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddForm/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < AddForm/>} 
              </Route>
              <Route exact path="/levels/current/:id">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateForm/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < UpdateForm/>} 
              </Route>
             {/* //// */}
 
 
             {/* Status */}
             <Route exact path="/status">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableS/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < DatatableS/>} 
              </Route>
             <Route exact path="/status/new">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormS/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < AddFormS/>} 
              </Route>
              <Route exact path="/status/current/:id">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormS/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < UpdateFormS/>} 
              </Route>
             {/* //// */}
 
             {/* User */}
             <Route exact path="/user">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < DatatableI/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < DatatableI/>} 
              </Route>
             <Route exact path="/user/new">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < AddFormI/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < AddFormI/>} 
              </Route>
              <Route exact path="/user/current/:id">
-            {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < UpdateFormI/>} 
+            {!sessionStorage.getItem('token')||(userInfo.RoleID!="1") ? <Redirect to='/login'/> : < UpdateFormI/>} 
              </Route>
             {/* //// */}
 
-          <Route exact path="/ui-elements/buttons" component={ Buttons } />
-
-          <Route exact path="/ui-elements/dropdowns" component={ Dropdowns } />
-          <Route exact path="/ui-elements/icons" component={ Icons } />
-
-          <Route exact path="/form/form-elements" component={ FormElements } />
-
-          <Route exact path="/charts/chartjs" component={ ChartJs } />
-
-          <Route exact path="/tables/basic-table" component={ BasicTable } />
 
           
 
@@ -238,11 +266,11 @@ export class AppRoutes extends Component {
             </Route>
 
             <Route exact path="/forgetpassword">
-            {sessionStorage.getItem('token') ? <Redirect to='/login'/> : < ForgetPassword/>}
+            {sessionStorage.getItem('token') ? <Redirect to='/dashboard'/> : < ForgetPassword/>}
             </Route>
-            <Route path='/forget' component={forget} />
+    
         <Route exact path="/reset/:token">
-            {sessionStorage.getItem('token') ? <Redirect to='/reset/:token'/> : < Reset/>}
+            {sessionStorage.getItem('token') ? <Redirect to='/dashboard'/> : <Redirect to='/reset/:token'/>}
             </Route>
         </Switch>
       </Suspense>

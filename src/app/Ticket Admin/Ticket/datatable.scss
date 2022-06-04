@@ -90,11 +90,20 @@
       border: 1px dotted rgb(250, 246, 249);
       cursor: pointer;
     }
+    .PiButton {
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: rgb(250, 246, 249);
+      background-color: rgba(246, 250, 23, 0.911);
+      border: 1px dotted rgb(250, 246, 249);
+      cursor: pointer;
+    }
     .PickButton {
       padding: 2px 5px;
       border-radius: 5px;
-      color: rgb(180, 34, 124);
-      border: 1px dotted rgb(180, 34, 124);
+      color: rgb(250, 246, 249);
+      background-color: rgba(23, 250, 34, 0.911);
+      border: 1px dotted rgb(250, 246, 249);
       cursor: pointer;
     }
   }

@@ -54,7 +54,7 @@ function Reset(props) {
 	
   
 		  });
-	  setError('Vérifiez votre email, vous obtiendrez le nouveau mot de passe');
+	  setError('Check your email, you will get the new password');
 	  }
 
 	return (

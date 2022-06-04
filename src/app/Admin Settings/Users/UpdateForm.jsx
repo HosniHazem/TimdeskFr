@@ -83,6 +83,7 @@ const IMG = styled('img')(() => ({
                 Is_Active: UserInput.Is_Active,
                 email:UserInput.email,
                 organization:UserInput.organization,
+                profile_picture:UserInput.profile_picture,
                 phone_no:UserInput.phone_no,
                 city:UserInput.city,
                 country:UserInput.country,
