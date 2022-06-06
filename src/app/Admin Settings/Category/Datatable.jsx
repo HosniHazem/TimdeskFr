@@ -7,18 +7,11 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
-
-
-const http = axios.create({
-  baseURL:"http://localhost:8000/api",
-  headers:{
-      "Content-type" : "application/json",
-  }
-});
-
+import AuthUser from '../../Session/AuthUser';
 
 const Datatable = () => {
-  
+    const {http,token} = AuthUser()  
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const [Category, setCategory] = useState([]);
 
  useEffect(() => {

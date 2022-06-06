@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { Span } from './Typography'
-
+import moment from "moment";
 import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
 import {useHistory,useParams} from 'react-router-dom';
@@ -15,7 +15,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MDBInput } from "mdbreact";
-
+import AuthUser from '../../Session/AuthUser';
 
 const Container = styled('div')(({ theme }) => ({
     margin: '100px',
@@ -38,12 +38,15 @@ const IMG = styled('img')(() => ({
   
   export default function SimpleForm () {
 
+    const {http,token} = AuthUser()  
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     const { id } = useParams();
     
     const [TicketInput, setTicket] = useState([]);
    
     const [value, setValue] = React.useState(null);
+    var min=moment().format("YYYY-MM-DD")
 
     useEffect(() => {
       axios.get(`api/Tickets/${id}/show`).then((res) => {
@@ -240,10 +243,9 @@ const [Category, setCategory] = useState([]);
     <select
                         name="RequestTypeID"
                         className="form-control"
-                        onChange={handleInput}
                         value={TicketInput.RequestTypeID}
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {RequestType.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
@@ -260,10 +262,9 @@ const [Category, setCategory] = useState([]);
     <select
                         name="CategoryID"
                         className="form-control"
-                        onChange={handleInput}
                         value={TicketInput.CategoryID}
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {Category.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
@@ -278,10 +279,9 @@ const [Category, setCategory] = useState([]);
     <select
                         name="SubCategoryID"
                         className="form-control"
-                        onChange={handleInput}
                         value={TicketInput.SubCategoryID}
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {SubCategory.map((item,index) => {
                           if((item.category_id==TicketInput.CategoryID))
                           return (
@@ -298,10 +298,9 @@ const [Category, setCategory] = useState([]);
     <select
                         name="PriorityID"
                         className="form-control"
-                        onChange={handleInput}
                         value={TicketInput.PriorityID}
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {Priority.map((item,index) => {
                           return (
                             <option value={item.id} key={index}>
@@ -315,11 +314,11 @@ const [Category, setCategory] = useState([]);
   <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label="DueDate"
+        minDate={new Date(min)}
         value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
-        renderInput={(params) => <TextField {...params} />}
+        renderInput={(params) => <TextField {...params} />
+      }
+      disabled
       />
     </LocalizationProvider> 
 
@@ -393,18 +392,22 @@ const [Category, setCategory] = useState([]);
                         <input type="text" name="EstimatedDate" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.EstimatedDate}  />
                        
                 </div>
+                <div className="mb-3">
+  <label htmlFor="exampleFormControlInput1"  >Solution</label>
+<MDBInput type="textarea" name="SolutionDescription" value={TicketInput.SolutionDescription} onChange={handleInput}  rows="5" />
+</div>
 
                   </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-4">
                     <label htmlFor="exampleFormControlInput1" className="name">Sujet</label>
-                        <input type="text" name="Subject" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.Subject}  />
+                        <input type="text" name="Subject"  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.Subject}  />
                         
                 </div>
 
  <label htmlFor="exampleFormControlInput1" >Description</label>
-<MDBInput type="textarea" name="Description"  value={TicketInput.Description} onChange={handleInput}  rows="5" />
+<MDBInput type="textarea" name="Description"  value={TicketInput.Description}   rows="5" />
 <div className="mb-5">
 
 <Button 
@@ -418,7 +421,6 @@ className="bg-secondary"
   <input
     type="file"
     name="attach"
-    onChange={handleImage}
     hidden
   />
   
@@ -426,10 +428,7 @@ className="bg-secondary"
 
 <div className="font-weight-bold">{Fich}</div>
 </div>
-<div className="mb-3">
-  <label htmlFor="exampleFormControlInput1"  >Solution</label>
-<MDBInput type="textarea" name="SolutionDescription" value={TicketInput.SolutionDescription} onChange={handleInput}  rows="5" />
-</div>
+
                   </Grid>
               </Grid>
            

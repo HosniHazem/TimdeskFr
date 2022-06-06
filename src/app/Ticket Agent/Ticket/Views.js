@@ -1,5 +1,6 @@
 import React,{ useState,useEffect } from "react";
 import PropTypes from 'prop-types';
+import { Link, useHistory } from "react-router-dom";
 import './Views.scss'
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -19,8 +20,13 @@ import StepLabel from '@mui/material/StepLabel'
 import Typography from '@mui/material/Typography'
 import { Box } from '@mui/system'
 import swal from 'sweetalert';
-
-
+import AuthUser from '../../Session/AuthUser';
+import Rating from '@mui/material/Rating';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -74,9 +80,38 @@ function getStepContent(stepIndex) {
           return ``
   }
 }
+const customIcons = {
+  5: {
+    icon: <SentimentVeryDissatisfiedIcon />,
+    label: 'Very Dissatisfied',
+  },
+  4: {
+    icon: <SentimentDissatisfiedIcon />,
+    label: 'Dissatisfied',
+  },
+  3: {
+    icon: <SentimentSatisfiedIcon />,
+    label: 'Neutral',
+  },
+  2: {
+    icon: <SentimentSatisfiedAltIcon />,
+    label: 'Satisfied',
+  },
+  1: {
+    icon: <SentimentVerySatisfiedIcon />,
+    label: 'Very Satisfied',
+  },
+};
 
+function IconContainer(props) {
+  const { value, ...other } = props;
+  return <span {...other}>{customIcons[value].icon}</span>;
+}
 
 export default function CustomizedDialogs(id) {
+  const [loading, setloading] = useState(true) 
+  const {http,token} = AuthUser()  
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
   const [StatutActive, setStatutActive] = React.useState();
   const [TicketInput, setTicket] = useState([]);
@@ -85,6 +120,7 @@ export default function CustomizedDialogs(id) {
     axios.get(`api/Tickets/${id}/show`).then((res) => {
       if(res.data.status === 200){
       setTicket(res.data.Ticket);
+      setloading(false)
       
       
  } else if(res.data.status === 404){
@@ -129,6 +165,7 @@ export default function CustomizedDialogs(id) {
    
 
   const [open, setOpen] = React.useState(false);
+  const [Clicked, setClicked] = React.useState(false);
  var i=0
   const handleClickOpen = () => {
     setOpen(true);
@@ -163,7 +200,9 @@ export default function CustomizedDialogs(id) {
   };
   const handleClose = () => {
     setOpen(false);
-    window.location.reload();
+    if(Clicked){
+      window.location.reload();
+    }
   };
 
 
@@ -199,7 +238,8 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
 
   if(res.data.status === 200)
   {
-    swal("Updated Success");   
+    swal("Updated Success"); 
+    setClicked(true)  
   } if(res.data.status === 422)
   {
     swal("not Updated");   
@@ -237,6 +277,7 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
   if(res.data.status === 200)
   {
     swal("Updated Success");   
+    setClicked(true)
   } if(res.data.status === 422)
   {
     swal("not Updated");   
@@ -274,6 +315,7 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
 if(res.data.status === 200)
 {
 swal("Updated Success");   
+setClicked(true)
 } if(res.data.status === 422)
 {
 swal("not Updated");   
@@ -281,6 +323,8 @@ swal("not Updated");
 
 });
   }
+
+  if(!loading)
   return (
     <div>
      <div
@@ -311,7 +355,6 @@ swal("not Updated");
             <div>
                 {StatutActive === steps.length ? (
                     <div>
-                        <Typography>All steps completed</Typography>
                         <Button
                             sx={{ mt: 2 }}
                             variant="contained"
@@ -328,7 +371,7 @@ swal("not Updated");
                             <Button
                                 variant="contained"
                                 color="secondary"
-                                disabled={StatutActive === 0}
+                                disabled={(StatutActive === 0)||(TicketInput.TicketClose==="1")}
                                 onClick={handleBack}
                             >
                                 Back
@@ -337,10 +380,11 @@ swal("not Updated");
                                 sx={{ ml: 2 }}
                                 variant="contained"
                                 color="primary"
+                                disabled={TicketInput.TicketClose==="1"}
                                 onClick={handleNext}
                             >
                                 {StatutActive === steps.length - 1
-                                    ? 'Finish'
+                                    ? <Link to={`/ticket/${id}/close`} style={{ textDecoration: 'none', color:'#FFFFFF', }}>Finish</Link>
                                     : 'Next'}
                             </Button>
                         </Box>
@@ -394,6 +438,14 @@ swal("not Updated");
                 <label className="font-weight-bold">Estimated Time:</label>
                 <p>{TicketInput.EstimatedTime}</p>
                 </div>
+                <label className="font-weight-bold">Your Rate:</label>
+    <Rating
+      name="rate"
+      disabled
+      value={TicketInput.rate}
+      IconContainerComponent={IconContainer}
+      highlightSelectedOnly
+    />
                     </Grid>
                     <Grid item lg={15} md={6} sm={12} xs={4} sx={{ mt: 2 }}>
                     <div>
@@ -418,7 +470,22 @@ swal("not Updated");
                 </div> 
                   
                     </Grid>
-                   
+                    <Grid item  lg={15} md={6} sm={12} xs={6} sx={{ mt: 2 }}>
+                     
+                     <div>
+                     <label className="font-weight-bold" >Close Reason:</label>
+                     <p>{TicketInput.StatusCloseReason}</p>
+                     </div>
+                     <div>
+                     <label className="font-weight-bold">Ticket Spent Time(H):</label>
+                     <p>{TicketInput.SpentTime}</p>
+                     </div>
+                     <div>
+                     <label className="font-weight-bold">Close Date and Time:</label>
+                     <p>{TicketInput.ClosedDate}</p>
+                     </div>
+                     
+                         </Grid>
                 </Grid>
 
    

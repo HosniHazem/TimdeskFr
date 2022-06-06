@@ -11,35 +11,31 @@ import Box from '@mui/material/Box';
 import CustomizedDialogs from './Views'
 import { pickBy } from 'lodash'
 import AuthUser from '../../Session/AuthUser';
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
 
 let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
     const ID=userInfo.id
+    const override = css`
+    display: block;
+    margin: auto;
+    border-color: #5b47fb;
+    text-align: center;
+  `;
 const Datatable = () => {
-
-const {http,getToken,token} = AuthUser()  
-console.log(token)
+  let [loading, setLoading] = useState(true);
+const {http,token} = AuthUser()  
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-const [Status, setStatus] = useState([]);
-
-useEffect(() => {
-  axios.get('api/Status').then((res) => {
-    if(res.status === 200){
-    setStatus(res.data.Status);
-}
-  });
-}, []);
-console.log(Status)
-
-
 
   const [Tickets, setTickets] = useState([]);
  useEffect(() => {
    axios.get('api/Tickets').then((res) => {
      if(res.status === 200){
-    setTickets(res.data.Ticket);
+    setTickets(res.data.Ticket)
+    setLoading(false)
 }
-   });
+   })
  }, []);
 
  var dataRows = "";
@@ -50,9 +46,13 @@ var Requser=""
 var Etime=""
 dataRows =Tickets.map((n) =>{
    if(n.users!=null){
+    if(n.status!=null){
   status=n.status.name
+    }
+    if(n.levels!=null){ 
   levels=n.levels.name
   levelsC=n.levels.color
+    }
   Requser=n.users.name
   Etime=n.EstimatedTime
 }else{
@@ -270,7 +270,7 @@ return(
        
        
      
-        console.log(params.row.TicketClose)
+       
        var id=params.row.id
         return (
           <div className="cellAction">
@@ -279,18 +279,34 @@ return(
            ?
            
            (
+            <>
            <div
               className="PickButton" 
             >
               
               New
             </div>
+            {CustomizedDialogs(id)}            
+            <Link to={`/client/ticket/current/${id}`} style={{ textDecoration: "none" }}>
+            <div className="viewButton">Update</div>
+          </Link>
+          <div
+              className="deleteButton"
+              onClick={(e) => handleDelete(id,e)}
+              
+              
+            >
+              
+              Delete
+            </div>
+          </>
             )
           :
           
             params.row.TicketClose===null
           ?
           (
+            <>
             <div
               className="PiButton"
               
@@ -300,9 +316,12 @@ return(
               
               In progress
             </div>
+            {CustomizedDialogs(id)}
+            </>
             )
             :
             (
+              <>
               <div
                 className="PickedButton"
                 
@@ -310,24 +329,16 @@ return(
                 
               >
                 
-                Close
+                Closed
               </div>
+              {CustomizedDialogs(id)}
+              </>
               )
           
           }
-            {CustomizedDialogs(id)}
-            <Link to={`/client/ticket/current/${id}`} style={{ textDecoration: "none" }}>
-              <div className="viewButton">Update</div>
-            </Link>
-            <div
-              className="deleteButton"
-              onClick={(e) => handleDelete(id,e)}
-              
-              
-            >
-              
-              Delete
-            </div>
+            
+            
+            
             
           </div>
           
@@ -336,7 +347,13 @@ return(
       },
     },
   ];
-  
+  if(loading)
+  return(
+    <div className="load">
+<ClipLoader color={"rgb(4, 107, 38)"} loading={loading} textAlign="center" css={override} size={60}  />
+</div>
+  )
+  else
   return (
     <div className="datatable">
       <div className="datatableTitle">

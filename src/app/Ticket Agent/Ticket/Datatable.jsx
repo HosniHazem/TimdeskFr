@@ -9,17 +9,22 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import Box from '@mui/material/Box';
 import CustomizedDialogs from './Views'
-const http = axios.create({
-  baseURL:"http://localhost:8000/api",
-  headers:{
-      "Content-type" : "application/json",
-  }
-});
+import AuthUser from '../../Session/AuthUser';
+import ClipLoader from "react-spinners/ClipLoader";
+import { css } from "@emotion/react";
+
 let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
-
+    const override = css`
+    display: block;
+    margin: auto;
+    border-color: #5b47fb;
+    text-align: center;
+  `;
 const Datatable = () => {
-
+  let [loading, setLoading] = useState(true);
+  const {http,token} = AuthUser()  
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   
   const [Tickets, setTickets] = useState([]);
 
@@ -27,6 +32,7 @@ const Datatable = () => {
    axios.get('api/Tickets').then((res) => {
      if(res.status === 200){
      setTickets(res.data.Ticket);
+     setLoading(false)
 }
    });
  }, []);
@@ -40,9 +46,13 @@ var Requser=""
 var Etime=""
  dataRows = Tickets.map((n) =>{
    if(n.users!=null){
-  status=n.status.name
-  levels=n.levels.name
-  levelsC=n.levels.color
+    if(n.status!=null){
+      status=n.status.name
+        }
+        if(n.levels!=null){ 
+      levels=n.levels.name
+      levelsC=n.levels.color
+        }
   Requser=n.users.name
   Etime=EstimatedTime
 }else{
@@ -181,7 +191,7 @@ axios.put(`api/Tickets/${id}/update`, dataU).then(res=>{
 if(res.data.status === 200)
 {
     swal("Picked Successfully");
-   history.push(`/ticket/current/${id}`)
+   history.push(`/agent/ticket/current/${id}`)
 } 
 
 });
@@ -272,8 +282,8 @@ if(res.data.status === 200)
             { params.row.AssignedUser===null 
            
               ?
+              <>
               
-              (
               <div
                  className="PickButton"
                  onClick={
@@ -284,12 +294,19 @@ if(res.data.status === 200)
                  
                  Pick Up
                </div>
-               )
+{CustomizedDialogs(id)}
+<Link to={`/agent/ticket/current/${id}`} style={{ textDecoration: "none" }}>
+  <div className="viewButton">Update</div>
+</Link>
+
+               
+               </>
              :
              
                params.row.TicketClose===null
              ?
-             (
+             <>
+             
                <div
                  className="PiButton"
                  
@@ -299,9 +316,15 @@ if(res.data.status === 200)
                  
                  Picked
                </div>
-               )
+               {CustomizedDialogs(id)}
+               <Link to={`/agent/ticket/current/${id}`} style={{ textDecoration: "none" }}>
+                 <div className="viewButton">Update</div>
+               </Link>
+               
+               </>
                :
-               (
+               <>
+               
                  <div
                    className="PickedButton"
                    
@@ -309,14 +332,13 @@ if(res.data.status === 200)
                    
                  >
                    
-                   Close
+                   Closed
                  </div>
-                 )
+                 {CustomizedDialogs(id)}
+                 
+                 </>
           }
-            {CustomizedDialogs(id)}
-            <Link to={`/agent/ticket/current/${id}`} style={{ textDecoration: "none" }}>
-              <div className="viewButton">Update</div>
-            </Link>
+           
             
           </div>
           
@@ -325,7 +347,13 @@ if(res.data.status === 200)
       },
     },
   ];
-  
+  if(loading)
+  return(
+    <div className="load">
+<ClipLoader color={"rgb(4, 107, 38)"} loading={loading} textAlign="center" css={override} size={60}  />
+</div>
+  )
+  else
   return (
     <div className="datatable">
       <div className="datatableTitle">

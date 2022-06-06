@@ -1,5 +1,8 @@
+
 import React, { Component } from 'react'
 import {Line, Bar, Pie } from 'react-chartjs-2';
+
+
 
 let info = sessionStorage.getItem("user");   
 const userInfo = JSON.parse(info);

@@ -15,6 +15,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MDBInput } from "mdbreact";
+import AuthUser from '../../Session/AuthUser';
+import moment from "moment";
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -36,6 +38,10 @@ const IMG = styled('img')(() => ({
   
   
   export default function SimpleForm () {
+
+    const {http,token} = AuthUser()  
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
     const [value, setValue] = React.useState(null);
     const [TicketsInput, setTickets] = useState({
       Subject:null,
@@ -58,7 +64,7 @@ const IMG = styled('img')(() => ({
     let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
       
-    
+    var min=moment().format("YYYY-MM-DD")
         
     
     const [Category, setCategory] = useState([]);
@@ -157,7 +163,7 @@ const handleImage = (e) => {
 
 }
 
-
+console.log(userInfo.organization)
 
     const AddTickets = (e) => {
       if(Fich!==''){
@@ -185,7 +191,6 @@ const handleImage = (e) => {
                 EstimatedDate:TicketsInput.EstimatedDate,
                 StatusID:TicketsInput.StatusID,
                 RequestedUser:userInfo.id,
-                SolutionDescription:TicketsInput.SolutionDescription,
                 DueDate:value,
                 RequestTypeID:TicketsInput.RequestTypeID,
                 AssignedUser:TicketsInput.AssignedUser,
@@ -196,7 +201,7 @@ const handleImage = (e) => {
                 LevelID:TicketsInput.LevelID,
                 Organization:userInfo.organization,
             }
-  
+
     axios.post(`api/Tickets/create`, data).then(res=>{
         if(res.data.status === 200)
         {
@@ -323,6 +328,7 @@ const handleImage = (e) => {
   <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label="DueDate"
+        minDate={new Date(min)}
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
@@ -367,11 +373,9 @@ className="bg-secondary"
 <div className="font-weight-bold">{Fich}</div>
 
 </div>
-<div className="mb-3">
-  <label htmlFor="exampleFormControlInput1"  >Solution</label>
-<MDBInput type="textarea" name="SolutionDescription" value={TicketsInput.SolutionDescription} onChange={handleInput}  rows="5" />
-</div>
+
                   </Grid>
+                  <div/>
               </Grid>
            
               

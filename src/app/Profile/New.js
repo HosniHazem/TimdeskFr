@@ -6,8 +6,13 @@ import React,{ useEffect, useState } from 'react';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import swal from 'sweetalert'
+import AuthUser from '../Session/AuthUser';
+
 
 const New = ({ inputs, title }) => {
+  const {http,token} = AuthUser()  
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
   const history = useHistory();
   let info = sessionStorage.getItem("user");
    
@@ -84,6 +89,9 @@ const New = ({ inputs, title }) => {
     state:userdetail.state,
     time_zone_id:userdetail.time_zone_id,
     updated_at:userdetail.updated_at,
+    sold: userdetail.sold,
+    sold_consumed: userdetail.sold_consumed,
+    sold_total: userdetail.sold_total,
   }
   const  profil = {
     id:userdetail.id,
@@ -106,6 +114,9 @@ const New = ({ inputs, title }) => {
     state:userdetail.state,
     time_zone_id:userdetail.time_zone_id,
     updated_at:userdetail.updated_at,
+    sold: userdetail.sold,
+    sold_consumed: userdetail.sold_consumed,
+    sold_total: userdetail.sold_total,
   }
   axios.put(`api/User/${userInfo.id}/update`, data).then(res=>{
         

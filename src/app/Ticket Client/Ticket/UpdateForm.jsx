@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { Span } from './Typography'
-
+import moment from "moment";
 import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
 import {useHistory,useParams} from 'react-router-dom';
@@ -15,6 +15,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MDBInput } from "mdbreact";
+import AuthUser from '../../Session/AuthUser';
 
 
 const Container = styled('div')(({ theme }) => ({
@@ -37,7 +38,9 @@ const IMG = styled('img')(() => ({
 
   
   export default function SimpleForm () {
-
+    var min=moment().format("YYYY-MM-DD")
+    const {http,token} = AuthUser()  
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     const { id } = useParams();
     
@@ -315,6 +318,7 @@ const [Category, setCategory] = useState([]);
   <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label="DueDate"
+        minDate={new Date(min)}
         value={value}
         onChange={(newValue) => {
           setValue(newValue);
@@ -358,10 +362,7 @@ className="bg-secondary"
 
 <div className="font-weight-bold">{Fich}</div>
 </div>
-<div className="mb-3">
-  <label htmlFor="exampleFormControlInput1"  >Solution</label>
-<MDBInput type="textarea" name="SolutionDescription" value={TicketInput.SolutionDescription} onChange={handleInput}  rows="5" />
-</div>
+
                   </Grid>
               </Grid>
            

@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { Span } from './Typography'
-
+import moment from "moment";
 import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
@@ -15,6 +15,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MDBInput } from "mdbreact";
+import AuthUser from '../../Session/AuthUser';
 
 const Container = styled('div')(({ theme }) => ({
     margin: '30px',
@@ -36,6 +37,10 @@ const IMG = styled('img')(() => ({
   
   
   export default function SimpleForm () {
+
+    const {http,token} = AuthUser()  
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
     const [value, setValue] = React.useState(null);
     const [TicketsInput, setTickets] = useState({
       Subject:"",
@@ -58,7 +63,7 @@ const IMG = styled('img')(() => ({
     let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
       
-    
+    var min=moment().format("YYYY-MM-DD")
         
     
     const [Category, setCategory] = useState([]);
@@ -324,6 +329,7 @@ const handleImage = (e) => {
       <DatePicker
         label="DueDate"
         value={value}
+        minDate={new Date(min)}
         onChange={(newValue) => {
           setValue(newValue);
         }}

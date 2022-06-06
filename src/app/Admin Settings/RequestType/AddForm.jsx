@@ -10,6 +10,10 @@ import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import swal from 'sweetalert';
+import AuthUser from '../../Session/AuthUser';
+
+
+ 
 
 const Container = styled('div')(({ theme }) => ({
     margin: '100px',
@@ -30,7 +34,8 @@ const IMG = styled('img')(() => ({
   
 
   export default function SimpleForm () {
-
+ const {http,token} = AuthUser()  
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const [RequestTypeInput, setRequestType] = useState({
         name:"",
         Is_Active:"Active",
@@ -116,18 +121,6 @@ const IMG = styled('img')(() => ({
                     <span className="text-danger">{RequestTypeInput.error_list.Is_Active}</span>
                      </div>
 
-                     <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{RequestTypeInput.Is_Client_Visible}</label>
-                    <select className="form-select" name="Is_Client_Visible" value={RequestTypeInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    
-                    </select>
-                    <span className="text-danger">{RequestTypeInput.error_list.Is_Client_Visible}</span>
-                     </div>
-
-                
                   </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>

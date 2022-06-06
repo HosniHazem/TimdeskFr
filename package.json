@@ -31,6 +31,7 @@
     "clx": "^1.0.0",
     "flag-icon-css": "^3.4.5",
     "ionicons": "^4.6.3",
+    "jwt-decode": "^3.1.2",
     "mdbreact": "^5.2.0",
     "mock-aws-s3": "^4.0.2",
     "nock": "^13.2.4",
@@ -56,6 +57,7 @@
     "react-scripts": "3.3.0",
     "react-select": "^3.0.8",
     "react-simplemde-editor": "^4.1.0",
+    "react-spinners": "^0.12.0",
     "reactcss": "^1.2.3",
     "sass": "^1.50.1",
     "sweetalert": "^2.1.2",
@@ -86,5 +88,4 @@
   "devDependencies": {
     "compass-mixins": "^0.12.10"
   }
-  
 }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useHistory  } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 
 export default function AuthUser(){
     let history = useHistory();
@@ -23,11 +24,20 @@ export default function AuthUser(){
     const [user,setUser] = useState(getUser());
 
     const saveToken = (user,token) =>{
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         sessionStorage.setItem('token',JSON.stringify(token));
         sessionStorage.setItem('user',JSON.stringify(user));
-
+        if (jwt_decode(token).exp < Date.now() / 1000) {
+            axios.post('api/refresh').then((res) => {
+                const token = res.data.access_token;
+                sessionStorage.removeItem('token');
+            sessionStorage.setItem('token',JSON.stringify(token));
+          })
+        }else{
         setToken(token);
-        setUser(user);
+        
+    }
+    setUser(user);
         history.push("/dashboard");
         window.location.reload();
     }
@@ -43,7 +53,7 @@ export default function AuthUser(){
         baseURL:"http://localhost:8000/api",
         headers:{
             "Content-type" : "application/json",
-            "Authorization" : `Bearer ${token}`
+            "Authorization" : `Bearer ${token}`,
         }
     });
     return {

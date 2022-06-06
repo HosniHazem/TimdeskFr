@@ -10,6 +10,9 @@ import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import swal from 'sweetalert';
+import AuthUser from '../../Session/AuthUser';
+
+
 
 const Container = styled('div')(({ theme }) => ({
     margin: '100px',
@@ -30,7 +33,8 @@ const IMG = styled('img')(() => ({
   
 
   export default function SimpleForm () {
-
+  const {http,token} = AuthUser()  
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const [StatusInput, setStatus] = useState({
         name:"",
         Is_Active:"Active",

@@ -19,6 +19,13 @@ import StepLabel from '@mui/material/StepLabel'
 import Typography from '@mui/material/Typography'
 import { Box } from '@mui/system'
 import swal from 'sweetalert';
+import AuthUser from '../../Session/AuthUser';
+import Rating from '@mui/material/Rating';
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
+import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
+import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 
 
 
@@ -60,6 +67,34 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
+const customIcons = {
+  5: {
+    icon: <SentimentVeryDissatisfiedIcon />,
+    label: 'Very Dissatisfied',
+  },
+  4: {
+    icon: <SentimentDissatisfiedIcon />,
+    label: 'Dissatisfied',
+  },
+  3: {
+    icon: <SentimentSatisfiedIcon />,
+    label: 'Neutral',
+  },
+  2: {
+    icon: <SentimentSatisfiedAltIcon />,
+    label: 'Satisfied',
+  },
+  1: {
+    icon: <SentimentVerySatisfiedIcon />,
+    label: 'Very Satisfied',
+  },
+};
+
+function IconContainer(props) {
+  const { value, ...other } = props;
+  return <span {...other}>{customIcons[value].icon}</span>;
+}
+
 
 
 function getStepContent(stepIndex) {
@@ -77,21 +112,72 @@ function getStepContent(stepIndex) {
 
 
 export default function CustomizedDialogs(id) {
+  const [loading, setloading] = useState(true) 
+  const [Clicked, setClicked] = React.useState(false);
+  const {http,token} = AuthUser()  
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
   const [StatutActive, setStatutActive] = React.useState();
   const [TicketInput, setTicket] = useState([]);
+  const [RateInput, setRate] = useState(2);
   
   useEffect(() => {
     axios.get(`api/Tickets/${id}/show`).then((res) => {
       if(res.data.status === 200){
       setTicket(res.data.Ticket);
-      
+      setloading(false)
       
  } else if(res.data.status === 404){
   
  }
     });
   }, [id]);
+
+  const handleInput = (e) => {
+    e.persist();
+    setTicket({...TicketInput, [e.target.name]: e.target.value });
+    
+    setClicked(true)  
+  }
+  console.log(TicketInput.rate)
+if(Clicked){
+  const  data = {
+    Subject: TicketInput.Subject,
+    Description:TicketInput.Description,
+    EstimatedTime:TicketInput.EstimatedTime,
+    EstimatedDate:TicketInput.EstimatedDate,
+    StatusID:TicketInput.StatusID,
+    RequestedUser:TicketInput.RequestedUser,
+    RequestTypeID:TicketInput.RequestTypeID,
+    SolutionDescription:TicketInput.SolutionDescription,
+    DueDate:TicketInput.DueDate,
+    AssignedUser:TicketInput.AssignedUser,
+    SubCategoryID:TicketInput.SubCategoryID,
+    CategoryID:TicketInput.CategoryID,
+    PriorityID:TicketInput.PriorityID,
+    attach:TicketInput.attach,
+    LevelID:TicketInput.LevelID,
+    Organization:TicketInput.Organization,
+    SpentTime:TicketInput.SpentTime,
+    StatusCloseReason:TicketInput.StatusCloseReason,
+    ClosedDate:TicketInput.ClosedDate,
+    TicketClose:TicketInput.TicketClose ,
+    rate:Number(TicketInput.rate),
+  }
+  axios.put(`api/Tickets/${id}/update`, data).then(res=>{
+
+
+    if(res.data.status === 200)
+    {
+     
+     
+    } if(res.data.status === 422)
+    {
+      swal("not Updated");   
+    }
+   
+  });
+}
 
   const [RequestTypeInput, setRequestType] = useState([]);
   const [CategoryInput, setCategory] = useState([]);
@@ -129,6 +215,7 @@ export default function CustomizedDialogs(id) {
    
 
   const [open, setOpen] = React.useState(false);
+ 
  var i=0
   const handleClickOpen = () => {
     setOpen(true);
@@ -163,6 +250,9 @@ export default function CustomizedDialogs(id) {
   };
   const handleClose = () => {
     setOpen(false);
+    if(Clicked){
+      window.location.reload();
+    }
   };
 
 
@@ -189,6 +279,7 @@ export default function CustomizedDialogs(id) {
         attach:TicketInput.attach,
         LevelID:TicketInput.LevelID,
         Organization:TicketInput.Organization,
+        rate:TicketInput.rate,
       }
   
 
@@ -202,7 +293,7 @@ export default function CustomizedDialogs(id) {
         Description:TicketInput.Description,
         EstimatedTime:TicketInput.EstimatedTime,
         EstimatedDate:TicketInput.EstimatedDate,
-        StatusID:StatutActive,
+        StatusID:TicketInput.StatusID,
         RequestedUser:TicketInput.RequestedUser,
         RequestTypeID:TicketInput.RequestTypeID,
         SolutionDescription:TicketInput.SolutionDescription,
@@ -214,6 +305,11 @@ export default function CustomizedDialogs(id) {
         attach:TicketInput.attach,
         LevelID:TicketInput.LevelID,
         Organization:TicketInput.Organization,
+        SpentTime:TicketInput.SpentTime,
+        StatusCloseReason:TicketInput.StatusCloseReason,
+        ClosedDate:TicketInput.ClosedDate,
+        TicketClose:TicketInput.TicketClose ,
+        rate:TicketInput.rate,
       }
   
   }
@@ -222,6 +318,8 @@ export default function CustomizedDialogs(id) {
       setStatutActive(1)
 
   }
+
+  if(!loading)
   return (
     <div>
      <div
@@ -298,6 +396,31 @@ export default function CustomizedDialogs(id) {
                 <label className="font-weight-bold">Estimated Time:</label>
                 <p>{TicketInput.EstimatedTime}</p>
                 </div>
+                {TicketInput.TicketClose==="1"
+                ?
+                <>
+                <label className="font-weight-bold">Rate the Agent:</label>
+                <Rating
+      name="rate"
+      onChange={handleInput}
+      value={TicketInput.rate}
+      IconContainerComponent={IconContainer}
+      highlightSelectedOnly
+    />
+    </>
+    :
+    <>
+    <label className="font-weight-bold">Rate the Agent:</label>
+    <Rating
+      name="rate"
+      onChange={handleInput}
+      disabled
+      value={TicketInput.rate}
+      IconContainerComponent={IconContainer}
+      highlightSelectedOnly
+    />
+    </>
+  }
                     </Grid>
                     <Grid item lg={15} md={6} sm={12} xs={4} sx={{ mt: 2 }}>
                     <div>
@@ -322,7 +445,22 @@ export default function CustomizedDialogs(id) {
                 </div> 
                   
                     </Grid>
-                   
+                    <Grid item  lg={15} md={6} sm={12} xs={6} sx={{ mt: 2 }}>
+                     
+                     <div>
+                     <label className="font-weight-bold" >Close Reason:</label>
+                     <p>{TicketInput.StatusCloseReason}</p>
+                     </div>
+                     <div>
+                     <label className="font-weight-bold">Ticket Spent Time(H):</label>
+                     <p>{TicketInput.SpentTime}</p>
+                     </div>
+                     <div>
+                     <label className="font-weight-bold">Close Date and Time:</label>
+                     <p>{TicketInput.ClosedDate}</p>
+                     </div>
+                     
+                         </Grid>
                 </Grid>
 
    

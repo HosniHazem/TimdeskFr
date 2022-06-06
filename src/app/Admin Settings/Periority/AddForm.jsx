@@ -11,7 +11,10 @@ import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import swal from 'sweetalert';
 import {  ChromePicker } from 'react-color';
+import AuthUser from '../../Session/AuthUser';
 
+
+  
 
 const Container = styled('div')(({ theme }) => ({
     margin: '100px',
@@ -36,6 +39,8 @@ const IMG = styled('img')(() => ({
   
   
   export default function SimpleForm () {
+      const {http,token} = AuthUser()  
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const [colorInput, setcolor]= useState('#fff')
     const [PriorityInput, setPriority] = useState({
         name:"",

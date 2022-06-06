@@ -8,17 +8,15 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
 import Box from '@mui/material/Box';
+import AuthUser from '../../Session/AuthUser';
 
-const http = axios.create({
-  baseURL:"http://localhost:8000/api",
-  headers:{
-      "Content-type" : "application/json",
-  }
-});
+
+
 
 
 const Datatable = () => {
-  
+    const {http,token} = AuthUser()  
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const [Priority, setPriority] = useState([]);
 
  useEffect(() => {

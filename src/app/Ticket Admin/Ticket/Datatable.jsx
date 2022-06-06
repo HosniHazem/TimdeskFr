@@ -9,24 +9,30 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import Box from '@mui/material/Box';
 import CustomizedDialogs from './Views'
-const http = axios.create({
-  baseURL:"http://localhost:8000/api",
-  headers:{
-      "Content-type" : "application/json",
-  }
-});
+import AuthUser from '../../Session/AuthUser';
+import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
+
 let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
-
+    const override = css`
+    display: block;
+    margin: auto;
+    border-color: #5b47fb;
+    text-align: center;
+  `;
 const Datatable = () => {
+  let [loading, setLoading] = useState(true);
+  const {http,token} = AuthUser()  
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-  
   const [Tickets, setTickets] = useState([]);
 
  useEffect(() => {
    axios.get('api/Tickets').then((res) => {
      if(res.status === 200){
      setTickets(res.data.Ticket);
+     setLoading(false)
 }
    });
  }, []);
@@ -40,9 +46,13 @@ var Requser=""
 var Etime=""
  dataRows = Tickets.map((n) =>{
    if(n.users!=null){
-  status=n.status.name
-  levels=n.levels.name
-  levelsC=n.levels.color
+    if(n.status!=null){
+      status=n.status.name
+        }
+        if(n.levels!=null){ 
+      levels=n.levels.name
+      levelsC=n.levels.color
+        }
   Requser=n.users.name
   Etime=EstimatedTime
 }else{
@@ -282,7 +292,7 @@ if(res.data.status === 200)
              } 
             >
               
-              New
+              Pick Up
             </div>
             )
           :
@@ -309,7 +319,7 @@ if(res.data.status === 200)
                 
               >
                 
-                Close
+                Closed
               </div>
               )    }
             {CustomizedDialogs(id)}
@@ -333,7 +343,13 @@ if(res.data.status === 200)
       },
     },
   ];
-  
+  if(loading)
+  return(
+    <div className="load">
+<ClipLoader color={"rgb(4, 107, 38)"} loading={loading} textAlign="center" css={override} size={60}  />
+</div>
+  )
+  else
   return (
     <div className="datatable">
       <div className="datatableTitle">

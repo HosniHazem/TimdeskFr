@@ -38,22 +38,6 @@ export const userColumns = [
       );
     },
   },
-
-
-  
-  {
-    field: "Is_Client_Visible",
-    headerName: "Is_Client_Visible",
-    width: 130,
-    renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.Is_Client_Visible}`}>
-          {params.row.Is_Client_Visible}
-        </div>
-      );
-    },
-  },
-
 ];
 
 //temporary data

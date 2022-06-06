@@ -6,5 +6,8 @@
 #grid{
 
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: auto auto auto auto;
+}
+.disabledCursor { 
+  cursor: default;
 }
