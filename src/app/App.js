@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import './App.scss';
 import AppRoutes from './AppRoutes';
 import Header from './shared/Header';
-
+import AuthUser from './Session/AuthUser';
 
 class App extends Component {
   state = {}

@@ -34,7 +34,9 @@ const IMG = styled('img')(() => ({
   
 
   export default function SimpleForm () {
-  const {http,token} = AuthUser()  
+ let info = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info);  
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const [UserInput, setUser] = useState({
         name:"",
@@ -46,6 +48,7 @@ const IMG = styled('img')(() => ({
         city:"",
         country:"",
         sold_total:"",
+        profile_picture:"default.png",
         error_list: [],
     });
 
@@ -79,6 +82,7 @@ const IMG = styled('img')(() => ({
                 city:UserInput.city,
                 country:UserInput.country,
                 sold_total:UserInput.sold_total,
+                profile_picture:"default.png",
             }
             
 console.log(data)

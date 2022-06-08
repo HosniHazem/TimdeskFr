@@ -25,7 +25,9 @@ let info = sessionStorage.getItem("user");
   `;
 const Datatable = () => {
   let [loading, setLoading] = useState(true);
-const {http,token} = AuthUser()  
+  let info1 = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info1);
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
   const [Tickets, setTickets] = useState([]);
@@ -102,7 +104,7 @@ return(
   const handleDelete = async (id,e) => {
 
     e.preventDefault();
-     await http.delete(`Tickets/${id}/delete`).then(res=>{
+     await axios.delete(`api/Tickets/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           

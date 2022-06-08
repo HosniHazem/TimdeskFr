@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { useHistory  } from 'react-router-dom';
 import jwt_decode from "jwt-decode";
 
+
 export default function AuthUser(){
     let history = useHistory();
-
     const getToken = () =>{
         const tokenString = sessionStorage.getItem('token');
         const userToken = JSON.parse(tokenString);
@@ -17,8 +17,9 @@ export default function AuthUser(){
         const user_detail = JSON.parse(userString);
         return user_detail;
     }
-
-
+   
+    
+ 
 
     const [token,setToken] = useState(getToken());
     const [user,setUser] = useState(getUser());
@@ -27,16 +28,10 @@ export default function AuthUser(){
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         sessionStorage.setItem('token',JSON.stringify(token));
         sessionStorage.setItem('user',JSON.stringify(user));
-        if (jwt_decode(token).exp < Date.now() / 1000) {
-            axios.post('api/refresh').then((res) => {
-                const token = res.data.access_token;
-                sessionStorage.removeItem('token');
-            sessionStorage.setItem('token',JSON.stringify(token));
-          })
-        }else{
+     
         setToken(token);
         
-    }
+    
     setUser(user);
         history.push("/dashboard");
         window.location.reload();
@@ -56,6 +51,34 @@ export default function AuthUser(){
             "Authorization" : `Bearer ${token}`,
         }
     });
+
+    http.interceptors.response.use(
+        (response) =>
+          new Promise((resolve, reject) => {
+            resolve(response);
+          }),
+        (error) => {
+          if (!error.response) {
+            return new Promise((resolve, reject) => {
+              reject(error);
+            });
+          }
+    
+          if (error.response.status === 403) {
+            sessionStorage.removeItem("token");
+    
+            if (history) {
+              history.push("/login");
+            } else {
+              window.location = "/login";
+            }
+          } else {
+            return new Promise((resolve, reject) => {
+              reject(error);
+            });
+          }
+        })
+
     return {
         setToken:saveToken,
         token,

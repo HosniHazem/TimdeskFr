@@ -26,6 +26,7 @@ import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied
 import SentimentSatisfiedIcon from '@mui/icons-material/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+import { pickBy } from 'lodash'
 
 
 
@@ -114,7 +115,9 @@ function getStepContent(stepIndex) {
 export default function CustomizedDialogs(id) {
   const [loading, setloading] = useState(true) 
   const [Clicked, setClicked] = React.useState(false);
-  const {http,token} = AuthUser()  
+ let info = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info);  
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
   const [StatutActive, setStatutActive] = React.useState();
@@ -197,21 +200,23 @@ if(Clicked){
     }, []);
    
    
-   var dataRows = "";
+    var dataRows = "";
           
-   dataRows = Status.map((n) =>{
-     return ( 
-      
-     
-
-         n.name
+    dataRows = Status.map((n) =>{
+     if(n.Is_Active==="Active")
+      return ( 
        
-   
-    
-      );
       
-   
-   })
+ 
+          n.name
+        
+    
+     
+       );
+       
+    
+    })
+    const cleanedObject = Object.values(pickBy(dataRows, v => v !== undefined))
    
 
   const [open, setOpen] = React.useState(false);
@@ -257,7 +262,7 @@ if(Clicked){
 
 
 
-  const steps = dataRows;
+  const steps = cleanedObject;
 
   const handleNext = () => {
       setStatutActive((prevActiveStep) => prevActiveStep + 1)

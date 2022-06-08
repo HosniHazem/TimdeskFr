@@ -14,7 +14,9 @@ import AuthUser from '../../Session/AuthUser';
 export default function FormD() {
   let info = sessionStorage.getItem("user");
    
-  const {http,token} = AuthUser()  
+ let info = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info);  
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const [open, setOpen] = React.useState(true);
   const { id } = useParams();

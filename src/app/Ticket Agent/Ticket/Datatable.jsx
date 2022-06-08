@@ -23,7 +23,9 @@ let info = sessionStorage.getItem("user");
   `;
 const Datatable = () => {
   let [loading, setLoading] = useState(true);
-  const {http,token} = AuthUser()  
+ let info = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info);  
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   
   const [Tickets, setTickets] = useState([]);

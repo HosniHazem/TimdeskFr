@@ -38,13 +38,13 @@ export class Header extends Component {
 
 
   closeMenu(e) {
-    e.target.closest(".dropdown").classList.remove("show");
-    e.target.closest(".dropdown .dropdown-menu").classList.remove("show");
+    e.target.closest(".dropdown ").classList.remove("show");
+    e.target.closest(".dropdown  .dropdown-menu ").classList.remove("show");
   }
 
   toggleHeaderMenu(e) {
     e.preventDefault();
-    document.querySelector("body").classList.toggle("az-header-menu-show");
+    document.querySelector("body").classList.toggle("az-header-menu-show ");
   }
 
   componentDidUpdate(prevProps) {
@@ -89,7 +89,7 @@ export class Header extends Component {
                   &times;
                 </a>
               </div>
-              <ul className="nav">
+              <ul className="nav ">
                 <li
                   className={
                     this.isPathActive("/dashboard")
@@ -97,15 +97,15 @@ export class Header extends Component {
                       : "nav-item"
                   }
                 >
-                  <Link to="/dashboard" className="nav-link">
-                    <i className="typcn typcn-chart-area-outline"></i> Dashboard
+                  <Link to="/dashboard" className="nav-link ">
+                    <i className="typcn typcn-chart-area-outline "></i> Dashboard
                   </Link>
                 </li>
                 
                 <li
                   className={
                     this.isPathActive("/ticket")
-                      ? "nav-item active"
+                      ? "nav-item active "
                       : "nav-item"
                   }
                 >
@@ -269,18 +269,13 @@ export class Header extends Component {
               </ul>
             </div>
             <div className="az-header-right">
-            <a href="https://www.bootstrapdash.com/demo/azia-react-free/documentation/documentation.html" className="az-header-search-link">
-                <i className="fas fa-file-alt"></i>
-              </a>
-              <a href="#/" className="az-header-search-link">
-                <i className="fas fa-search"></i>
-              </a>
-              <div className="az-header-message">
+            
+              {/* <div className="az-header-message">
                 <Link to="#/">
                   <i className="typcn typcn-messages"></i>
                 </Link>
-              </div>
-              <Dropdown className="az-header-notification">
+              </div> */}
+              {/* <Dropdown className="az-header-notification">
                 <Dropdown.Toggle as={"a"} className="new">
                   <i className="typcn typcn-bell"></i>
                 </Dropdown.Toggle>
@@ -364,7 +359,7 @@ export class Header extends Component {
                     <a href="#/">View All Notifications</a>
                   </div>
                 </Dropdown.Menu>
-              </Dropdown>
+              </Dropdown> */}
           
               <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">
@@ -536,18 +531,14 @@ export class Header extends Component {
               </ul>
             </div>
             <div className="az-header-right">
-            <a href="https://www.bootstrapdash.com/demo/azia-react-free/documentation/documentation.html" className="az-header-search-link">
-                <i className="fas fa-file-alt"></i>
-              </a>
-              <a href="#/" className="az-header-search-link">
-                <i className="fas fa-search"></i>
-              </a>
-              <div className="az-header-message">
+           
+             
+              {/* <div className="az-header-message">
                 <Link to="#/">
                   <i className="typcn typcn-messages"></i>
                 </Link>
-              </div>
-              <Dropdown className="az-header-notification">
+              </div> */}
+              {/* <Dropdown className="az-header-notification">
                 <Dropdown.Toggle as={"a"} className="new">
                   <i className="typcn typcn-bell"></i>
                 </Dropdown.Toggle>
@@ -631,7 +622,7 @@ export class Header extends Component {
                     <a href="#/">View All Notifications</a>
                   </div>
                 </Dropdown.Menu>
-              </Dropdown>
+              </Dropdown> */}
           
               <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">
@@ -803,18 +794,14 @@ export class Header extends Component {
               </ul>
             </div>
             <div className="az-header-right">
-            <a href="https://www.bootstrapdash.com/demo/azia-react-free/documentation/documentation.html" className="az-header-search-link">
-                <i className="fas fa-file-alt"></i>
-              </a>
-              <a href="#/" className="az-header-search-link">
-                <i className="fas fa-search"></i>
-              </a>
-              <div className="az-header-message">
+           
+             
+              {/* <div className="az-header-message">
                 <Link to="#/">
                   <i className="typcn typcn-messages"></i>
                 </Link>
-              </div>
-              <Dropdown className="az-header-notification">
+              </div> */}
+              {/* <Dropdown className="az-header-notification">
                 <Dropdown.Toggle as={"a"} className="new">
                   <i className="typcn typcn-bell"></i>
                 </Dropdown.Toggle>
@@ -898,7 +885,7 @@ export class Header extends Component {
                     <a href="#/">View All Notifications</a>
                   </div>
                 </Dropdown.Menu>
-              </Dropdown>
+              </Dropdown> */}
           
               <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">

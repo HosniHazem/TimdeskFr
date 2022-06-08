@@ -10,9 +10,11 @@ import AuthUser from '../Session/AuthUser';
 
 
 const New = ({ inputs, title }) => {
-  const {http,token} = AuthUser()  
+ let info1 = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info1);  
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
+ 
   const history = useHistory();
   let info = sessionStorage.getItem("user");
    
@@ -141,8 +143,8 @@ sessionStorage.setItem('user',JSON.stringify(profil));
   }
 
   if (userdetail.profile_picture) {
-    var imagestr = userdetail.profile_picture;
-    imagestr = imagestr.replace("http://localhost:8000/images/uploads/", "");
+   
+  var  imagestr = imagestr.replace("http://localhost:8000/images/uploads/", "");
     var profilePic = "http://localhost:8000/images/uploads/" + imagestr;
   } else {
     profilePic = DefaultUserPic;

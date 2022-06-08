@@ -39,7 +39,9 @@ const IMG = styled('img')(() => ({
   
   export default function SimpleForm () {
     var min=moment().format("YYYY-MM-DD")
-    const {http,token} = AuthUser()  
+   let info = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info);  
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     const { id } = useParams();
@@ -248,6 +250,7 @@ const [Category, setCategory] = useState([]);
                       >
                         
                         {RequestType.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -267,6 +270,7 @@ const [Category, setCategory] = useState([]);
                       >
                         
                         {Category.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -276,7 +280,7 @@ const [Category, setCategory] = useState([]);
                       </select>
   </div>
   <div className="form-group">
-    <label htmlFor="exampleFormControlSelect1">Module</label>
+    <label htmlFor="exampleFormControlSelect1">SubCategory</label>
     <select
                         name="SubCategoryID"
                         className="form-control"
@@ -284,7 +288,7 @@ const [Category, setCategory] = useState([]);
                       >
                         
                         {SubCategory.map((item,index) => {
-                          if((item.category_id==TicketInput.CategoryID))
+                          if((item.category_id==TicketInput.CategoryID)&&(item.Is_Active==="Active"))
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -303,6 +307,7 @@ const [Category, setCategory] = useState([]);
                       >
                         
                         {Priority.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -337,6 +342,7 @@ const [Category, setCategory] = useState([]);
                       >
                         <option value="DEFAULT"></option>
                         {User.map((item,index) => {
+                          if((item.Is_Active==="Active")&&(item.RoleID!=3))
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -355,6 +361,7 @@ const [Category, setCategory] = useState([]);
                       >
                         <option value="DEFAULT"></option>
                         {Status.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -375,6 +382,7 @@ const [Category, setCategory] = useState([]);
                       >
                         <option value="DEFAULT"></option>
                         {Levels.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}

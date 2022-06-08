@@ -10,7 +10,9 @@ import moment from 'moment';
 import AuthUser from '../../Session/AuthUser';
 
 const Datatable = () => {
-    const {http,token} = AuthUser()  
+   let info = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info);  
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const [Category, setCategory] = useState([]);
 
@@ -49,7 +51,7 @@ console.log(dataRows)
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`Category/${id}/delete`).then(res=>{
+     await axios.delete(`api/Category/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -77,7 +79,15 @@ console.log(dataRows)
             </Link>
             <div
               className="deleteButton"
-              onClick={(e) => handleDelete(e, params.row.id)}
+              onClick={(e) => {
+                if (
+                  window.confirm(
+                    'Do you want to delete it?'
+                  )
+                ) {
+                  handleDelete(e, params.row.id);
+                }
+              }}
               
               
             >
@@ -106,7 +116,7 @@ console.log(dataRows)
         columns={userColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
-        checkboxSelection
+        
       />
     </div>
   );

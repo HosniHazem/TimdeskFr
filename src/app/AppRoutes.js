@@ -1,6 +1,7 @@
-import React, { Component, Suspense, lazy } from 'react'
+import React, { Component, Suspense, lazy,useState,useEffect } from 'react'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import axios from 'axios';
+
 axios.defaults.baseURL = "http://localhost:8000/";
 let info = sessionStorage.getItem("user");
 // eslint-disable-next-line 
@@ -8,6 +9,8 @@ let userInfo = JSON.parse(info);
 if(userInfo){
 var Role=userInfo.RoleID;
 }
+
+
 const FormD = lazy(() => import('./Ticket Admin/Ticket/ViewsClose'))
 // Profile
 const Reset = lazy(() => import('./ForgetPassword/Reset'))
@@ -93,20 +96,7 @@ const DatatableI = lazy(() => import('./Admin Settings/Users/Datatable'))
 //
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'))
-
-
-
-const Buttons = lazy(() => import('./ui-elements/Buttons'))
-
-const Dropdowns = lazy(() => import('./ui-elements/Dropdowns'))
-
-const Icons = lazy(() => import('./ui-elements/Icons'))
-
-const FormElements = lazy(() => import('./form/FormElements'))
-
-const ChartJs = lazy(() => import('./charts/ChartJs'))
-
-const BasicTable = lazy(() => import('./tables/BasicTable'))
+ 
 
 const Login = lazy(() => import('./Session/login'))
 
@@ -114,7 +104,9 @@ const ForgetPassword = lazy(() => import('./ForgetPassword/ForgetPassword'))
 
 export class AppRoutes extends Component {
   render() {
+   
     return (
+      
       <Suspense fallback=''>
         <Switch>
           <Route exact path="/">

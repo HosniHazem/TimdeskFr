@@ -33,7 +33,9 @@ const IMG = styled('img')(() => ({
   
 
   export default function SimpleForm () {
-  const {http,token} = AuthUser()  
+ let info = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info);  
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const [StatusInput, setStatus] = useState({
         name:"",

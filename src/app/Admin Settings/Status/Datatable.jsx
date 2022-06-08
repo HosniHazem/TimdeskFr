@@ -7,14 +7,15 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
-import AuthUser from '../../Session/AuthUser';
 
 
 
 
 
 const Datatable = () => {
-    const {http,token} = AuthUser()  
+  let info = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info);
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const [Status, setStatus] = useState([]);
 
@@ -53,7 +54,7 @@ dataRows = Status.map((n) =>{
   const handleDelete = async (e,id) => {
 
     e.preventDefault();
-     await http.delete(`Status/${id}/delete`).then(res=>{
+     await axios.delete(`api/Status/${id}/delete`).then(res=>{
       if(res.status === 200)
         {
           
@@ -81,7 +82,15 @@ dataRows = Status.map((n) =>{
             </Link>
             <div
               className="deleteButton"
-              onClick={(e) => handleDelete(e, params.row.id)}
+              onClick={(e) => {
+                if (
+                  window.confirm(
+                    'Do you want to delete it?'
+                  )
+                ) {
+                  handleDelete(e, params.row.id);
+                }
+              }}
               
               
             >
@@ -110,7 +119,7 @@ dataRows = Status.map((n) =>{
         columns={userColumns.concat(actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}
-        checkboxSelection
+        
       />
     </div>
   );

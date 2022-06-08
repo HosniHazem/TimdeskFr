@@ -33,12 +33,15 @@ const IMG = styled('img')(() => ({
     width: '30%',
   }))
  
-
+  let info22 = sessionStorage.getItem("user");
+  const userInfo = JSON.parse(info22);
   
   
   export default function SimpleForm () {
 
-    const {http,token} = AuthUser()  
+   let info1 = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info1);  
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     const [value, setValue] = React.useState(null);
@@ -60,9 +63,8 @@ const IMG = styled('img')(() => ({
       attach:"",
       Organization:"",
     });
-    let info = sessionStorage.getItem("user");
-    const userInfo = JSON.parse(info);
-      
+  
+    
     var min=moment().format("YYYY-MM-DD")
         
     
@@ -258,6 +260,7 @@ const handleImage = (e) => {
                       >
                         <option value="DEFAULT"></option>
                         {RequestType.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -278,6 +281,7 @@ const handleImage = (e) => {
                       >
                         <option value="DEFAULT"></option>
                         {Category.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -287,7 +291,7 @@ const handleImage = (e) => {
                       </select>
   </div>
   <div className="form-group">
-    <label htmlFor="exampleFormControlSelect1">Module</label>
+    <label htmlFor="exampleFormControlSelect1">SubCategory</label>
     <select
                         name="SubCategoryID"
                         className="form-control"
@@ -296,7 +300,7 @@ const handleImage = (e) => {
                       >
                         <option value="DEFAULT"></option>
                         {SubCategory.map((item,index) => {
-                          if((item.category_id==TicketsInput.CategoryID))
+                          if((item.category_id==TicketsInput.CategoryID)&&(item.Is_Active==="Active"))
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -316,6 +320,7 @@ const handleImage = (e) => {
                       >
                         <option value="DEFAULT"></option>
                         {Priority.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -351,6 +356,7 @@ const handleImage = (e) => {
                       >
                         <option value="DEFAULT"></option>
                         {User.map((item,index) => {
+                          if((item.Is_Active==="Active")&&(item.RoleID!=3))
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -368,7 +374,9 @@ const handleImage = (e) => {
                         value={TicketsInput.StatusID}
                       >
                         <option value="DEFAULT"></option>
+                        
                         {Status.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -389,6 +397,7 @@ const handleImage = (e) => {
                       >
                         <option value="DEFAULT"></option>
                         {Levels.map((item,index) => {
+                          if(item.Is_Active==="Active")
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
