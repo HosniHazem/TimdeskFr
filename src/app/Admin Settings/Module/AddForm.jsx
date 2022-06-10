@@ -139,16 +139,6 @@ let info = sessionStorage.getItem("token");
                     <span className="text-danger">{SubCategoryInput.error_list.Is_Active}</span>
                      </div>
 
-                     <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{SubCategoryInput.Is_Client_Visible}</label>
-                    <select className="form-select" name="Is_Client_Visible" value={SubCategoryInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    
-                    </select>
-                    <span className="text-danger">{SubCategoryInput.error_list.Is_Client_Visible}</span>
-                     </div>
 
                 
                   </Grid>

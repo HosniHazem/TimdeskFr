@@ -2,8 +2,8 @@
 export const userColumns = [
   { field: "id", headerName: "ID", width: 50 },
   {
-    field: "Sujet",
-    headerName: "Sujet",
+    field: "Subject",
+    headerName: "Subject",
     width: 100,
   },
   {

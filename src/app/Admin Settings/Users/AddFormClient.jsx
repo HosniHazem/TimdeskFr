@@ -61,24 +61,21 @@ const IMG = styled('img')(() => ({
         setUser({...UserInput, [e.target.name]: e.target.value });
     }
     const AddUser = (e) => {
-    var ID=""
+
         e.preventDefault();
-        if(UserInput.RoleID==="Admin"){
-           ID="1"         
-        }else if (UserInput.RoleID==="Agent"){
-            ID="2"
-        }
+       
        
             const  data = {
                 name: UserInput.name,
                 
-                RoleID: ID,
+                RoleID: "3",
                 Is_Active: UserInput.Is_Active,
                 email:UserInput.email,
                 organization:UserInput.organization,
                 phone_no:UserInput.phone_no,
                 city:UserInput.city,
                 country:UserInput.country,
+                sold_total:UserInput.sold_total,
                 profile_picture:"default.png",
             }
             
@@ -132,15 +129,6 @@ console.log(data)
                         <span className="text-danger">{UserInput.error_list.city}</span>
                 </div>                       
                       
-                <label htmlFor="exampleFormControlInput1" className="RoleID">Role</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="RoleID" htmlFor="inputGroupSelect01">{UserInput.RoleID}</label>
-                    <select className="form-select" name="RoleID" value={UserInput.RoleID} onChange={handleInput} id="inputGroupSelect01">
-                    <option defaultValue value="Admin">Admin</option>
-                    <option value="Agent">Agent</option>
-                    </select>
-                    <span className="text-danger">{UserInput.error_list.RoleID}</span>
-                     </div>
                 
                   </Grid>
 
@@ -160,7 +148,11 @@ console.log(data)
                         <input type="text" name="country" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.country}/>
                         <span className="text-danger">{UserInput.error_list.country}</span>
                 </div>  
-               
+                <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="form-label">Solde</label>
+                        <input type="text" name="sold_total" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.sold_total}/>
+                        <span className="text-danger">{UserInput.error_list.sold_total}</span>
+                </div>  
 
                 <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                       <div className="input-group mb-3">

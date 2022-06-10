@@ -142,13 +142,7 @@ sessionStorage.removeItem('user');
 sessionStorage.setItem('user',JSON.stringify(profil));
   }
 
-  if (userdetail.profile_picture) {
-   
-  var  imagestr = imagestr.replace("http://localhost:8000/images/uploads/", "");
-    var profilePic = "http://localhost:8000/images/uploads/" + imagestr;
-  } else {
-    profilePic = DefaultUserPic;
-  }
+
   return (
     
     <div className="new">
@@ -162,7 +156,7 @@ sessionStorage.setItem('user',JSON.stringify(profil));
           <div className="left">
             <img
               src={
-                profilePic
+                "http://localhost:8000/images/uploads/" + userdetail.profile_picture
               }
               alt=""
             />

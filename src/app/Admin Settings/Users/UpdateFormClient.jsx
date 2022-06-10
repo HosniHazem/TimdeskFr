@@ -62,13 +62,14 @@ const {http,token} = AuthUser()
         setUser({...UserInput, [e.target.name]: e.target.value });
     }
     const updateUser = (e) => {
+        var ID=UserInput.RoleID
         e.preventDefault();
-      
+        
             const  data = {
                 
                 name: UserInput.name,
                 
-                RoleID: UserInput.RoleID,
+                RoleID: "3",
                 Is_Active: UserInput.Is_Active,
                 email:UserInput.email,
                 organization:UserInput.organization,
@@ -77,7 +78,9 @@ const {http,token} = AuthUser()
                 phone_no:UserInput.phone_no,
                 city:UserInput.city,
                 country:UserInput.country,
- 
+                sold_total:UserInput.sold_total,
+                sold:(Number(UserInput.sold_total)-Number(soldInput))+Number(UserInput.sold),
+                sold_consumed:UserInput.sold_consumed,
             }
         
    console.log(data)
@@ -134,6 +137,7 @@ const {http,token} = AuthUser()
                       <span className="text-danger">{errorInput.city}</span>
               </div>                       
                     
+           
               
                 </Grid>
 
@@ -153,7 +157,11 @@ const {http,token} = AuthUser()
                       <input type="text" name="country" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.country}/>
                       <span className="text-danger">{errorInput.country}</span>
               </div>  
-           
+              <div className="mb-3">
+                  <label htmlFor="exampleFormControlInput1" className="form-label">Solde</label>
+                      <input type="text" name="sold_total" onChange={handleInput}  className="form-control" id="exampleFormControlInput1" value={UserInput.sold_total}/>
+                      <span className="text-danger">{errorInput.sold_total}</span>
+              </div>  
 
               <label htmlFor="exampleFormControlInput1" className="Is_Active">Is Active</label>
                     <div className="input-group mb-3">
@@ -169,7 +177,6 @@ const {http,token} = AuthUser()
 
                 </Grid>
             </Grid>
-           
             <Button color="primary" variant="contained" type="submit">
                 <IMG
                                   src="/assets/send.png"

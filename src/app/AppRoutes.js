@@ -29,6 +29,8 @@ const DatatableT = lazy(() => import('./Ticket Admin/Ticket/Datatable'))
 // Ticket Agent
 const UpdateFormTG = lazy(() => import('./Ticket Agent/Ticket/UpdateForm'))
 
+const DatatableOP = lazy(() => import('./Ticket Agent/Ticket/DatatableOP'))
+
 const DatatableTG = lazy(() => import('./Ticket Agent/Ticket/Datatable'))
 //
 // Ticket Client
@@ -37,6 +39,7 @@ const AddFormTC = lazy(() => import('./Ticket Client/Ticket/AddForm'))
 const UpdateFormTC = lazy(() => import('./Ticket Client/Ticket/UpdateForm'))
 
 const DatatableTC = lazy(() => import('./Ticket Client/Ticket/Datatable'))
+
 //
 
 // Periority
@@ -92,7 +95,13 @@ const AddFormI = lazy(() => import('./Admin Settings/Users/AddForm'))
 
 const UpdateFormI = lazy(() => import('./Admin Settings/Users/UpdateForm'))
 
+const AddFormIC = lazy(() => import('./Admin Settings/Users/AddFormClient'))
+
+const UpdateFormIC = lazy(() => import('./Admin Settings/Users/UpdateFormClient'))
+
 const DatatableI = lazy(() => import('./Admin Settings/Users/Datatable'))
+
+const DatatableIC = lazy(() => import('./Admin Settings/Users/DatatableClient'))
 //
 
 const Dashboard = lazy(() => import('./dashboard/Dashboard'))
@@ -114,7 +123,7 @@ export class AppRoutes extends Component {
           </Route>
 
           <Route exact path="/ticket/:id/close">
-            {!sessionStorage.getItem('token')||(Role!="2")||(Role!="1") ? <Redirect to='/login'/> : < FormD/>} 
+            {!sessionStorage.getItem('token')||(Role==="3") ? <Redirect to='/login'/> : < FormD/>} 
              </Route>
           {/* <Route exact path="/dashboard" component={ Dashboard } /> */}
           <Route exact path="/modal">
@@ -159,6 +168,9 @@ export class AppRoutes extends Component {
             {/* Ticket Agent */}
 <Route exact path="/agent/ticket">
             {!sessionStorage.getItem('token')||(Role!="2") ? <Redirect to='/login'/> : < DatatableTG/>} 
+             </Route>
+<Route exact path="/ticket/open">
+            {!sessionStorage.getItem('token')||(Role!="2") ? <Redirect to='/login'/> : < DatatableOP/>} 
              </Route>
             
              <Route exact path="/agent/ticket/current/:id">
@@ -248,11 +260,20 @@ export class AppRoutes extends Component {
             <Route exact path="/user">
             {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < DatatableI/>} 
              </Route>
+            <Route exact path="/client">
+            {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < DatatableIC/>} 
+             </Route>
             <Route exact path="/user/new">
             {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < AddFormI/>} 
              </Route>
              <Route exact path="/user/current/:id">
             {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < UpdateFormI/>} 
+             </Route>
+            <Route exact path="/client/new">
+            {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < AddFormIC/>} 
+             </Route>
+             <Route exact path="/client/current/:id">
+            {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < UpdateFormIC/>} 
              </Route>
             {/* //// */}
 

@@ -116,42 +116,7 @@ export class Header extends Component {
 
                 
               
-{/* 
-                <li className="nav-item">
-                  <Dropdown
-                    className={
-                      this.isPathActive("/general-pages")
-                        ? "nav-item active"
-                        : "nav-item"
-                    }
-                  >
-                    <Dropdown.Toggle as={"a"} className="nav-link with-sub">
-                      <i className="typcn typcn-document"></i> Pages
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu className="az-menu-sub">
-                      <Link
-                        to="/general-pages/signin"
-                        className={
-                          this.isPathActive("/general-pages/signin")
-                            ? "nav-link active"
-                            : "nav-link"
-                        }
-                      >
-                        Sign In
-                      </Link>
-                      <Link
-                        to="/general-pages/signup"
-                        className={
-                          this.isPathActive("/general-pages/signup")
-                            ? "nav-link active"
-                            : "nav-link"
-                        }
-                      >
-                        Sign Up
-                      </Link>
-                    </Dropdown.Menu>
-                  </Dropdown>
-                </li> */}
+
                 <li className="nav-item">
                   <Dropdown
                     className={
@@ -248,6 +213,8 @@ export class Header extends Component {
                         <div>
                           <nav className="nav">
                            
+                           
+                
                           <Link
                               to="/user"
                               className={
@@ -256,7 +223,18 @@ export class Header extends Component {
                                   : "nav-link"
                               }
                             >
-                              Users
+                              Admin And Agent
+                            </Link>
+                           
+                            <Link
+                              to="/client"
+                              className={
+                                this.isPathActive("/client")
+                                  ? "nav-link active"
+                                  : "nav-link"
+                              }
+                            >
+                              Client
                             </Link>
                            
                           </nav>
@@ -466,13 +444,13 @@ export class Header extends Component {
                 </li>
                 <li
                   className={
-                    this.isPathActive("/profil")
+                    this.isPathActive("/ticket/open")
                       ? "nav-item active"
                       : "nav-item"
                   }
                 >
-                  <Link to="/profil" className="nav-link">
-                    <i className="typcn typcn-cog"></i> Profil Setting
+                  <Link to="/ticket/open" className="nav-link">
+                    <i className="typcn typcn-pencil"></i> Available Tickets
                   </Link>
                 </li>
 

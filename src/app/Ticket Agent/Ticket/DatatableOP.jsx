@@ -10,8 +10,9 @@ import moment from 'moment';
 import Box from '@mui/material/Box';
 import CustomizedDialogs from './Views'
 import AuthUser from '../../Session/AuthUser';
-import { css } from "@emotion/react";
 import ClipLoader from "react-spinners/ClipLoader";
+import { css } from "@emotion/react";
+import { pickBy } from 'lodash'
 
 let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
@@ -26,8 +27,8 @@ const Datatable = () => {
  let info = sessionStorage.getItem("token");
    
   const token = JSON.parse(info);  
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  
   const [Tickets, setTickets] = useState([]);
 
  useEffect(() => {
@@ -38,11 +39,8 @@ const Datatable = () => {
 }
    });
  }, []);
-if(Tickets===undefined){
-  sessionStorage.removeItem('token');
-  window.location.reload();
-}
-console.log(Tickets)
+
+
  var dataRows = "";
 var status="" 
 var levels=""
@@ -67,6 +65,7 @@ var Etime=""
   levelsC=null
   Etime=null
 }
+if(n.AssignedUser===null)
    return ( 
     
      {
@@ -99,27 +98,27 @@ var Etime=""
  
  })
 
- 
+ const cleanedObject = Object.values(pickBy(dataRows, v => v !== undefined))
 
 
   
-  const handleDelete = async (id,e) => {
+  // const handleDelete = async (id,e) => {
 
-    e.preventDefault();
-     await axios.delete(`api/Tickets/${id}/delete`).then(res=>{
-      if(res.status === 200)
-        {
+  //   e.preventDefault();
+  //    await http.delete(`Tickets/${id}/delete`).then(res=>{
+  //     if(res.status === 200)
+  //       {
           
-            swal("Deleted!",res.data.message,"success");
-            window.location.reload();
-        }
-        else if(res.data.status === 404)
-        {
-            swal("Error",res.data.message,"error");
+  //           swal("Deleted!",res.data.message,"success");
+  //           window.location.reload();
+  //       }
+  //       else if(res.data.status === 404)
+  //       {
+  //           swal("Error",res.data.message,"error");
             
-        }
-    });
-  };
+  //       }
+  //   });
+  // };
   const [NewInput, setNew] = useState([]);
   var Category=""
   var  Subject=""
@@ -147,48 +146,48 @@ var Etime=""
 
 
     await axios.get(`api/Tickets/${id}/show`).then((res) => {
-      if(res.data.status === 200){
-        setNew(res.data.Ticket);
-        Subject=res.data.Ticket.Subject
-        Description=res.data.Ticket.Description
-        EstimatedTime=res.data.Ticket.EstimatedTime
-        EstimatedDate=res.data.Ticket.EstimatedDate
-        StatusID=res.data.Ticket.StatusID
-        RequestedUser=res.data.Ticket.RequestedUser
-        RequestTypeID=res.data.Ticket.RequestTypeID
-        SolutionDescription=res.data.Ticket.SolutionDescription
-        DueDate=res.data.Ticket.DueDate
-        SubCategoryID=res.data.Ticket.SubCategoryID
-        CategoryID=res.data.Ticket.CategoryID
-        PriorityID=res.data.Ticket.PriorityID
-        attach=res.data.Ticket.attach
-        LevelID=res.data.Ticket.LevelID
-        TicketClose=res.data.Ticket.TicketClose
-        Organization=res.data.Ticket.Organization
- } else if(res.data.status === 404){
-  
- }
-    });
-      
-  const dataU = {
-    Subject: Subject,
-    Description:Description,
-    EstimatedTime:EstimatedTime,
-    EstimatedDate:EstimatedDate,
-    StatusID:StatusID,
-    RequestedUser:RequestedUser,
-    RequestTypeID:RequestTypeID,
-    SolutionDescription:SolutionDescription,
-    DueDate:DueDate,
-    AssignedUser:userInfo.id,
-    SubCategoryID:SubCategoryID,
-    CategoryID:CategoryID,
-    PriorityID:PriorityID,
-    attach:attach,
-    LevelID:LevelID,
-    TicketClose:TicketClose,
-    Organization:Organization,
-  }
+        if(res.data.status === 200){
+          setNew(res.data.Ticket);
+          Subject=res.data.Ticket.Subject
+          Description=res.data.Ticket.Description
+          EstimatedTime=res.data.Ticket.EstimatedTime
+          EstimatedDate=res.data.Ticket.EstimatedDate
+          StatusID=res.data.Ticket.StatusID
+          RequestedUser=res.data.Ticket.RequestedUser
+          RequestTypeID=res.data.Ticket.RequestTypeID
+          SolutionDescription=res.data.Ticket.SolutionDescription
+          DueDate=res.data.Ticket.DueDate
+          SubCategoryID=res.data.Ticket.SubCategoryID
+          CategoryID=res.data.Ticket.CategoryID
+          PriorityID=res.data.Ticket.PriorityID
+          attach=res.data.Ticket.attach
+          LevelID=res.data.Ticket.LevelID
+          TicketClose=res.data.Ticket.TicketClose
+          Organization=res.data.Ticket.Organization
+   } else if(res.data.status === 404){
+    
+   }
+      });
+        
+    const dataU = {
+      Subject: Subject,
+      Description:Description,
+      EstimatedTime:EstimatedTime,
+      EstimatedDate:EstimatedDate,
+      StatusID:StatusID,
+      RequestedUser:RequestedUser,
+      RequestTypeID:RequestTypeID,
+      SolutionDescription:SolutionDescription,
+      DueDate:DueDate,
+      AssignedUser:userInfo.id,
+      SubCategoryID:SubCategoryID,
+      CategoryID:CategoryID,
+      PriorityID:PriorityID,
+      attach:attach,
+      LevelID:LevelID,
+      TicketClose:TicketClose,
+      Organization:Organization,
+    }
 
 axios.put(`api/Tickets/${id}/update`, dataU).then(res=>{
 
@@ -196,7 +195,7 @@ axios.put(`api/Tickets/${id}/update`, dataU).then(res=>{
 if(res.data.status === 200)
 {
     swal("Picked Successfully");
-   history.push(`/ticket/current/${id}`)
+   history.push(`/agent/ticket/current/${id}`)
 } 
 
 });
@@ -284,70 +283,66 @@ if(res.data.status === 200)
        var id=params.row.id
         return (
           <div className="cellAction">
-       { params.row.AssignedUser===null 
+            { params.row.AssignedUser===null 
            
-           ?
-           
-           (
-           <div
-              className="PickButton"
-              onClick={
-             
-               (e) => handlePick(id,e)
-             } 
-            >
+              ?
+              <>
               
-              Pick Up
-            </div>
-            )
-          :
-          
-            params.row.TicketClose===null
-          ?
-          (
-            <div
-              className="PiButton"
-              
-              
-              
-            >
-              
-              Picked
-            </div>
-            )
-            :
-            (
               <div
-                className="PickedButton"
+                 className="PickButton"
+                 onClick={
                 
-                
-                
-              >
-                
-                Closed
-              </div>
-              )    }
-            {CustomizedDialogs(id)}
-            <Link to={`/ticket/current/${id}`} style={{ textDecoration: "none" }}>
-              <div className="viewButton">Update</div>
-            </Link>
-            <div
-              className="deleteButton"
-              onClick={(e) => {
-                if (
-                  window.confirm(
-                    'Do you want to delete it?'
-                  )
-                ) {
-                  handleDelete(e, params.row.id);
-                }
-              }}
-              
-              
-            >
-              
-              Delete
-            </div>
+                  (e) => handlePick(id,e)
+                } 
+               >
+                 
+                 Pick Up
+               </div>
+{CustomizedDialogs(id)}
+<Link to={`/agent/ticket/current/${id}`} style={{ textDecoration: "none" }}>
+  <div className="viewButton">Update</div>
+</Link>
+
+               
+               </>
+             :
+             
+               params.row.TicketClose===null
+             ?
+             <>
+             
+               <div
+                 className="PiButton"
+                 
+                 
+                 
+               >
+                 
+                 Picked
+               </div>
+               {CustomizedDialogs(id)}
+               <Link to={`/agent/ticket/current/${id}`} style={{ textDecoration: "none" }}>
+                 <div className="viewButton">Update</div>
+               </Link>
+               
+               </>
+               :
+               <>
+               
+                 <div
+                   className="PickedButton"
+                   
+                   
+                   
+                 >
+                   
+                   Closed
+                 </div>
+                 {CustomizedDialogs(id)}
+                 
+                 </>
+          }
+           
             
           </div>
           
@@ -366,15 +361,13 @@ if(res.data.status === 200)
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        Add New Tickets
-        <Link to="/ticket/new" className="link">
-          Add New
-        </Link>
+         Ticket list
+  
       </div>
       <DataGrid
         className="datagrid"
         
-        rows={dataRows}
+        rows={cleanedObject}
         columns={userColumns.concat(PriorityColumn,LevelsColumn,actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}

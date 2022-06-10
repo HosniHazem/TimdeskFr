@@ -6,7 +6,7 @@ export const userColumns = [
   {
     field: "Name",
     headerName: "Name",
-    width: 100,
+    width: 180,
     renderCell: (params) => {
       return (
         
@@ -42,18 +42,7 @@ export const userColumns = [
 
 
   
-  {
-    field: "Is_Client_Visible",
-    headerName: "Is_Client_Visible",
-    width: 130,
-    renderCell: (params) => {
-      return (
-        <div className={`cellWithStatus ${params.row.Is_Client_Visible}`}>
-          {params.row.Is_Client_Visible}
-        </div>
-      );
-    },
-  },
+  
 
 ];
 

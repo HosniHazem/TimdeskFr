@@ -6,7 +6,7 @@ export const userColumns = [
   {
     field: "Name",
     headerName: "Name",
-    width: 150,
+    width: 180,
   },
   {
     field: "Organization",
@@ -40,11 +40,6 @@ export const userColumns = [
         </div>
       );
     },
-  },
-  {
-    field: "Solde",
-    headerName: "Solde",
-    width: 80,
   },
 ];
 

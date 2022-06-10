@@ -6,7 +6,7 @@ export const userColumns = [
   {
     field: "Name",
     headerName: "Name",
-    width: 100,
+    width: 150,
     renderCell: (params) => {
       return (
         
@@ -18,7 +18,7 @@ export const userColumns = [
   {
     field: "Description",
     headerName: "Description",
-    width: 130,
+    width: 200,
   },
   {
     field: "UpadatedDate",

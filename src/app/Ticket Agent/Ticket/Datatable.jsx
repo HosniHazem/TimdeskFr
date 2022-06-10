@@ -68,7 +68,7 @@ var Etime=""
     
      {
                 id: n.id,
-                Sujet: n.Subject,
+                Subject: n.Subject,
                 Description:n.Description,
                 RequestTypeID:n.RequestTypeID,
                 EstimatedTime:Etime,

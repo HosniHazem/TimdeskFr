@@ -33,7 +33,7 @@ setInterval(()=>{
     sessionStorage.removeItem('token');
  sessionStorage.setItem('token',JSON.stringify(res.data.access_token));
  })
-  },1200000)
+  },1800000)
 
  
   const [Tickets, setTickets] = useState([]);
@@ -98,11 +98,19 @@ if((Number(n.RequestedUser)===userInfo.id)&&(n.AssignedUser===null)){
 
  })
  var x=(Math.floor((CF/CC)*100))
+ var x1=(Math.floor((closed/Tickets.length)*100))
+ var x2=(Math.floor((InP/Tickets.length)*100))
+ var x3=(Math.floor((notA/Tickets.length)*100))
+ var x4=(Math.floor((Assign/Tickets.length)*100))
  var xd=x.toString();
-var DesC="progress-bar bg-primary wd-"+((closed/Tickets.length)*100)+"p";
-var DesO="progress-bar bg-secondary wd-"+((InP/Tickets.length)*100)+"p";
-var DesN="progress-bar bg-warning wd-"+((notA/Tickets.length)*100)+"p";
-var DesA="progress-bar bg-info wd-"+((Assign/Tickets.length)*100)+"p";
+ var xd1=x1.toString();
+ var xd2=x2.toString();
+ var xd3=x3.toString();
+ var xd4=x4.toString();
+var DesC="progress-bar bg-primary wd-"+xd1[0]+"0"+"p";
+var DesO="progress-bar bg-secondary wd-"+xd2[0]+"0"+"p";
+var DesN="progress-bar bg-warning wd-"+xd3[0]+"0"+"p";
+var DesA="progress-bar bg-info wd-"+xd4[0]+"0"+"p";
 var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
 
   
@@ -236,7 +244,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
   const sessionsChart1Data = {
     labels: ['New Tickets'],
     datasets: [{
-      data: [((InP/Tickets.length)*100),100-((InP/Tickets.length)*100)],
+      data: [Math.floor((InP/Tickets.length)*100),100-Math.floor((InP/Tickets.length)*100)],
       backgroundColor: ['#6f42c1', '#cad0e8'],
       borderColor: ['#007bff', '#cad0e8'],
     }]
@@ -274,7 +282,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
   const sessionsChart2Data = {
     labels: ['Closed Tickets'],
     datasets: [{
-      data: [((closed/Tickets.length)*100),100-((closed/Tickets.length)*100)],
+      data: [Math.floor((closed/Tickets.length)*100),100-Math.floor((closed/Tickets.length)*100)],
       backgroundColor: ['#00cccc', '#cad0e8'],
       borderColor: ['#00cccc', '#cad0e8']
     }]
@@ -408,7 +416,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>Closed Tickets</span>
-                          <span>{closed} <span>({((closed/Tickets.length)*100)}%)</span></span>
+                          <span>{closed} <span>({Math.floor((closed/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
                           <div className={DesC} role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
@@ -417,7 +425,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>Not Assigned Tickets</span>
-                          <span>{notA}<span>({((notA/Tickets.length)*100)}%)</span></span>
+                          <span>{notA}<span>({Math.floor((notA/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
                           <div className={DesN} role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
@@ -426,7 +434,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>Assigned For Me</span>
-                          <span>{Assign} <span>({((Assign/Tickets.length)*100)}%)</span></span>
+                          <span>{Assign} <span>({Math.floor((Assign/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
                           <div className={DesA} role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
@@ -435,7 +443,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>Open Tickets</span>
-                          <span>{InP}<span>({((InP/Tickets.length)*100)}%)</span></span>
+                          <span>{InP}<span>({Math.floor((InP/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
                           <div className={DesO} role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
@@ -463,7 +471,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                           </div>
                           <div>
                             <label>Assigned for Me</label>
-                            <h4>{((Assign/Tickets.length)*100)}%</h4>
+                            <h4>{(Math.floor(Assign/Tickets.length)*100)}%</h4>
                           </div>
                         </div>{/* col */}
                         <div className="col-6 d-sm-flex align-items-center">
@@ -492,7 +500,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                             </div>
                             <div>
                               <label>New Tickets</label>
-                              <h4>{((InP/Tickets.length)*100)}%</h4>
+                              <h4>{(Math.floor(InP/Tickets.length)*100)}%</h4>
                             </div>
                           </div>
                         </div>{/* col */}
@@ -503,7 +511,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                             </div>
                             <div>
                               <label>Closed Tickets</label>
-                              <h4>{((closed/Tickets.length)*100)}%</h4>
+                              <h4>{(Math.floor(closed/Tickets.length)*100)}%</h4>
                             </div>
                           </div>
                         </div>{/* col */}
@@ -674,7 +682,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>Closed Tickets</span>
-                          <span>{closed} <span>({((closed/Tickets.length)*100)}%)</span></span>
+                          <span>{closed} <span>({Math.floor((closed/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
                           <div className={DesC} role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
@@ -683,7 +691,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>Not Assigned Tickets</span>
-                          <span>{notA}<span>({((notA/Tickets.length)*100)}%)</span></span>
+                          <span>{notA}<span>({Math.floor((notA/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
                           <div className={DesN} role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
@@ -692,7 +700,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>Assigned For Me</span>
-                          <span>{Assign} <span>({((Assign/Tickets.length)*100)}%)</span></span>
+                          <span>{Assign} <span>({Math.floor((Assign/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
                           <div className={DesA} role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
@@ -701,7 +709,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>Open Tickets</span>
-                          <span>{InP}<span>({((InP/Tickets.length)*100)}%)</span></span>
+                          <span>{InP}<span>({Math.floor((InP/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
                           <div className={DesO} role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
@@ -729,7 +737,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                           </div>
                           <div>
                             <label>Assigned for Me</label>
-                            <h4>{((Assign/Tickets.length)*100)}%</h4>
+                            <h4>{(Math.floor(Assign/Tickets.length)*100)}%</h4>
                           </div>
                         </div>{/* col */}
                         <div className="col-6 d-sm-flex align-items-center">
@@ -758,7 +766,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                             </div>
                             <div>
                               <label>New Tickets</label>
-                              <h4>{((InP/Tickets.length)*100)}%</h4>
+                              <h4>{(Math.floor(InP/Tickets.length)*100)}%</h4>
                             </div>
                           </div>
                         </div>{/* col */}
@@ -769,7 +777,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                             </div>
                             <div>
                               <label>Closed Tickets</label>
-                              <h4>{((closed/Tickets.length)*100)}%</h4>
+                              <h4>{(Math.floor(closed/Tickets.length)*100)}%</h4>
                             </div>
                           </div>
                         </div>{/* col */}

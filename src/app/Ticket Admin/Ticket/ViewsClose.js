@@ -137,7 +137,7 @@ const history = useHistory();
 if(res.data.status === 200)
 {
   swal("Updated","Ticket","success");
-  history.push('/ticket')   
+  history.push('/agent/ticket')   
 } if(res.data.status === 422)
 {
   swal("not Updated");   

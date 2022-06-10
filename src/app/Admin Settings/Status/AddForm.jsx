@@ -124,16 +124,7 @@ const IMG = styled('img')(() => ({
                     <span className="text-danger">{StatusInput.error_list.Is_Active}</span>
                      </div>
 
-                     <label htmlFor="exampleFormControlInput1" className="Is_Client_Visible">Is Client Visible</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Client_Visible" htmlFor="inputGroupSelect01">{StatusInput.Is_Client_Visible}</label>
-                    <select className="form-select" name="Is_Client_Visible" value={StatusInput.Is_Client_Visible} onChange={handleInput} id="inputGroupSelect01">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    
-                    </select>
-                    <span className="text-danger">{StatusInput.error_list.Is_Client_Visible}</span>
-                     </div>
+                
 
                 
                   </Grid>
@@ -146,19 +137,6 @@ const IMG = styled('img')(() => ({
                 </div>
 
                       
-                      
-                
-
-                <label htmlFor="exampleFormControlInput1" className="Is_Closed">Is Closed</label>
-                      <div className="input-group mb-3">
-                    <label className="input-group-text" name="Is_Closed" htmlFor="inputGroupSelect01">{StatusInput.Is_Closed}</label>
-                    <select className="form-select" name="Is_Closed" value={StatusInput.Is_Closed}  onChange={handleInput} id="inputGroupSelect02">
-                    <option defaultValue value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                    </select>
-                    <span className="text-danger">{StatusInput.error_list.Is_Closed}</span>
-                </div>
-
 
                   </Grid>
               </Grid>

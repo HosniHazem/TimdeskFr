@@ -224,7 +224,7 @@ const [Category, setCategory] = useState([]);
     
           <ValidatorForm onSubmit={updateTicket} onError={() => null} encType="multipart/form-data">
               <Grid container spacing={3}>
-                  <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+                  <Grid item lg={6.5} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   
                 <div className="form-group">

@@ -71,7 +71,7 @@ if(Number(n.RequestedUser)===ID)
 return(    
      {
                 id: n.id,
-                Sujet: n.Subject,
+                Subject: n.Subject,
                 Description:n.Description,
                 RequestTypeID:n.RequestTypeID,
                 EstimatedTime:Etime,
@@ -294,7 +294,15 @@ return(
           </Link>
           <div
               className="deleteButton"
-              onClick={(e) => handleDelete(id,e)}
+              onClick={(e) => {
+                if (
+                  window.confirm(
+                    'Do you want to delete it?'
+                  )
+                ) {
+                  handleDelete(e, params.row.id);
+                }
+              }}
               
               
             >

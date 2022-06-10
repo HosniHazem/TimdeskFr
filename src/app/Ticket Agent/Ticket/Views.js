@@ -242,7 +242,7 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
 
   if(res.data.status === 200)
   {
-    swal("Updated Success"); 
+ 
     setClicked(true)  
   } if(res.data.status === 422)
   {
@@ -280,7 +280,7 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
 
   if(res.data.status === 200)
   {
-    swal("Updated Success");   
+      
     setClicked(true)
   } if(res.data.status === 422)
   {
@@ -318,7 +318,7 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
 
 if(res.data.status === 200)
 {
-swal("Updated Success");   
+  
 setClicked(true)
 } if(res.data.status === 422)
 {

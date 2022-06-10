@@ -2,7 +2,7 @@
 import React,{ useState,useEffect } from "react";
 import "./datatableU.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { userColumns } from './datatablesource';
+import { userColumns } from './datatablesourceClient';
 import { Link } from "react-router-dom";
 import axios from 'axios';
 import swal from 'sweetalert';
@@ -34,32 +34,25 @@ const Datatable = () => {
  var dataRows = "";
        
  dataRows = User.map((n) =>{
-   var role=""
-   if(n.RoleID==="1"){
-    role="Admin"         
- }else if (n.RoleID==="2"){
-     role="Agent"
- }else(
-  role=""
- )
- if (n.RoleID!="3")
+   
+ if(n.RoleID==="3")
    return ( 
     
      {
        id: n.id,
        Name: n.name,
-       Role: role,
+       Role: "Client",
        UpadatedDate: moment(n.updated_at).format("DD/MM/YYYY"),
        Is_Active: n.Is_Active,
        Email:n.email,
        Organization:n.organization,
+       Solde:n.sold_total,
        
      }
     );
     
  
  })
- 
  const cleanedObject = Object.values(pickBy(dataRows, v => v !== undefined))
 
   
@@ -89,7 +82,7 @@ const Datatable = () => {
       renderCell: (params) => {
         return (
           <div className="cellAction">
-            <Link to={`/User/current/${params.row.id}`} style={{ textDecoration: "none" }}>
+            <Link to={`/client/current/${params.row.id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">View</div>
             </Link>
             <div
@@ -121,7 +114,7 @@ const Datatable = () => {
     <div className="datatable">
       <div className="datatableTitle">
         Add New User
-        <Link to="/User/new" className="link">
+        <Link to="/client/new" className="link">
           Add New
         </Link>
       </div>
