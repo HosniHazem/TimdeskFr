@@ -39,7 +39,10 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
    })
  }, []);
-
+ if(Tickets===undefined){
+  sessionStorage.clear();
+  window.location.reload();
+}
  var dataRows = "";
 var status="" 
 var levels=""
@@ -101,7 +104,7 @@ return(
 
 
   
-  const handleDelete = async (id,e) => {
+  const handleDelete = async (e,id) => {
 
     e.preventDefault();
      await axios.delete(`api/Tickets/${id}/delete`).then(res=>{

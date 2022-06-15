@@ -43,7 +43,8 @@ const IMG = styled('img')(() => ({
    
   const token = JSON.parse(info1);  
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
+    let info = sessionStorage.getItem("user");
+    const userInfo = JSON.parse(info);
     const [value, setValue] = React.useState(null);
     const [TicketsInput, setTickets] = useState({
       Subject:null,
@@ -62,9 +63,10 @@ const IMG = styled('img')(() => ({
       LevelID:null,
       attach:null,
       Organization:null,
-    });
-    let info = sessionStorage.getItem("user");
-    const userInfo = JSON.parse(info);
+      Username:null,
+      error_list: [],
+      });
+
       
     var min=moment().format("YYYY-MM-DD")
         
@@ -78,6 +80,10 @@ const IMG = styled('img')(() => ({
    }
       });
     }, []);
+    if(Category===undefined){
+      sessionStorage.clear();
+      window.location.reload();
+    }
    
     const [SubCategory, setsubCategory] = useState([]);
 
@@ -149,7 +155,7 @@ const IMG = styled('img')(() => ({
 
 
 
-    const [Fich, setFich] = useState("");
+    const [Fich, setFich] = useState(null);
     
 
 const [picture,setPicture] = useState({
@@ -162,16 +168,13 @@ const handleImage = (e) => {
  
   setFich(e.target.files[0].name)
  
-
 }
 
-console.log(userInfo.organization)
-
     const AddTickets = (e) => {
-      if(Fich!==''){
+      if(Fich!=null){
       const formData = new FormData();
   formData.append('attach',picture.attach);
-   axios.post('api/image',formData).then(res=>{
+   axios.post('api/imageProfil',formData).then(res=>{
      if(res.status=== 200){
       
        setError(res.data.error);
@@ -202,8 +205,9 @@ console.log(userInfo.organization)
                 attach:Fich,
                 LevelID:TicketsInput.LevelID,
                 Organization:userInfo.organization,
+                Username:userInfo.name  
             }
-
+console.log(data)
     axios.post(`api/Tickets/create`, data).then(res=>{
         if(res.data.status === 200)
         {
@@ -217,8 +221,8 @@ console.log(userInfo.organization)
         }
         else if(res.data.status === 422)
         {
-         
-                     setTickets({...TicketsInput });
+          swal("All fields are mandetory","","error");
+          setTickets({...TicketsInput, error_list: res.data.validate_err });  
         }
     });
  
@@ -268,6 +272,7 @@ console.log(userInfo.organization)
                           );
                         })}
                       </select>
+                      <span className="text-danger">{TicketsInput.error_list.RequestTypeID}</span>
   </div>
                     
                    
@@ -289,6 +294,7 @@ console.log(userInfo.organization)
                           );
                         })}
                       </select>
+                      <span className="text-danger">{TicketsInput.error_list.CategoryID}</span>
   </div>
   <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">SubCategory</label>
@@ -308,6 +314,7 @@ console.log(userInfo.organization)
                           );
                         })}
                       </select>
+                      <span className="text-danger">{TicketsInput.error_list.SubCategoryID}</span>
   </div>
 
   <div className="form-group">
@@ -328,6 +335,7 @@ console.log(userInfo.organization)
                           );
                         })}
                       </select>
+                      <span className="text-danger">{TicketsInput.error_list.PriorityID}</span>
   </div>
  
   <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -341,7 +349,7 @@ console.log(userInfo.organization)
         renderInput={(params) => <TextField {...params} />}
       />
     </LocalizationProvider> 
-
+    <span className="text-danger">{TicketsInput.error_list.DueDate}</span>
                 
                   </Grid>
 
@@ -349,13 +357,14 @@ console.log(userInfo.organization)
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-4">
-                    <label htmlFor="exampleFormControlInput1" className="name">Sujet</label>
+                    <label htmlFor="exampleFormControlInput1" className="name">Subject</label>
                         <input type="text" name="Subject" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketsInput.Subject}  />
-                        
+                        <span className="text-danger">{TicketsInput.error_list.Subject}</span>
                 </div>
 
  <label htmlFor="exampleFormControlInput1" >Description</label>
 <MDBInput type="textarea" name="Description"  value={TicketsInput.Description} onChange={handleInput}  rows="5" />
+<span className="text-danger">{TicketsInput.error_list.Description}</span>
 <div className="mb-5">
 
 <Button 

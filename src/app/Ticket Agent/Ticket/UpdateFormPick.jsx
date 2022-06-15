@@ -1,14 +1,14 @@
-import React,{ useState,useEffect } from "react";
+import React,{ useState,useEffect,Image } from "react";
 import {
   Button,
   Grid,
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { Span } from './Typography'
-import moment from "moment";
+
 import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
-import {useHistory} from 'react-router-dom';
+import {useHistory,useParams} from 'react-router-dom';
 import swal from 'sweetalert';
 import TextField from '@mui/material/TextField';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -16,14 +16,16 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MDBInput } from "mdbreact";
 import AuthUser from '../../Session/AuthUser';
+import moment from "moment";
+import { userColumns } from "../../Admin Settings/Users/datatablesourceClient";
 
 const Container = styled('div')(({ theme }) => ({
-    margin: '30px',
+    margin: '100px',
     [theme.breakpoints.down('sm')]: {
         margin: '16px',
     },
     '& .breadcrumb': {
-        marginBottom: '20px',
+        marginBottom: '30px',
         [theme.breakpoints.down('sm')]: {
             marginBottom: '16px',
         },
@@ -32,43 +34,42 @@ const Container = styled('div')(({ theme }) => ({
 const IMG = styled('img')(() => ({
     width: '30%',
   }))
- 
-  let info22 = sessionStorage.getItem("user");
-  const userInfo = JSON.parse(info22);
+
   
+
   
   export default function SimpleForm () {
-
-   let info1 = sessionStorage.getItem("token");
-   
-  const token = JSON.parse(info1);  
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-    const [value, setValue] = React.useState(null);
-    const [TicketsInput, setTickets] = useState({
-      Subject:"",
-      Description:"",
-      RequestTypeID:"",
-      SolutionDescription:"",
-      DueDate:"",
-      EstimatedTime:"",
-      EstimatedDate:"",
-      StatusID:"",
-      RequestedUser:"",
-      AssignedUser:"",
-      SubCategoryID:"",
-      CategoryID:"",
-      PriorityID:"",
-      LevelID:"",
-      attach:"",
-      Organization:"",
-    });
-  
-    
     var min=moment().format("YYYY-MM-DD")
-        
+   let info = sessionStorage.getItem("token");
+   
+  const token = JSON.parse(info);  
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+    const { id } = useParams();
     
-    const [Category, setCategory] = useState([]);
+    const [TicketInput, setTicket] = useState([]);
+   
+    const [value, setValue] = React.useState(null);
+    const [value1, setValue1] = React.useState(null);
+    const [errorInput, setError] = useState([]);
+    useEffect(() => {
+      axios.get(`api/Tickets/${id}/show`).then((res) => {
+        if(res.data.status === 200){
+        setTicket(res.data.Ticket);
+        setValue(res.data.Ticket.DueDate);
+        setValue1(res.data.Ticket.EstimatedDate);
+   } else if(res.data.status === 404){
+    
+   }
+      });
+    }, [id]);
+    if(TicketInput===undefined){
+      sessionStorage.clear();
+      window.location.reload();
+    }
+    const [Fich, setFich] = useState(TicketInput.attach);
+  
+const [Category, setCategory] = useState([]);
 
     useEffect(() => {
       axios.get('api/Category').then((res) => {
@@ -137,95 +138,99 @@ const IMG = styled('img')(() => ({
    }
       });
     }, []);
-
+    
+  
     const history = useHistory();
 
     const handleInput = (e) => {
         e.persist();
-       
-        setTickets({...TicketsInput, [e.target.name]: e.target.value });
+        setTicket({...TicketInput, [e.target.name]: e.target.value });
     }
-
-
-
-    const [Fich, setFich] = useState("");
+    const [picture,setPicture] = useState({
+      attach:""
+    });
+    const handleImage = (e) => {
+      e.preventDefault();
+      setPicture({attach : e.target.files[0]});
+     
+      setFich(e.target.files[0].name)
+     
     
-
-const [picture,setPicture] = useState({
-  attach:""
-});
-const [error,setError] = useState([]);
-const handleImage = (e) => {
-  e.preventDefault();
-  setPicture({attach : e.target.files[0]});
- 
-  setFich(e.target.files[0].name)
- 
-
-}
-
-
-
-    const AddTickets = (e) => {
-      if(Fich!==''){
+    }
+    
+    const err ={
+      status:"",
+      level:"",
+      estimatedtime:"",
+      estimateddate:"",
+      solution:"",
+    }
+    const updateTicket = (e) => {
+    
       const formData = new FormData();
-  formData.append('attach',picture.attach);
-   axios.post('api/image',formData).then(res=>{
-     if(res.status=== 200){
-      
-       setError(res.data.error);
-
-     }
-     else if (res.status=== 422){
-       setError(res.data.error);
-     }
-   },
-   )
-  }  
+      formData.append('attach',picture.attach);
+       axios.post('api/image',formData).then(res=>{
+         if(res.status=== 200){
+          
+           console.log(res.data.error);
+    
+         }
+         else if (res.status=== 422){
+           console.log(res.data.error);
+         }
+       },
+       )
+       
         e.preventDefault();
         
        
             const  data = {
-                Subject: TicketsInput.Subject,
-                Description:TicketsInput.Description,
-                EstimatedTime:TicketsInput.EstimatedTime,
-                EstimatedDate:TicketsInput.EstimatedDate,
-                StatusID:TicketsInput.StatusID,
-                RequestedUser:userInfo.name,
-                Organization:userInfo.organization,
-                SolutionDescription:TicketsInput.SolutionDescription,
-                DueDate:value,
-                RequestTypeID:TicketsInput.RequestTypeID,
-                AssignedUser:TicketsInput.AssignedUser,
-                SubCategoryID:TicketsInput.SubCategoryID,
-                CategoryID:TicketsInput.CategoryID,
-                PriorityID:TicketsInput.PriorityID,
-                attach:Fich,
-                LevelID:TicketsInput.LevelID,
+              Subject: TicketInput.Subject,
+              Description:TicketInput.Description,
+              EstimatedTime:TicketInput.EstimatedTime,
+              EstimatedDate:value1,
+              StatusID:TicketInput.StatusID,
+              RequestedUser:TicketInput.RequestedUser,
+              RequestTypeID:TicketInput.RequestTypeID,
+              SolutionDescription:TicketInput.SolutionDescription,
+              DueDate:value,
+              AssignedUser:TicketInput.AssignedUser,
+              SubCategoryID:TicketInput.SubCategoryID,
+              CategoryID:TicketInput.CategoryID,
+              PriorityID:TicketInput.PriorityID,
+              attach:TicketInput.attach,
+              LevelID:TicketInput.LevelID,
+              TicketClose:TicketInput.TicketClose,
+              Organization:TicketInput.Organization,
+              Username:TicketInput.Username,
             }
-  
-    axios.post(`api/Tickets/create`, data).then(res=>{
+
+var i=0
+
+    axios.put(`api/Tickets/${id}/update`, data).then(res=>{
+        
+      
         if(res.data.status === 200)
         {
+            swal("Pick Up","success");
             
-            swal("Created","Ticket","success");
-           history.push('/ticket')
+           history.push('/agent/myticket')
+        } if(res.data.status === 422)
+        {
+            swal("All fields are mandetory","","error");
+            setError(res.data.validate_err);
         }
         else if(res.data.status === 404)
         {
-            swal("Error",TicketsInput.name,"error");
-        }
-        else if(res.data.status === 422)
-        {
-         
-                     setTickets({...TicketsInput });
+            swal("Pick Up","error");
+            setError([]);
         }
     });
- 
 }
 
   
   
+
 
 
   return (   
@@ -233,7 +238,7 @@ const handleImage = (e) => {
       <Container>
       <div>
     
-          <ValidatorForm onSubmit={AddTickets} onError={() => null} encType="multipart/form-data">
+          <ValidatorForm onSubmit={updateTicket} onError={() => null} encType="multipart/form-data">
               <Grid container spacing={3}>
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
@@ -243,22 +248,30 @@ const handleImage = (e) => {
     <select
                         name="RequestedUser"
                         className="form-control"
-                        defaultValue={userInfo.name}
+                        defaultValue={TicketInput.Username}
+                        disabled
                       >
-                         <option value={userInfo.name}>
-                              {userInfo.name}
+                         {User.map((item,index) => {
+                    
+                          return (
+                            <option value={item.id} key={index}>
+                         {item.name}
                             </option>
+                          );
+                        })}
+                        
                       </select>
-  </div>                
+  </div>
+                
   <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">Request type</label>
     <select
                         name="RequestTypeID"
                         className="form-control"
-                        onChange={handleInput}
-                        value={TicketsInput.RequestTypeID}
+                        value={TicketInput.RequestTypeID}
+                        disabled
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {RequestType.map((item,index) => {
                           if(item.Is_Active==="Active")
                           return (
@@ -276,10 +289,10 @@ const handleImage = (e) => {
     <select
                         name="CategoryID"
                         className="form-control"
-                        onChange={handleInput}
-                        value={TicketsInput.CategoryID}
+                        value={TicketInput.CategoryID}
+                        disabled
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {Category.map((item,index) => {
                           if(item.Is_Active==="Active")
                           return (
@@ -295,12 +308,12 @@ const handleImage = (e) => {
     <select
                         name="SubCategoryID"
                         className="form-control"
-                        onChange={handleInput}
-                        value={TicketsInput.SubCategoryID}
+                        value={TicketInput.SubCategoryID}
+                        disabled
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {SubCategory.map((item,index) => {
-                          if((item.category_id==TicketsInput.CategoryID)&&(item.Is_Active==="Active"))
+                          if((item.category_id==TicketInput.CategoryID)&&(item.Is_Active==="Active"))
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -315,10 +328,10 @@ const handleImage = (e) => {
     <select
                         name="PriorityID"
                         className="form-control"
-                        onChange={handleInput}
-                        value={TicketsInput.PriorityID}
+                        value={TicketInput.PriorityID}
+                        disabled
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {Priority.map((item,index) => {
                           if(item.Is_Active==="Active")
                           return (
@@ -329,16 +342,15 @@ const handleImage = (e) => {
                         })}
                       </select>
   </div>
- 
+  <span className="text-danger">{err.status}</span>
   <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label="DueDate"
-        value={value}
         minDate={new Date(min)}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
-        renderInput={(params) => <TextField {...params} />}
+        value={value}
+        renderInput={(params) => <TextField {...params} />
+      }
+      disabled
       />
     </LocalizationProvider> 
 
@@ -352,7 +364,7 @@ const handleImage = (e) => {
                         name="AssignedUser"
                         className="form-control"
                         onChange={handleInput}
-                        value={TicketsInput.AssignedUser}
+                        value={TicketInput.AssignedUser}
                       >
                         <option value="DEFAULT"></option>
                         {User.map((item,index) => {
@@ -364,6 +376,7 @@ const handleImage = (e) => {
                           );
                         })}
                       </select>
+                      <span className="text-danger">{errorInput.AssignedUser}</span>
   </div>
                 <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">Status</label>
@@ -371,12 +384,12 @@ const handleImage = (e) => {
                         name="StatusID"
                         className="form-control"
                         onChange={handleInput}
-                        value={TicketsInput.StatusID}
+                        value={TicketInput.StatusID}
+                        
                       >
                         <option value="DEFAULT"></option>
-                        
                         {Status.map((item,index) => {
-                          if(item.Is_Active==="Active")
+                          if((item.Is_Active==="Active")&&(item.name!="Closed"))
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -384,16 +397,18 @@ const handleImage = (e) => {
                           );
                         })}
                       </select>
+                      <span className="text-danger">{errorInput.StatusID}</span>
+
   </div>
 
- 
+  
   <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">Level</label>
     <select
                         name="LevelID"
                         className="form-control"
                         onChange={handleInput}
-                        value={TicketsInput.LevelID}
+                        value={TicketInput.LevelID}
                       >
                         <option value="DEFAULT"></option>
                         {Levels.map((item,index) => {
@@ -405,29 +420,49 @@ const handleImage = (e) => {
                           );
                         })}
                       </select>
+                      <span className="text-danger">{errorInput.LevelID}</span>
+
   </div>
   <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="name">Estimated Time</label>
-                        <input type="text" name="EstimatedTime" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketsInput.EstimatedTime}  />
+                    <label htmlFor="exampleFormControlInput1" className="name">Estimated Time(H)</label>
+                        <input type="text" name="EstimatedTime" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.EstimatedTime}  />
+                        <span className="text-danger">{errorInput.EstimatedTime}</span>
                        
                 </div>
+                <div>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        label="EstimatedDate"
+        minDate={new Date(min)}
+        value={value1}
+        onChange={(newValue) => {
+          setValue1(newValue);
+        }}
+        renderInput={(params) => <TextField {...params} />
+      }
+      />
+    </LocalizationProvider>
+    <span className="text-danger">{errorInput.EstimatedDate}</span>
+
+    </div> 
                 <div className="mb-3">
-                <label htmlFor="exampleFormControlInput1" className="name">Estimated Date</label>
-                        <input type="text" name="EstimatedDate" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketsInput.EstimatedDate}  />
-                       
-                </div>
+  <label htmlFor="exampleFormControlInput1"  >Solution</label>
+<MDBInput type="textarea" name="SolutionDescription" value={TicketInput.SolutionDescription} onChange={handleInput}  rows="5" />
+<span className="text-danger">{errorInput.SolutionDescription}</span>
+
+</div>
 
                   </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-4">
-                    <label htmlFor="exampleFormControlInput1" className="name">Sujet</label>
-                        <input type="text" name="Subject" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketsInput.Subject}  />
+                    <label htmlFor="exampleFormControlInput1" className="name">Subject</label>
+                        <input type="text" name="Subject" disabled  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.Subject}  />
                         
                 </div>
 
  <label htmlFor="exampleFormControlInput1" >Description</label>
-<MDBInput type="textarea" name="Description"  value={TicketsInput.Description} onChange={handleInput}  rows="5" />
+<MDBInput type="textarea" name="Description" disabled  value={TicketInput.Description}   rows="5" />
 <div className="mb-5">
 
 <Button 
@@ -441,19 +476,14 @@ className="bg-secondary"
   <input
     type="file"
     name="attach"
-    onChange={handleImage}
     hidden
   />
   
 </Button>
 
 <div className="font-weight-bold">{Fich}</div>
+</div>
 
-</div>
-<div className="mb-3">
-  <label htmlFor="exampleFormControlInput1"  >Solution</label>
-<MDBInput type="textarea" name="SolutionDescription" value={TicketsInput.SolutionDescription} onChange={handleInput}  rows="5" />
-</div>
                   </Grid>
               </Grid>
            
@@ -464,10 +494,9 @@ className="bg-secondary"
                                     alt=""
                                 />
                   <Span sx={{ pl: 1, textTransform: 'capitalize' }}>
-                      ADD
+                      Pick Up
                   </Span>
               </Button>
-              
           </ValidatorForm>
       </div>
       </Container>

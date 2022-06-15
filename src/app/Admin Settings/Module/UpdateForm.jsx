@@ -48,6 +48,10 @@ const IMG = styled('img')(() => ({
    }
       });
     }, []);
+    if(Category===undefined){
+      sessionStorage.clear();
+      window.location.reload();
+    }
 
     const { id } = useParams();
     const [SubCategoryInput, setSubCategory] = useState([]);

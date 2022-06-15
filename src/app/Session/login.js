@@ -81,7 +81,7 @@ export default function Login() {
                 
         }catch(err){
            
-            setMessage(err.message);
+            setMessage("Wrong Password or Mail Address");
             setLoading(false);
           }
 

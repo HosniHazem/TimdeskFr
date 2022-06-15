@@ -14,9 +14,9 @@ import AuthUser from '../../Session/AuthUser';
 export default function FormD() {
   let info = sessionStorage.getItem("user");
    
- let info = sessionStorage.getItem("token");
+ let info1 = sessionStorage.getItem("token");
    
-  const token = JSON.parse(info);  
+  const token = JSON.parse(info1);  
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const [open, setOpen] = React.useState(true);
   const { id } = useParams();
@@ -81,6 +81,7 @@ const history = useHistory();
       Organization:TicketInput.Organization,
       SpentTime:TicketInput.SpentTime,
       StatusCloseReason:TicketInput.StatusCloseReason,
+      Username:TicketInput.Username,
       ClosedDate:min,
       TicketClose: "1",
     }
@@ -116,7 +117,7 @@ const history = useHistory();
       
       if(res.data.status === 200)
       {
-
+       
 
       } if(res.data.status === 422)
       {
@@ -137,7 +138,7 @@ const history = useHistory();
 if(res.data.status === 200)
 {
   swal("Updated","Ticket","success");
-  history.push('/ticket')   
+  history.push('/agent/myticket')   
 } if(res.data.status === 422)
 {
   swal("not Updated");   
@@ -188,7 +189,7 @@ if(res.data.status === 200)
                 </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={()=>history.push('/ticket')}>Cancel</Button>
+          <Button onClick={()=>history.push('/agent/myticket')}>Cancel</Button>
           <Button onClick={()=>submit()}>Send</Button>
         </DialogActions>
       </Dialog>

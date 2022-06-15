@@ -85,7 +85,7 @@ console.log(data)
         {
             
             swal("Created",UserInput.name,"success");
-           history.push('/User')
+           history.push('/client')
         }
         else if(res.data.status === 404)
         {

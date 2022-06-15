@@ -103,7 +103,7 @@ var Etime=""
 
 
   
-  const handleDelete = async (id,e) => {
+  const handleDelete = async (e,id) => {
 
     e.preventDefault();
      await axios.delete(`api/Tickets/${id}/delete`).then(res=>{
@@ -190,13 +190,13 @@ var Etime=""
     Organization:Organization,
   }
 
-axios.put(`api/Tickets/${id}/update`, dataU).then(res=>{
+axios.put(`api/TicketsPick/${id}/update`, dataU).then(res=>{
 
 
 if(res.data.status === 200)
 {
     swal("Picked Successfully");
-   history.push(`/ticket/current/${id}`)
+   history.push(`/ticket/pick/current/${id}`)
 } 
 
 });
@@ -287,8 +287,8 @@ if(res.data.status === 200)
        { params.row.AssignedUser===null 
            
            ?
+           <>
            
-           (
            <div
               className="PickButton"
               onClick={
@@ -299,12 +299,30 @@ if(res.data.status === 200)
               
               Pick Up
             </div>
-            )
+            {CustomizedDialogs(id)}
+            <div
+            className="deleteButton"
+            onClick={(e) => {
+              if (
+                window.confirm(
+                  'Do you want to delete it?'
+                )
+              ) {
+                handleDelete(e, params.row.id);
+              }
+            }}
+            
+            
+          >
+            
+            Delete
+          </div>
+          </>
           :
           
             params.row.TicketClose===null
           ?
-          (
+          <>
             <div
               className="PiButton"
               
@@ -314,19 +332,6 @@ if(res.data.status === 200)
               
               Picked
             </div>
-            )
-            :
-            (
-              <div
-                className="PickedButton"
-                
-                
-                
-              >
-                
-                Closed
-              </div>
-              )    }
             {CustomizedDialogs(id)}
             <Link to={`/ticket/current/${id}`} style={{ textDecoration: "none" }}>
               <div className="viewButton">Update</div>
@@ -349,6 +354,40 @@ if(res.data.status === 200)
               Delete
             </div>
             
+            </>
+            :
+            <>
+            
+              <div
+                className="PickedButton"
+                
+                
+                
+              >
+                
+                Closed
+              </div>
+              {CustomizedDialogs(id)}
+              <div
+              className="deleteButton"
+              onClick={(e) => {
+                if (
+                  window.confirm(
+                    'Do you want to delete it?'
+                  )
+                ) {
+                  handleDelete(e, params.row.id);
+                }
+              }}
+              
+              
+            >
+              
+              Delete
+            </div>
+            </>
+                }
+            
           </div>
           
         );
@@ -367,9 +406,7 @@ if(res.data.status === 200)
     <div className="datatable">
       <div className="datatableTitle">
         Add New Tickets
-        <Link to="/ticket/new" className="link">
-          Add New
-        </Link>
+        
       </div>
       <DataGrid
         className="datagrid"

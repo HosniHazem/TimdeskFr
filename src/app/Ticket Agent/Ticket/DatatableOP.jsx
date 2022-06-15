@@ -39,7 +39,10 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
    });
  }, []);
-
+ if(Tickets===undefined){
+  sessionStorage.clear();
+  window.location.reload();
+}
 
  var dataRows = "";
 var status="" 
@@ -102,7 +105,7 @@ if(n.AssignedUser===null)
 
 
   
-  // const handleDelete = async (id,e) => {
+  // const handleDelete = async (e,id) => {
 
   //   e.preventDefault();
   //    await http.delete(`Tickets/${id}/delete`).then(res=>{
@@ -189,13 +192,13 @@ if(n.AssignedUser===null)
       Organization:Organization,
     }
 
-axios.put(`api/Tickets/${id}/update`, dataU).then(res=>{
+axios.put(`api/TicketsPick/${id}/update`, dataU).then(res=>{
 
 
 if(res.data.status === 200)
 {
     swal("Picked Successfully");
-   history.push(`/agent/ticket/current/${id}`)
+   history.push(`/agent/pick/current/${id}`)
 } 
 
 });
@@ -299,9 +302,7 @@ if(res.data.status === 200)
                  Pick Up
                </div>
 {CustomizedDialogs(id)}
-<Link to={`/agent/ticket/current/${id}`} style={{ textDecoration: "none" }}>
-  <div className="viewButton">Update</div>
-</Link>
+
 
                
                </>

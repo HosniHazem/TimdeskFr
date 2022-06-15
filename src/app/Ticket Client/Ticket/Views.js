@@ -69,11 +69,11 @@ BootstrapDialogTitle.propTypes = {
 };
 
 const customIcons = {
-  5: {
+  1: {
     icon: <SentimentVeryDissatisfiedIcon />,
     label: 'Very Dissatisfied',
   },
-  4: {
+  2: {
     icon: <SentimentDissatisfiedIcon />,
     label: 'Dissatisfied',
   },
@@ -81,11 +81,11 @@ const customIcons = {
     icon: <SentimentSatisfiedIcon />,
     label: 'Neutral',
   },
-  2: {
+  4: {
     icon: <SentimentSatisfiedAltIcon />,
     label: 'Satisfied',
   },
-  1: {
+  5: {
     icon: <SentimentVerySatisfiedIcon />,
     label: 'Very Satisfied',
   },
@@ -165,6 +165,7 @@ if(Clicked){
     StatusCloseReason:TicketInput.StatusCloseReason,
     ClosedDate:TicketInput.ClosedDate,
     TicketClose:TicketInput.TicketClose ,
+    Username:TicketInput.Username,
     rate:Number(TicketInput.rate),
   }
   axios.put(`api/Tickets/${id}/update`, data).then(res=>{
@@ -285,6 +286,7 @@ if(Clicked){
         LevelID:TicketInput.LevelID,
         Organization:TicketInput.Organization,
         rate:TicketInput.rate,
+        Username:TicketInput.Username,
       }
   
 
@@ -315,6 +317,7 @@ if(Clicked){
         ClosedDate:TicketInput.ClosedDate,
         TicketClose:TicketInput.TicketClose ,
         rate:TicketInput.rate,
+        Username:TicketInput.Username,
       }
   
   }
@@ -364,7 +367,7 @@ if(Clicked){
                      
                 <div>
                 <label className="font-weight-bold" >Demander:</label>
-                <p>{TicketInput.RequestedUser}</p>
+                <p>{TicketInput.Username}</p>
                 </div>
                 <div>
                 <label className="font-weight-bold">Request type:</label>

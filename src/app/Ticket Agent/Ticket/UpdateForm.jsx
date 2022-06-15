@@ -49,18 +49,23 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const [TicketInput, setTicket] = useState([]);
    
     const [value, setValue] = React.useState(null);
-
+    const [value1, setValue1] = React.useState(null);
+    const [errorInput, setError] = useState([]);
     useEffect(() => {
       axios.get(`api/Tickets/${id}/show`).then((res) => {
         if(res.data.status === 200){
         setTicket(res.data.Ticket);
         setValue(res.data.Ticket.DueDate);
+        setValue1(res.data.Ticket.EstimatedDate);
    } else if(res.data.status === 404){
     
    }
       });
     }, [id]);
-
+    if(TicketInput===undefined){
+      sessionStorage.clear();
+      window.location.reload();
+    }
     const [Fich, setFich] = useState(TicketInput.attach);
   
 const [Category, setCategory] = useState([]);
@@ -143,7 +148,6 @@ const [Category, setCategory] = useState([]);
     const [picture,setPicture] = useState({
       attach:""
     });
-    const [error,setError] = useState([]);
     const handleImage = (e) => {
       e.preventDefault();
       setPicture({attach : e.target.files[0]});
@@ -154,16 +158,16 @@ const [Category, setCategory] = useState([]);
     }
     const updateTicket = (e) => {
     
-      const formData = new FormData();
+        const formData = new FormData();
       formData.append('attach',picture.attach);
        axios.post('api/image',formData).then(res=>{
          if(res.status=== 200){
           
-           setError(res.data.error);
+           console.log(res.data.error);
     
          }
          else if (res.status=== 422){
-           setError(res.data.error);
+           console.log(res.data.error);
          }
        },
        )
@@ -175,7 +179,7 @@ const [Category, setCategory] = useState([]);
               Subject: TicketInput.Subject,
               Description:TicketInput.Description,
               EstimatedTime:TicketInput.EstimatedTime,
-              EstimatedDate:TicketInput.EstimatedDate,
+              EstimatedDate:value1,
               StatusID:TicketInput.StatusID,
               RequestedUser:TicketInput.RequestedUser,
               RequestTypeID:TicketInput.RequestTypeID,
@@ -189,6 +193,7 @@ const [Category, setCategory] = useState([]);
               LevelID:TicketInput.LevelID,
               TicketClose:TicketInput.TicketClose,
               Organization:TicketInput.Organization,
+              Username:TicketInput.Username,
             }
 
             console.log(data)
@@ -199,16 +204,16 @@ const [Category, setCategory] = useState([]);
         {
             swal("Updated","Ticket","success");
             
-           history.push('/agent/ticket')
-        } if(res.data.status === 422)
+           history.push('/agent/myticket')
+        }  if(res.data.status === 422)
         {
             swal("All fields are mandetory","","error");
-    
+            setError(res.data.validate_err);
         }
         else if(res.data.status === 404)
         {
-            swal("Error","Ticket","error");
-    
+            swal("Pick Up","error");
+            setError([]);
         }
     });
 }
@@ -228,16 +233,23 @@ const [Category, setCategory] = useState([]);
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   
-                <div className="form-group">
+                          <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">Demander</label>
     <select
                         name="RequestedUser"
                         className="form-control"
-                        defaultValue={TicketInput.RequestedUser}
+                        defaultValue={TicketInput.Username}
+                        disabled
                       >
-                         <option value={TicketInput.RequestedUser}>
-                              {TicketInput.RequestedUser}
+                         {User.map((item,index) => {
+                    
+                          return (
+                            <option value={item.id} key={index}>
+                         {item.name}
                             </option>
+                          );
+                        })}
+                        
                       </select>
   </div>
                 
@@ -247,6 +259,7 @@ const [Category, setCategory] = useState([]);
                         name="RequestTypeID"
                         className="form-control"
                         value={TicketInput.RequestTypeID}
+                        disabled
                       >
                         
                         {RequestType.map((item,index) => {
@@ -267,6 +280,7 @@ const [Category, setCategory] = useState([]);
                         name="CategoryID"
                         className="form-control"
                         value={TicketInput.CategoryID}
+                        disabled
                       >
                         
                         {Category.map((item,index) => {
@@ -285,6 +299,7 @@ const [Category, setCategory] = useState([]);
                         name="SubCategoryID"
                         className="form-control"
                         value={TicketInput.SubCategoryID}
+                        disabled
                       >
                         
                         {SubCategory.map((item,index) => {
@@ -304,6 +319,7 @@ const [Category, setCategory] = useState([]);
                         name="PriorityID"
                         className="form-control"
                         value={TicketInput.PriorityID}
+                        disabled
                       >
                         
                         {Priority.map((item,index) => {
@@ -316,7 +332,6 @@ const [Category, setCategory] = useState([]);
                         })}
                       </select>
   </div>
- 
   <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label="DueDate"
@@ -350,6 +365,7 @@ const [Category, setCategory] = useState([]);
                           );
                         })}
                       </select>
+                      <span className="text-danger">{errorInput.AssignedUser}</span>
   </div>
                 <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">Status</label>
@@ -358,10 +374,11 @@ const [Category, setCategory] = useState([]);
                         className="form-control"
                         onChange={handleInput}
                         value={TicketInput.StatusID}
+                        
                       >
                         <option value="DEFAULT"></option>
                         {Status.map((item,index) => {
-                          if(item.Is_Active==="Active")
+                          if((item.Is_Active==="Active")&&(item.name!="Closed"))
                           return (
                             <option value={item.id} key={index}>
                               {item.name}
@@ -369,6 +386,8 @@ const [Category, setCategory] = useState([]);
                           );
                         })}
                       </select>
+                      <span className="text-danger">{errorInput.StatusID}</span>
+
   </div>
 
   
@@ -390,40 +409,56 @@ const [Category, setCategory] = useState([]);
                           );
                         })}
                       </select>
+                      <span className="text-danger">{errorInput.LevelID}</span>
+
   </div>
   <div className="mb-3">
-                    <label htmlFor="exampleFormControlInput1" className="name">Estimated Time</label>
+                    <label htmlFor="exampleFormControlInput1" className="name">Estimated Time(H)</label>
                         <input type="text" name="EstimatedTime" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.EstimatedTime}  />
+                        <span className="text-danger">{errorInput.EstimatedTime}</span>
                        
                 </div>
-                <div className="mb-3">
-                <label htmlFor="exampleFormControlInput1" className="name">Estimated Date</label>
-                        <input type="text" name="EstimatedDate" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.EstimatedDate}  />
-                       
-                </div>
+                <div>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        label="EstimatedDate"
+        minDate={new Date(min)}
+        value={value1}
+        onChange={(newValue) => {
+          setValue1(newValue);
+        }}
+        renderInput={(params) => <TextField {...params} />
+      }
+      />
+    </LocalizationProvider>
+    <span className="text-danger">{errorInput.EstimatedDate}</span>
+
+    </div> 
                 <div className="mb-3">
   <label htmlFor="exampleFormControlInput1"  >Solution</label>
 <MDBInput type="textarea" name="SolutionDescription" value={TicketInput.SolutionDescription} onChange={handleInput}  rows="5" />
+<span className="text-danger">{errorInput.SolutionDescription}</span>
+
 </div>
 
                   </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-4">
-                    <label htmlFor="exampleFormControlInput1" className="name">Sujet</label>
-                        <input type="text" name="Subject"  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.Subject}  />
+                    <label htmlFor="exampleFormControlInput1" className="name">Subject</label>
+                        <input type="text" name="Subject" disabled className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.Subject}  />
                         
                 </div>
 
  <label htmlFor="exampleFormControlInput1" >Description</label>
-<MDBInput type="textarea" name="Description"  value={TicketInput.Description}   rows="5" />
+<MDBInput type="textarea" name="Description" disabled value={TicketInput.Description}   rows="5" />
 <div className="mb-5">
 
 <Button 
 className="bg-secondary"
   variant="contained"
   component="label"
- 
+  disabled
  
 >
   Upload File

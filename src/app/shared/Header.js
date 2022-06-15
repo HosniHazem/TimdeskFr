@@ -338,7 +338,7 @@ export class Header extends Component {
                   </div>
                 </Dropdown.Menu>
               </Dropdown> */}
-          
+          <div><a>{userInfo.name}</a></div>
               <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">
                   
@@ -431,15 +431,16 @@ export class Header extends Component {
                   </Link>
                 </li>
                 
+               
                 <li
                   className={
-                    this.isPathActive("/agent/ticket")
+                    this.isPathActive("/agent/myticket")
                       ? "nav-item active"
                       : "nav-item"
                   }
                 >
-                  <Link to="/agent/ticket" className="nav-link">
-                    <i className=" typcn typcn-ticket"></i> Ticket
+                  <Link to="/agent/myticket" className="nav-link">
+                    <i className=" typcn typcn-ticket"></i> Assigned Tickets
                   </Link>
                 </li>
                 <li
@@ -601,7 +602,7 @@ export class Header extends Component {
                   </div>
                 </Dropdown.Menu>
               </Dropdown> */}
-          
+          <div><a >{userInfo.name}</a></div>
               <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">
                   
@@ -864,7 +865,9 @@ export class Header extends Component {
                   </div>
                 </Dropdown.Menu>
               </Dropdown> */}
-          
+
+         <div/>
+         <div><a>{userInfo.name}</a></div>
               <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">
                   

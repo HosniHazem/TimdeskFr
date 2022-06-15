@@ -14,9 +14,12 @@ import { useReactToPrint } from "react-to-print";
 import Clock from 'react-live-clock';
 import jwt_decode from "jwt-decode";
 
+
 let info = sessionStorage.getItem("user");   
 let token = sessionStorage.getItem("token");  
 const userInfo = JSON.parse(info);
+const idc = userInfo.id;
+
 if(userInfo==null){
   window.location.reload();
 }
@@ -45,6 +48,10 @@ setInterval(()=>{
 }
    });
  }, []);
+ if(Tickets===undefined){
+  sessionStorage.clear();
+  window.location.reload();
+}
  const [User, setUser] = useState([]);
 
  useEffect(() => {
@@ -55,7 +62,16 @@ setInterval(()=>{
    });
  }, []);
  var len=Tickets.length;
-   
+ const [UserInput, setUsers] = useState([]);
+ useEffect(() => {
+  axios.get(`api/User/${idc}/show`).then((res) => {
+    if(res.data.status === 200){
+    setUsers(res.data.User);
+} else if(res.data.status === 404){
+
+}
+  });
+}, [idc]);
 
 
  const componentRef = useRef();
@@ -73,7 +89,8 @@ var InP=0
 var CC=0
 var CF=0
 var CN=0
-
+var AC=0
+var AO=0
 Tickets.map((n) =>{
 if(n.TicketClose==="1"){
 closed=closed+1
@@ -86,6 +103,9 @@ notA=notA+1
 if(n.AssignedUser===userInfo.id){
   Assign=Assign+1
 }
+if((n.AssignedUser===userInfo.id)&&(n.TicketClose==="1")){
+  AC=AC+1
+}
 if(Number(n.RequestedUser)===userInfo.id){
  CC=CC+1
 }
@@ -97,11 +117,19 @@ if((Number(n.RequestedUser)===userInfo.id)&&(n.AssignedUser===null)){
 }
 
  })
+ AO=Assign-AC
+ var xc=(Math.floor((AC/Assign)*100))
+ var xo=(Math.floor((AO/Assign)*100))
  var x=(Math.floor((CF/CC)*100))
+ var xn=(Math.floor((CN/CC)*100))
+var xp=(Math.floor(((CC-(CF+CN))/CC)*100))
  var x1=(Math.floor((closed/Tickets.length)*100))
  var x2=(Math.floor((InP/Tickets.length)*100))
  var x3=(Math.floor((notA/Tickets.length)*100))
- var x4=(Math.floor((Assign/Tickets.length)*100))
+ var x4=(Math.floor(((Tickets.length-(closed+notA))/Tickets.length)*100))
+ var x5=(Math.floor((Assign/Tickets.length)*100))
+var n=xn.toString();
+var p=xp.toString();
  var xd=x.toString();
  var xd1=x1.toString();
  var xd2=x2.toString();
@@ -110,8 +138,11 @@ if((Number(n.RequestedUser)===userInfo.id)&&(n.AssignedUser===null)){
 var DesC="progress-bar bg-primary wd-"+xd1[0]+"0"+"p";
 var DesO="progress-bar bg-secondary wd-"+xd2[0]+"0"+"p";
 var DesN="progress-bar bg-warning wd-"+xd3[0]+"0"+"p";
-var DesA="progress-bar bg-info wd-"+xd4[0]+"0"+"p";
-var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
+var DesA="progress-bar bg-light wd-"+xd4[0]+"0"+"p";
+var DesAC="progress-bar bg-info wd-"+xd4[0]+"0"+"p";
+var DesCF="progress-bar bg-danger wd-"+xd[0]+"0"+"p";
+var Desn="progress-bar bg-success wd-"+xd[0]+"0"+"p";
+var Desp="progress-bar bg-warning wd-"+xd[0]+"0"+"p";
 
   
 
@@ -120,20 +151,26 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
 
   
 
-
+const sessionsChannelChartDatas = {
+  labels: ['Closed Tickets', 'Not Assigned Tickets','Assigned Tickets'],
+  datasets: [{
+    data: [closed,notA,Tickets.length-(closed+notA)],
+    backgroundColor: ['#007bff','#ffc107',],
+  }]
+};
   const sessionsChannelChartData = {
-    labels: ['All Tickets', 'Closed Tickets', 'Not Assigned Tickets', 'Assigned For Me', 'Open Tickets'],
+    labels: ['Open Tickets', 'Closed Tickets'],
     datasets: [{
-      data: [Tickets.length,closed,notA,Assign,InP],
-      backgroundColor: ['#28a745', '#007bff','#ffc107','#17a2b8','#6c757d'],
+      data: [AO,AC],
+      backgroundColor: ['#fff3b0','#223843'],
     }]
   };
   const sessionsChannelChartData1 = {
-    labels: ['All My Ticket', 'Closed Tickets'],
+    labels: ['New Tickets', 'In progress Tickets', 'Closed Tickets'],
    
     datasets: [{
-      data: [CC,CF],
-      backgroundColor: ['#28a745', '#007bff'],
+      data: [CN,CC-(CF+CN),CF],
+      backgroundColor: ['#28a745', '#ffc107','#dc3545'],
     }]
   };
   const sessionsChannelChartOptions = {
@@ -142,6 +179,18 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
     responsive: true,
     legend: {
       display: false,
+    },
+    animation: {
+      animateScale: true,
+      animateRotate: true
+    }
+  };
+  const sessionsChannelChartOptions1 = {
+    cutoutPercentage: 50,
+    maintainAspectRatio: false,
+    responsive: true,
+    legend: {
+      display: true,
     },
     animation: {
       animateScale: true,
@@ -252,7 +301,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
   const sessionsChart0Data = {
     labels: ['New Tickets'],
     datasets: [{
-      data: [(Math.floor((CN/CC)*100)),100-(Math.floor((CN/CC)*100))],
+      data: [(100-(Math.floor((CF/CC)*100))),100-(Math.floor((CN/CC)*100))],
       backgroundColor: ['#6f42c1', '#cad0e8'],
       borderColor: ['#007bff', '#cad0e8'],
     }]
@@ -400,7 +449,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                   <div className="card-body row">
                     <div className="col-md-6 d-flex align-items-center">
                       <div className="chart">
-                        <Pie data={sessionsChannelChartData} options={sessionsChannelChartOptions} />
+                        <Pie data={sessionsChannelChartDatas} options={sessionsChannelChartOptions} />
                       </div>
                     </div>{/* col */}
                     <div className="col-md-6 col-lg-5 mg-lg-l-auto mg-t-20 mg-md-t-0">
@@ -433,8 +482,8 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       </div>
                       <div className="az-traffic-detail-item">
                         <div>
-                          <span>Assigned For Me</span>
-                          <span>{Assign} <span>({Math.floor((Assign/Tickets.length)*100)}%)</span></span>
+                          <span>Assigned Tickets</span>
+                          <span>{Tickets.length-(closed+notA)} <span>({Math.floor(((Tickets.length-(closed+notA))/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
                           <div className={DesA} role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
@@ -471,7 +520,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                           </div>
                           <div>
                             <label>Assigned for Me</label>
-                            <h4>{(Math.floor(Assign/Tickets.length)*100)}%</h4>
+                            <h4>{x5}%</h4>
                           </div>
                         </div>{/* col */}
                         <div className="col-6 d-sm-flex align-items-center">
@@ -490,7 +539,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                     <div className="card card-dashboard-five">
                       <div className="card-header">
                         <h6 className="card-title">Overall Tickets</h6>
-                        <span className="card-text"> Analysis dor opened and closed tickets.</span>
+                        <span className="card-text"> Analysis for opened and closed tickets.</span>
                       </div>{/* card-header */}
                       <div className="card-body row row-sm">
                         <div className="col-6">
@@ -500,7 +549,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                             </div>
                             <div>
                               <label>New Tickets</label>
-                              <h4>{(Math.floor(InP/Tickets.length)*100)}%</h4>
+                              <h4>{x2}%</h4>
                             </div>
                           </div>
                         </div>{/* col */}
@@ -511,7 +560,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                             </div>
                             <div>
                               <label>Closed Tickets</label>
-                              <h4>{(Math.floor(closed/Tickets.length)*100)}%</h4>
+                              <h4>{x1}%</h4>
                             </div>
                           </div>
                         </div>{/* col */}
@@ -537,7 +586,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       </thead>
                       <tbody id="growth">
                       {User.map((item,index) => {
-                      if(item.RoleID!="3")
+                       if((item.RoleID!="3")&&(item.id!=userInfo.id))
                           return (
                             <tr key={index}>
                           <td><Avatar alt="User Photo" sx={{ width: 30, height: 30 }} src={"http://localhost:8000/images/uploads/"+item.profile_picture} /></td>
@@ -613,14 +662,14 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
            
            
              
-            <div className="row row-sm mg-b-20" >
-              <div className="col-lg-4" >
+            <div className="row row-sm10 mg-b-20 mh-25 " >
+              <div className="col-lg-4 w-10 " >
                 <div className="card card-dashboard-pageviews" >
                   <div className="card-header" >
                     <h6 className="card-title">Tickets Assigned For You</h6>
                     <p className="card-text">This report is your Assigned tickets.</p>
                   </div>{/* card-header */}
-                  <div className="card-body" id="growth">
+                  <div className="card-body h-25 d-inline-block" id="growth" >
                   {Tickets.map((item,index) => {
                           if(item.AssignedUser===userInfo.id)
                           return (
@@ -666,28 +715,20 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                   <div className="card-body row">
                     <div className="col-md-6 d-flex align-items-center">
                       <div className="chart">
-                        <Pie data={sessionsChannelChartData} options={sessionsChannelChartOptions} />
+                        <Pie data={sessionsChannelChartData} options={sessionsChannelChartOptions1} />
                       </div>
                     </div>{/* col */}
-                    <div className="col-md-6 col-lg-5 mg-lg-l-auto mg-t-20 mg-md-t-0">
+                    <div className="col-md-6 col-lg-5 mg-lg-l-auto mg-t-10 mg-md-t-30">
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>All Tickets</span>
                           <span>{len} <span>(100%)</span></span>
                         </div>
                         <div className="progress">
-                          <div className="progress-bar bg-success wd-100p" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="4"></div>
+                          <div className="progress-bar bg-danger wd-100p" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="4"></div>
                         </div>{/* progress */}
                       </div>
-                      <div className="az-traffic-detail-item">
-                        <div>
-                          <span>Closed Tickets</span>
-                          <span>{closed} <span>({Math.floor((closed/Tickets.length)*100)}%)</span></span>
-                        </div>
-                        <div className="progress">
-                          <div className={DesC} role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>{/* progress */}
-                      </div>
+                      
                       <div className="az-traffic-detail-item">
                         <div>
                           <span>Not Assigned Tickets</span>
@@ -703,16 +744,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                           <span>{Assign} <span>({Math.floor((Assign/Tickets.length)*100)}%)</span></span>
                         </div>
                         <div className="progress">
-                          <div className={DesA} role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>{/* progress */}
-                      </div>
-                      <div className="az-traffic-detail-item">
-                        <div>
-                          <span>Open Tickets</span>
-                          <span>{InP}<span>({Math.floor((InP/Tickets.length)*100)}%)</span></span>
-                        </div>
-                        <div className="progress">
-                          <div className={DesO} role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                          <div className={DesAC} role="progressbar" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>{/* progress */}
                       </div>
                     </div>{/* col */}
@@ -737,7 +769,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                           </div>
                           <div>
                             <label>Assigned for Me</label>
-                            <h4>{(Math.floor(Assign/Tickets.length)*100)}%</h4>
+                            <h4>{Math.floor((Assign/Tickets.length)*100)}%</h4>
                           </div>
                         </div>{/* col */}
                         <div className="col-6 d-sm-flex align-items-center">
@@ -756,7 +788,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                     <div className="card card-dashboard-five">
                       <div className="card-header">
                         <h6 className="card-title">Overall Tickets</h6>
-                        <span className="card-text"> Analysis dor opened and closed tickets.</span>
+                        <span className="card-text"> Analysis for opened and closed tickets.</span>
                       </div>{/* card-header */}
                       <div className="card-body row row-sm">
                         <div className="col-6">
@@ -766,7 +798,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                             </div>
                             <div>
                               <label>New Tickets</label>
-                              <h4>{(Math.floor(InP/Tickets.length)*100)}%</h4>
+                              <h4>{x2}%</h4>
                             </div>
                           </div>
                         </div>{/* col */}
@@ -777,7 +809,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                             </div>
                             <div>
                               <label>Closed Tickets</label>
-                              <h4>{(Math.floor(closed/Tickets.length)*100)}%</h4>
+                              <h4>{x1}%</h4>
                             </div>
                           </div>
                         </div>{/* col */}
@@ -803,7 +835,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       </thead>
                       <tbody id="growth">
                       {User.map((item,index) => {
-                      if(item.RoleID!="3")
+                      if((item.RoleID!="3")&&(item.id!=userInfo.id))
                           return (
                             <tr key={index}>
                           <td><Avatar alt="User Photo" sx={{ width: 30, height: 30 }} src={"http://localhost:8000/images/uploads/"+item.profile_picture} /></td>
@@ -863,14 +895,14 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                 </div>{/* media */}
                 <div className="media">
                   <div className="media-body">
-                  <label>In Progress Tickets</label>
+                  <label>Open Tickets</label>
                     <h6>{CC-CF}</h6>
                   </div>{/* media-body */}
                 </div>{/* media */}
                 <div className="media">
                   <div className="media-body">
-                    <label>Tickets Category</label>
-                    <h6>All Categories</h6>
+                    <label>Your Current Sold</label>
+                    <h6>{UserInput.sold} H</h6>
                   </div>{/* media-body */}
                 </div>{/* media */}
                 <button className="btn btn-purple" onClick={handlePrint}>Export</button>
@@ -944,7 +976,25 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                           <span>{CC} <span>(100%)</span></span>
                         </div>
                         <div className="progress">
-                          <div className="progress-bar bg-success wd-100p" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="4"></div>
+                          <div className="progress-bar bg-info wd-100p" role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="4"></div>
+                        </div>{/* progress */}
+                      </div>
+                      <div className="az-traffic-detail-item">
+                        <div>
+                          <span>New Tickets</span>
+                          <span>{CN} <span>({xn}%)</span></span>
+                        </div>
+                        <div className="progress">
+                          <div className={Desn} role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="4"></div>
+                        </div>{/* progress */}
+                      </div>
+                      <div className="az-traffic-detail-item">
+                        <div>
+                          <span>In Progress Tickets</span>
+                          <span>{CC-(CF+CN)} <span>({xp}%)</span></span>
+                        </div>
+                        <div className="progress">
+                          <div className={Desp} role="progressbar" aria-valuenow="4" aria-valuemin="0" aria-valuemax="4"></div>
                         </div>{/* progress */}
                       </div>
                       <div className="az-traffic-detail-item">
@@ -971,7 +1021,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                     <div className="card card-dashboard-five">
                       <div className="card-header">
                         <h6 className="card-title">Overall Tickets</h6>
-                        <span className="card-text"> Analysis dor opened and closed tickets.</span>
+                        <span className="card-text"> Analysis for opened and closed tickets.</span>
                       </div>{/* card-header */}
                       <div className="card-body row row-sm">
                         <div className="col-6">
@@ -980,8 +1030,8 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                               <Pie data={sessionsChart0Data} options={sessionsChart1Options} />
                             </div>
                             <div>
-                              <label>Not Picked</label>
-                              <h4>{(Math.floor((CN/CC)*100))}%</h4>
+                              <label>Open Tickets</label>
+                              <h4>{100-(Math.floor((CF/CC)*100))}%</h4>
                             </div>
                           </div>
                         </div>{/* col */}
@@ -1017,7 +1067,7 @@ var DesCF="progress-bar bg-info wd-"+xd[0]+"0"+"p";
                       </thead>
                       <tbody id="growth">
                       {User.map((item,index) => {
-                      if(item.RoleID!="3")
+                       if((item.RoleID!="3")&&(item.id!=userInfo.id))
                           return (
                             <tr key={index}>
                           <td><Avatar alt="User Photo" sx={{ width: 30, height: 30 }} src={"http://localhost:8000/images/uploads/"+item.profile_picture} /></td>

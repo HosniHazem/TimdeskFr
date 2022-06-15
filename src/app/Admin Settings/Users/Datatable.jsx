@@ -29,7 +29,10 @@ const Datatable = () => {
 }
    });
  }, []);
-
+ if(User===undefined){
+  sessionStorage.clear();
+  window.location.reload();
+}
 
  var dataRows = "";
        

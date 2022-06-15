@@ -69,24 +69,13 @@ BootstrapDialogTitle.propTypes = {
 
 
 
-function getStepContent(stepIndex) {
-  switch (stepIndex) {
-      case 0:
-          return ``
-      case 1:
-          return ``
-      case 2:
-          return ``
-      default:
-          return ``
-  }
-}
+
 const customIcons = {
-  5: {
+  1: {
     icon: <SentimentVeryDissatisfiedIcon />,
     label: 'Very Dissatisfied',
   },
-  4: {
+  2: {
     icon: <SentimentDissatisfiedIcon />,
     label: 'Dissatisfied',
   },
@@ -94,11 +83,11 @@ const customIcons = {
     icon: <SentimentSatisfiedIcon />,
     label: 'Neutral',
   },
-  2: {
+  4: {
     icon: <SentimentSatisfiedAltIcon />,
     label: 'Satisfied',
   },
-  1: {
+  5: {
     icon: <SentimentVerySatisfiedIcon />,
     label: 'Very Satisfied',
   },
@@ -208,14 +197,28 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       window.location.reload();
     }
   };
-
+  function getStepContent(stepIndex) {
+  
+    switch (stepIndex) {
+  
+      case 0:
+            return ``
+        case 1:
+            return ``
+        case 2:
+            return ``
+        case 3:
+            return ``
+        default:
+            return ``
+    }
+  }
 
 
   const steps = cleanedObject;
 
   const handleNext = () => {
       setStatutActive((prevActiveStep) => prevActiveStep + 1)
-     
       const  data = {
         Subject: TicketInput.Subject,
         Description:TicketInput.Description,
@@ -234,6 +237,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         LevelID:TicketInput.LevelID,
         TicketClose:TicketInput.TicketClose,
         Organization:TicketInput.Organization,
+        Username:TicketInput.Username,
       }
   
 
@@ -253,7 +257,7 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
   }
 
   const handleBack = () => {
-      setStatutActive((prevActiveStep) => prevActiveStep - 1)
+      setStatutActive((prevActiveStep) => prevActiveStep-1 )
       const  data = {
         Subject: TicketInput.Subject,
         Description:TicketInput.Description,
@@ -272,6 +276,7 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
         LevelID:TicketInput.LevelID,
         TicketClose:TicketInput.TicketClose,
         Organization:TicketInput.Organization,
+        Username:TicketInput.Username,
       }
   
 
@@ -310,6 +315,7 @@ axios.put(`api/Tickets/${id}/update`, data).then(res=>{
   LevelID:TicketInput.LevelID,
   TicketClose:TicketInput.TicketClose,
   Organization:TicketInput.Organization,
+  Username:TicketInput.Username,
 }
 
 
@@ -388,7 +394,7 @@ swal("not Updated");
                                 onClick={handleNext}
                             >
                                 {StatutActive === steps.length - 1
-                                    ? <Link to={`/ticket/${id}/close`} style={{ textDecoration: 'none', color:'#FFFFFF', }}>Finish</Link>
+                                    ? <Link to={`/agent/${id}/close`} style={{ textDecoration: 'none', color:'#FFFFFF', }}>Finish</Link>
                                     : 'Next'}
                             </Button>
                         </Box>
@@ -405,7 +411,7 @@ swal("not Updated");
                      
                 <div>
                 <label className="font-weight-bold" >Demander:</label>
-                <p>{TicketInput.RequestedUser}</p>
+                <p>{TicketInput.Username}</p>
                 </div>
                 <div>
                 <label className="font-weight-bold">Request type:</label>

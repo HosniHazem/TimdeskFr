@@ -32,6 +32,10 @@ const New = ({ inputs, title }) => {
    }
       });
     }, []);
+    if(userdetail===undefined){
+      sessionStorage.clear();
+      window.location.reload();
+    }
     console.log(file)
   
     

@@ -88,16 +88,18 @@ function getStepContent(stepIndex) {
           return ``
       case 2:
           return ``
+      case 3:
+          return ``
       default:
           return ``
   }
 }
 const customIcons = {
-  5: {
+  1: {
     icon: <SentimentVeryDissatisfiedIcon />,
     label: 'Very Dissatisfied',
   },
-  4: {
+  2: {
     icon: <SentimentDissatisfiedIcon />,
     label: 'Dissatisfied',
   },
@@ -105,11 +107,11 @@ const customIcons = {
     icon: <SentimentSatisfiedIcon />,
     label: 'Neutral',
   },
-  2: {
+  4: {
     icon: <SentimentSatisfiedAltIcon />,
     label: 'Satisfied',
   },
-  1: {
+  5: {
     icon: <SentimentVerySatisfiedIcon />,
     label: 'Very Satisfied',
   },
@@ -250,6 +252,7 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       LevelID:TicketInput.LevelID,
       TicketClose:TicketInput.TicketClose,
       Organization:TicketInput.Organization,
+      Username:TicketInput.Username,
     }
 
 
@@ -290,6 +293,7 @@ const handleBack = () => {
       TicketClose:TicketInput.TicketClose,
       Organization:TicketInput.Organization,
       rate:TicketInput.rate,
+      Username:TicketInput.Username,
     }
 
 
@@ -328,6 +332,7 @@ attach:TicketInput.attach,
 LevelID:TicketInput.LevelID,
 TicketClose:TicketInput.TicketClose,
 Organization:TicketInput.Organization,
+Username:TicketInput.Username,
 }
 
 
@@ -382,13 +387,16 @@ if(!loading)
                 {StatutActive === steps.length ? (
                     <div>
                         <Button
-                            sx={{ mt: 2 }}
-                            variant="contained"
-                            color="secondary"
-                            onClick={handleReset}
-                        >
-                            Reset
-                        </Button>
+                                sx={{ ml: 2 }}
+                                variant="contained"
+                                color="primary"
+                                disabled={TicketInput.TicketClose==="1"}
+                                onClick={handleNext}
+                            >
+                                {StatutActive === steps.length - 1
+                                    ? <Link to={`/ticket/${id}/close`} style={{ textDecoration: 'none', color:'#FFFFFF', }}>Finish</Link>
+                                    : 'Next'}
+                            </Button>
                     </div>
                 ) : (
                     <div>
@@ -428,7 +436,7 @@ if(!loading)
                      
                 <div>
                 <label className="font-weight-bold" >Demander:</label>
-                <p>{TicketInput.RequestedUser}</p>
+                <p>{TicketInput.Username}</p>
                 </div>
                 <div>
                 <label className="font-weight-bold">Request type:</label>

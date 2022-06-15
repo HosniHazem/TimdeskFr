@@ -27,7 +27,10 @@ const Datatable = () => {
 }
    });
  }, []);
-
+ if(SubCategory===undefined){
+  sessionStorage.clear();
+  window.location.reload();
+}
 
  var dataRows = "";
        

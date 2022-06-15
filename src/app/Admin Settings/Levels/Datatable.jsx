@@ -27,7 +27,10 @@ const Datatable = () => {
 }
    });
  }, []);
-
+ if(Levels===undefined){
+  sessionStorage.clear();
+  window.location.reload();
+}
 
 
  var dataRows = "";  

@@ -56,6 +56,10 @@ let info = sessionStorage.getItem("token");
    }
       });
     }, [id]);
+    if(PriorityInput===undefined){
+        sessionStorage.clear();
+        window.location.reload();
+      }
 
     const history = useHistory();
 

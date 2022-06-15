@@ -82,6 +82,7 @@ const history = useHistory();
       SpentTime:TicketInput.SpentTime,
       StatusCloseReason:TicketInput.StatusCloseReason,
       ClosedDate:min,
+      Username:TicketInput.Username,
       TicketClose: "1",
     }
  
@@ -137,7 +138,7 @@ const history = useHistory();
 if(res.data.status === 200)
 {
   swal("Updated","Ticket","success");
-  history.push('/agent/ticket')   
+  history.push('/ticket')   
 } if(res.data.status === 422)
 {
   swal("not Updated");   

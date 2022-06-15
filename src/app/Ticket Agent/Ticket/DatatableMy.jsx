@@ -9,12 +9,14 @@ import swal from 'sweetalert';
 import moment from 'moment';
 import Box from '@mui/material/Box';
 import CustomizedDialogs from './Views'
+import { pickBy } from 'lodash'
 import AuthUser from '../../Session/AuthUser';
-import ClipLoader from "react-spinners/ClipLoader";
 import { css } from "@emotion/react";
+import ClipLoader from "react-spinners/ClipLoader";
 
 let info = sessionStorage.getItem("user");
     const userInfo = JSON.parse(info);
+    const ID=userInfo.id
     const override = css`
     display: block;
     margin: auto;
@@ -23,20 +25,19 @@ let info = sessionStorage.getItem("user");
   `;
 const Datatable = () => {
   let [loading, setLoading] = useState(true);
- let info = sessionStorage.getItem("token");
+  let info1 = sessionStorage.getItem("token");
    
-  const token = JSON.parse(info);  
+  const token = JSON.parse(info1);
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  
-  const [Tickets, setTickets] = useState([]);
 
+  const [Tickets, setTickets] = useState([]);
  useEffect(() => {
    axios.get('api/Tickets').then((res) => {
      if(res.status === 200){
-     setTickets(res.data.Ticket);
-     setLoading(false)
+    setTickets(res.data.Ticket)
+    setLoading(false)
 }
-   });
+   })
  }, []);
  if(Tickets===undefined){
   sessionStorage.clear();
@@ -49,17 +50,17 @@ var levels=""
 var levelsC="" 
 var Requser=""  
 var Etime=""
- dataRows = Tickets.map((n) =>{
+dataRows =Tickets.map((n) =>{
    if(n.users!=null){
     if(n.status!=null){
-      status=n.status.name
-        }
-        if(n.levels!=null){ 
-      levels=n.levels.name
-      levelsC=n.levels.color
-        }
+  status=n.status.name
+    }
+    if(n.levels!=null){ 
+  levels=n.levels.name
+  levelsC=n.levels.color
+    }
   Requser=n.users.name
-  Etime=EstimatedTime
+  Etime=n.EstimatedTime
 }else{
   Requser=null
   status=null
@@ -67,8 +68,11 @@ var Etime=""
   levelsC=null
   Etime=null
 }
-   return ( 
-    
+
+if(Number(n.AssignedUser)===ID)
+
+   
+return(    
      {
                 id: n.id,
                 Subject: n.Subject,
@@ -93,34 +97,31 @@ var Etime=""
                 Organization:n.Organization,
                 
 
-     }
-    );
-    
+     }) 
+  
  
  })
-
- 
+ const cleanedObject = Object.values(pickBy(dataRows, v => v !== undefined))
 
 
   
-  // const handleDelete = async (e,id) => {
+  const handleDelete = async (e,id) => {
 
-  //   e.preventDefault();
-  //    await http.delete(`Tickets/${id}/delete`).then(res=>{
-  //     if(res.status === 200)
-  //       {
+    e.preventDefault();
+     await axios.delete(`api/Tickets/${id}/delete`).then(res=>{
+      if(res.status === 200)
+        {
           
-  //           swal("Deleted!",res.data.message,"success");
-  //           window.location.reload();
-  //       }
-  //       else if(res.data.status === 404)
-  //       {
-  //           swal("Error",res.data.message,"error");
+            swal("Deleted!",res.data.message,"success");
+            window.location.reload();
+        }
+        else if(res.data.status === 404)
+        {
+            swal("Error",res.data.message,"error");
             
-  //       }
-  //   });
-  // };
-  const [NewInput, setNew] = useState([]);
+        }
+    });
+  };const [NewInput, setNew] = useState([]);
   var Category=""
   var  Subject=""
   var  Description=""
@@ -190,18 +191,17 @@ var Etime=""
       Organization:Organization,
     }
 
-axios.put(`api/Tickets/${id}/update`, dataU).then(res=>{
+axios.put(`api/TicketsPick/${id}/update`, dataU).then(res=>{
 
 
 if(res.data.status === 200)
 {
-    // swal("Picked Successfully");
+    swal("Picked Successfully");
    history.push(`/agent/pick/current/${id}`)
 } 
 
 });
   };
-
   const PriorityColumn = [
     
     {
@@ -280,7 +280,7 @@ if(res.data.status === 200)
        
        
      
-
+       
        var id=params.row.id
         return (
           <div className="cellAction">
@@ -299,7 +299,10 @@ if(res.data.status === 200)
                  
                  Pick Up
                </div>
-{CustomizedDialogs(id)}               
+{CustomizedDialogs(id)}
+
+
+               
                </>
              :
              
@@ -357,13 +360,13 @@ if(res.data.status === 200)
   return (
     <div className="datatable">
       <div className="datatableTitle">
-         Ticket list
-  
+        Add New Tickets
+        
       </div>
       <DataGrid
         className="datagrid"
         
-        rows={dataRows}
+        rows={cleanedObject}
         columns={userColumns.concat(PriorityColumn,LevelsColumn,actionColumn)}
         pageSize={9}
         rowsPerPageOptions={[9]}

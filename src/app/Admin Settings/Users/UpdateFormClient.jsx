@@ -53,7 +53,10 @@ const {http,token} = AuthUser()
    }
       });
     }, [id]);
-    
+    if(UserInput===undefined){
+        sessionStorage.clear();
+        window.location.reload();
+      }
    
     const history = useHistory();
 

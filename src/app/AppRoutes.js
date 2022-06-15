@@ -12,6 +12,7 @@ var Role=userInfo.RoleID;
 
 
 const FormD = lazy(() => import('./Ticket Admin/Ticket/ViewsClose'))
+const FormA = lazy(() => import('./Ticket Agent/Ticket/ViewsClose'))
 // Profile
 const Reset = lazy(() => import('./ForgetPassword/Reset'))
 
@@ -20,18 +21,22 @@ const Modal = lazy(() => import('./Ticket Admin/Ticket/Views'))
 const New = lazy(() => import('./Profile/New'))
 
 // Ticket Admin
-const AddFormT = lazy(() => import('./Ticket Admin/Ticket/AddForm'))
 
 const UpdateFormT = lazy(() => import('./Ticket Admin/Ticket/UpdateForm'))
+
+const UpdateFormPickA = lazy(() => import('./Ticket Admin/Ticket/UpdateFormPick'))
 
 const DatatableT = lazy(() => import('./Ticket Admin/Ticket/Datatable'))
 //
 // Ticket Agent
 const UpdateFormTG = lazy(() => import('./Ticket Agent/Ticket/UpdateForm'))
 
+const UpdateFormPick = lazy(() => import('./Ticket Agent/Ticket/UpdateFormPick'))
+
 const DatatableOP = lazy(() => import('./Ticket Agent/Ticket/DatatableOP'))
 
-const DatatableTG = lazy(() => import('./Ticket Agent/Ticket/Datatable'))
+const DatatableMY = lazy(() => import('./Ticket Agent/Ticket/DatatableMy'))
+
 //
 // Ticket Client
 const AddFormTC = lazy(() => import('./Ticket Client/Ticket/AddForm'))
@@ -125,6 +130,10 @@ export class AppRoutes extends Component {
           <Route exact path="/ticket/:id/close">
             {!sessionStorage.getItem('token')||(Role==="3") ? <Redirect to='/login'/> : < FormD/>} 
              </Route>
+
+          <Route exact path="/agent/:id/close">
+            {!sessionStorage.getItem('token')||(Role==="3") ? <Redirect to='/login'/> : < FormA/>} 
+             </Route>
           {/* <Route exact path="/dashboard" component={ Dashboard } /> */}
           <Route exact path="/modal">
             {!sessionStorage.getItem('token') ? <Redirect to='/login'/> : < Modal/>} 
@@ -143,13 +152,14 @@ export class AppRoutes extends Component {
 <Route exact path="/ticket">
             {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < DatatableT/>} 
              </Route>
-             <Route exact path="/ticket/new">
-            {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < AddFormT/>} 
-             </Route>
+             
              <Route exact path="/ticket/current/:id">
             {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < UpdateFormT/>} 
              </Route>
-             
+             <Route exact path="/ticket/pick/current/:id">
+            {!sessionStorage.getItem('token')||(Role!="1") ? <Redirect to='/login'/> : < UpdateFormPickA/>} 
+             </Route>
+
             {/* //// */}
 
             {/* Ticket Client */}
@@ -166,8 +176,9 @@ export class AppRoutes extends Component {
             {/* //// */}
 
             {/* Ticket Agent */}
-<Route exact path="/agent/ticket">
-            {!sessionStorage.getItem('token')||(Role!="2") ? <Redirect to='/login'/> : < DatatableTG/>} 
+
+<Route exact path="/agent/myticket">
+            {!sessionStorage.getItem('token')||(Role!="2") ? <Redirect to='/login'/> : < DatatableMY/>} 
              </Route>
 <Route exact path="/ticket/open">
             {!sessionStorage.getItem('token')||(Role!="2") ? <Redirect to='/login'/> : < DatatableOP/>} 
@@ -175,6 +186,10 @@ export class AppRoutes extends Component {
             
              <Route exact path="/agent/ticket/current/:id">
             {!sessionStorage.getItem('token')||(Role!="2") ? <Redirect to='/login'/> : < UpdateFormTG/>} 
+             </Route>
+            
+             <Route exact path="/agent/pick/current/:id">
+            {!sessionStorage.getItem('token')||(Role!="2") ? <Redirect to='/login'/> : < UpdateFormPick/>} 
              </Route>
              
             {/* //// */}
@@ -287,10 +302,7 @@ export class AppRoutes extends Component {
             <Route exact path="/forgetpassword">
             {sessionStorage.getItem('token') ? <Redirect to='/dashboard'/> : < ForgetPassword/>}
             </Route>
-    
-        <Route exact path="/reset/:token">
-            {sessionStorage.getItem('token') ? <Redirect to='/dashboard'/> : <Redirect to='/reset/:token'/>}
-            </Route>
+            <Route exact path="/reset/:token" component={ Reset } />
         </Switch>
       </Suspense>
     )

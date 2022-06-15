@@ -1,4 +1,27 @@
 #growth {
-    overflow-y: scroll;
-    white-space: nowrap;
+  max-height: 400px;
+  overflow: auto;
    }
+   #grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: #2196F3;
+    padding: 10px;
+  }
+  #grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    font-size: 30px;
+    text-align: center;
+  }
+  #div {
+    border: 1px solid black;
+    padding: 5px 17px 0px 25px;
+    background-color: lightblue;
+}
+#div2 {
+    border: 1px solid black;
+    padding: 64px 20px 110px 20px;
+    background-color: lightblue;
+}

@@ -55,7 +55,10 @@ let info = sessionStorage.getItem("token");
    }
       });
     }, [id]);
-
+    if(LevelsInput===undefined){
+        sessionStorage.clear();
+        window.location.reload();
+      }
     const history = useHistory();
 
     const handleInput = (e) => {

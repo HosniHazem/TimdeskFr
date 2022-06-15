@@ -54,7 +54,10 @@ const IMG = styled('img')(() => ({
    }
       });
     }, [id]);
-    
+    if(StatusInput===undefined){
+        sessionStorage.clear();
+        window.location.reload();
+      }
     
     const history = useHistory();
 

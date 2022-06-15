@@ -5,7 +5,7 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/system'
 import { Span } from './Typography'
-import moment from "moment";
+
 import { ValidatorForm} from 'react-material-ui-form-validator'
 import axios from 'axios';
 import {useHistory,useParams} from 'react-router-dom';
@@ -16,7 +16,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { MDBInput } from "mdbreact";
 import AuthUser from '../../Session/AuthUser';
-
+import moment from "moment";
 
 const Container = styled('div')(({ theme }) => ({
     margin: '100px',
@@ -42,19 +42,22 @@ const IMG = styled('img')(() => ({
    let info = sessionStorage.getItem("token");
    
   const token = JSON.parse(info);  
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
     const { id } = useParams();
     
     const [TicketInput, setTicket] = useState([]);
    
     const [value, setValue] = React.useState(null);
+    const [value1, setValue1] = React.useState(null);
     const [errorInput, setError] = useState([]);
+
     useEffect(() => {
       axios.get(`api/Tickets/${id}/show`).then((res) => {
         if(res.data.status === 200){
         setTicket(res.data.Ticket);
         setValue(res.data.Ticket.DueDate);
+        setValue1(res.data.Ticket.EstimatedDate);
    } else if(res.data.status === 404){
     
    }
@@ -64,7 +67,6 @@ const IMG = styled('img')(() => ({
       sessionStorage.clear();
       window.location.reload();
     }
-
     const [Fich, setFich] = useState(TicketInput.attach);
   
 const [Category, setCategory] = useState([]);
@@ -178,7 +180,7 @@ const [Category, setCategory] = useState([]);
               Subject: TicketInput.Subject,
               Description:TicketInput.Description,
               EstimatedTime:TicketInput.EstimatedTime,
-              EstimatedDate:TicketInput.EstimatedDate,
+              EstimatedDate:value1,
               StatusID:TicketInput.StatusID,
               RequestedUser:TicketInput.RequestedUser,
               RequestTypeID:TicketInput.RequestTypeID,
@@ -188,23 +190,21 @@ const [Category, setCategory] = useState([]);
               SubCategoryID:TicketInput.SubCategoryID,
               CategoryID:TicketInput.CategoryID,
               PriorityID:TicketInput.PriorityID,
-              attach:Fich,
+              attach:TicketInput.attach,
               LevelID:TicketInput.LevelID,
               TicketClose:TicketInput.TicketClose,
               Organization:TicketInput.Organization,
               Username:TicketInput.Username,
-              
-
             }
 
-    axios.put(`api/TicketsClient/${id}/update`, data).then(res=>{
+    axios.put(`api/Tickets/${id}/update`, data).then(res=>{
         
       
         if(res.data.status === 200)
         {
-            swal("Updated","Ticket","success");
+            swal("Pick Up","success");
             
-           history.push('/client/ticket')
+           history.push('/ticket')
         } if(res.data.status === 422)
         {
             swal("All fields are mandetory","","error");
@@ -212,7 +212,7 @@ const [Category, setCategory] = useState([]);
         }
         else if(res.data.status === 404)
         {
-            swal("Error","Ticket","error");
+            swal("Pick Up","error");
             setError([]);
         }
     });
@@ -230,21 +230,27 @@ const [Category, setCategory] = useState([]);
     
           <ValidatorForm onSubmit={updateTicket} onError={() => null} encType="multipart/form-data">
               <Grid container spacing={3}>
-                  <Grid item lg={6.5} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+                  <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                      
                   
-                <div className="form-group">
+                  <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">Demander</label>
     <select
                         name="RequestedUser"
                         className="form-control"
                         defaultValue={TicketInput.Username}
+                        disabled
                       >
-                         <option value={TicketInput.Username}>
-                              {TicketInput.Username}
+                         {User.map((item,index) => {
+                    
+                          return (
+                            <option value={item.id} key={index}>
+                         {item.name}
                             </option>
+                          );
+                        })}
+                        
                       </select>
-                      
   </div>
                 
   <div className="form-group">
@@ -252,10 +258,10 @@ const [Category, setCategory] = useState([]);
     <select
                         name="RequestTypeID"
                         className="form-control"
-                        onChange={handleInput}
                         value={TicketInput.RequestTypeID}
+                        disabled
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {RequestType.map((item,index) => {
                           if(item.Is_Active==="Active")
                           return (
@@ -265,7 +271,6 @@ const [Category, setCategory] = useState([]);
                           );
                         })}
                       </select>
-                      <span className="text-danger">{errorInput.RequestTypeID}</span>
   </div>
                     
                    
@@ -274,10 +279,10 @@ const [Category, setCategory] = useState([]);
     <select
                         name="CategoryID"
                         className="form-control"
-                        onChange={handleInput}
                         value={TicketInput.CategoryID}
+                        disabled
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {Category.map((item,index) => {
                           if(item.Is_Active==="Active")
                           return (
@@ -287,18 +292,16 @@ const [Category, setCategory] = useState([]);
                           );
                         })}
                       </select>
-                      <span className="text-danger">{errorInput.CategoryID}</span>
-  
   </div>
   <div className="form-group">
     <label htmlFor="exampleFormControlSelect1">SubCategory</label>
     <select
                         name="SubCategoryID"
                         className="form-control"
-                        onChange={handleInput}
                         value={TicketInput.SubCategoryID}
+                        disabled
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {SubCategory.map((item,index) => {
                           if((item.category_id==TicketInput.CategoryID)&&(item.Is_Active==="Active"))
                           return (
@@ -308,8 +311,6 @@ const [Category, setCategory] = useState([]);
                           );
                         })}
                       </select>
-                      <span className="text-danger">{errorInput.SubCategoryID}</span>
-
   </div>
 
   <div className="form-group">
@@ -317,10 +318,10 @@ const [Category, setCategory] = useState([]);
     <select
                         name="PriorityID"
                         className="form-control"
-                        onChange={handleInput}
                         value={TicketInput.PriorityID}
+                        disabled
                       >
-                        <option value="DEFAULT"></option>
+                        
                         {Priority.map((item,index) => {
                           if(item.Is_Active==="Active")
                           return (
@@ -330,40 +331,127 @@ const [Category, setCategory] = useState([]);
                           );
                         })}
                       </select>
-                      <span className="text-danger">{errorInput.PriorityID}</span>
-
   </div>
- 
   <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         label="DueDate"
         minDate={new Date(min)}
         value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
-        renderInput={(params) => <TextField {...params} />}
+        renderInput={(params) => <TextField {...params} />
+      }
+      disabled
       />
     </LocalizationProvider> 
-    <span className="text-danger">{errorInput.DueDate}</span>
 
                 
                   </Grid>
 
-                  
+                  <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
+                  <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Agent</label>
+    <select
+                        name="AssignedUser"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={TicketInput.AssignedUser}
+                      >
+                        <option value="DEFAULT"></option>
+                        {User.map((item,index) => {
+                          if((item.Is_Active==="Active")&&(item.RoleID!=3))
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      <span className="text-danger">{errorInput.AssignedUser}</span>
+  </div>
+                <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Status</label>
+    <select
+                        name="StatusID"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={TicketInput.StatusID}
+                        
+                      >
+                        <option value="DEFAULT"></option>
+                        {Status.map((item,index) => {
+                          if((item.Is_Active==="Active")&&(item.name!="Closed"))
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      <span className="text-danger">{errorInput.StatusID}</span>
+
+  </div>
+
+  
+  <div className="form-group">
+    <label htmlFor="exampleFormControlSelect1">Level</label>
+    <select
+                        name="LevelID"
+                        className="form-control"
+                        onChange={handleInput}
+                        value={TicketInput.LevelID}
+                      >
+                        <option value="DEFAULT"></option>
+                        {Levels.map((item,index) => {
+                          if(item.Is_Active==="Active")
+                          return (
+                            <option value={item.id} key={index}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      <span className="text-danger">{errorInput.LevelID}</span>
+
+  </div>
+  <div className="mb-3">
+                    <label htmlFor="exampleFormControlInput1" className="name">Estimated Time(H)</label>
+                        <input type="text" name="EstimatedTime" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.EstimatedTime}  />
+                        <span className="text-danger">{errorInput.EstimatedTime}</span>
+                       
+                </div>
+                <div>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <DatePicker
+        label="EstimatedDate"
+        minDate={new Date(min)}
+        value={value1}
+        onChange={(newValue) => {
+          setValue1(newValue);
+        }}
+        renderInput={(params) => <TextField {...params} />
+      }
+      />
+    </LocalizationProvider>
+    <span className="text-danger">{errorInput.EstimatedDate}</span>
+
+    </div> 
+                <div className="mb-3">
+  <label htmlFor="exampleFormControlInput1"  >Solution</label>
+<MDBInput type="textarea" name="SolutionDescription" value={TicketInput.SolutionDescription} onChange={handleInput}  rows="5" />
+<span className="text-danger">{errorInput.SolutionDescription}</span>
+
+</div>
+
+                  </Grid>
 
                   <Grid item lg={6} md={6} sm={12} xs={12} sx={{ mt: 2 }}>
                   <div className="mb-4">
                     <label htmlFor="exampleFormControlInput1" className="name">Subject</label>
-                        <input type="text" name="Subject" onChange={handleInput}  className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.Subject}  />
-                        <span className="text-danger">{errorInput.Subject}</span>
-
+                        <input type="text" name="Subject" disabled className="form-control" htmlFor="exampleFormControlInput1" value={TicketInput.Subject}  />
+                        
                 </div>
 
  <label htmlFor="exampleFormControlInput1" >Description</label>
-<MDBInput type="textarea" name="Description"  value={TicketInput.Description} onChange={handleInput}  rows="5" />
-<span className="text-danger">{errorInput.Description}</span>
-
+<MDBInput type="textarea" name="Description" disabled value={TicketInput.Description}   rows="5" />
 <div className="mb-5">
 
 <Button 
@@ -377,8 +465,8 @@ className="bg-secondary"
   <input
     type="file"
     name="attach"
-    onChange={handleImage}
     hidden
+    disabled
   />
   
 </Button>
@@ -396,7 +484,7 @@ className="bg-secondary"
                                     alt=""
                                 />
                   <Span sx={{ pl: 1, textTransform: 'capitalize' }}>
-                      Update
+                      Pick Up
                   </Span>
               </Button>
           </ValidatorForm>
