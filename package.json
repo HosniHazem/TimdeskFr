@@ -37,6 +37,7 @@
     "nock": "^13.2.4",
     "node-pre-gyp": "^0.17.0",
     "nouislider-react": "^3.3.7",
+    "pusher-js": "^7.1.1-beta",
     "randomstring": "^1.2.2",
     "react": "^18.0.0",
     "react-bootstrap": "^1.6.4",

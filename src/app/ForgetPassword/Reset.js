@@ -103,7 +103,7 @@ function Reset(props) {
 							: 'm-3'
 					}>
 					<Link to='/login' className='btn btn-primary '>
-					aller à la page de connexion{' '}
+					go to login page{' '}
 						</Link>
 						</div>
 								

@@ -247,12 +247,12 @@ export class Header extends Component {
               </ul>
             </div>
             <div className="az-header-right">
-            
-              {/* <div className="az-header-message">
-                <Link to="#/">
+
+              <div className="az-header-message">
+                <Link to="/messages">
                   <i className="typcn typcn-messages"></i>
                 </Link>
-              </div> */}
+              </div>
               {/* <Dropdown className="az-header-notification">
                 <Dropdown.Toggle as={"a"} className="new">
                   <i className="typcn typcn-bell"></i>
@@ -338,7 +338,7 @@ export class Header extends Component {
                   </div>
                 </Dropdown.Menu>
               </Dropdown> */}
-          <div><a>{userInfo.name}</a></div>
+          <div className="ml-3"><a>{userInfo.name}</a></div>
               <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">
                   
@@ -512,11 +512,11 @@ export class Header extends Component {
             <div className="az-header-right">
            
              
-              {/* <div className="az-header-message">
-                <Link to="#/">
+              <div className="az-header-message">
+                <Link to="/messages">
                   <i className="typcn typcn-messages"></i>
                 </Link>
-              </div> */}
+              </div>
               {/* <Dropdown className="az-header-notification">
                 <Dropdown.Toggle as={"a"} className="new">
                   <i className="typcn typcn-bell"></i>
@@ -602,7 +602,7 @@ export class Header extends Component {
                   </div>
                 </Dropdown.Menu>
               </Dropdown> */}
-          <div><a >{userInfo.name}</a></div>
+          <div className='ml-3'><a >{userInfo.name}</a></div>
               <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">
                   
@@ -775,11 +775,7 @@ export class Header extends Component {
             <div className="az-header-right">
            
              
-              {/* <div className="az-header-message">
-                <Link to="#/">
-                  <i className="typcn typcn-messages"></i>
-                </Link>
-              </div> */}
+             
               {/* <Dropdown className="az-header-notification">
                 <Dropdown.Toggle as={"a"} className="new">
                   <i className="typcn typcn-bell"></i>
@@ -867,7 +863,7 @@ export class Header extends Component {
               </Dropdown> */}
 
          <div/>
-         <div><a>{userInfo.name}</a></div>
+         <div className="ml-3"><a>{userInfo.name}</a></div>
               <Dropdown name="profil" className="az-profile-menu">
                 <Dropdown.Toggle as={"a"} className="az-img-user">
                   
