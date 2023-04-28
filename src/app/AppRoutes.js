@@ -76,41 +76,7 @@ export class AppRoutes extends Component {
               <DatatableI />
             )}
           </Route>
-          <Route exact path="/client">
-            {!sessionStorage.getItem("token") || Role != "1" ? (
-              <Redirect to="/login" />
-            ) : (
-              <DatatableIC />
-            )}
-          </Route>
-          <Route exact path="/user/new">
-            {!sessionStorage.getItem("token") || Role != "1" ? (
-              <Redirect to="/login" />
-            ) : (
-              <AddFormI />
-            )}
-          </Route>
-          <Route exact path="/user/current/:id">
-            {!sessionStorage.getItem("token") || Role != "1" ? (
-              <Redirect to="/login" />
-            ) : (
-              <UpdateFormI />
-            )}
-          </Route>
-          <Route exact path="/client/new">
-            {!sessionStorage.getItem("token") || Role != "1" ? (
-              <Redirect to="/login" />
-            ) : (
-              <AddFormIC />
-            )}
-          </Route>
-          <Route exact path="/client/current/:id">
-            {!sessionStorage.getItem("token") || Role != "1" ? (
-              <Redirect to="/login" />
-            ) : (
-              <UpdateFormIC />
-            )}
-          </Route>
+         
           {/* //// */}
 
           <Route exact path="/login">
